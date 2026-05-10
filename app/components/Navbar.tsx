@@ -1,0 +1,127 @@
+'use client'
+
+const navLinks = ['Home', 'Work', 'Services', 'Meet the Team', 'Careers']
+
+export default function Navbar() {
+  return (
+    <nav
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        height: '52px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 var(--pad)',
+        borderBottom: '1px solid var(--line2)',
+        background: 'rgba(0,0,0,0.82)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+      }}
+    >
+      {/* Logo */}
+      <a
+        href="#"
+        style={{
+          fontFamily: 'var(--font-bricolage), sans-serif',
+          fontSize: '15px',
+          fontWeight: 700,
+          letterSpacing: '0.01em',
+          color: 'var(--white)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '7px',
+          textDecoration: 'none',
+          flexShrink: 0,
+        }}
+      >
+        <span
+          style={{
+            width: '7px',
+            height: '7px',
+            background: 'var(--green)',
+            borderRadius: '50%',
+            flexShrink: 0,
+            display: 'inline-block',
+          }}
+        />
+        WAGMI Media
+      </a>
+
+      {/* Center links */}
+      <div
+        className="nav-center"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        {navLinks.map((link) => (
+          <a
+            key={link}
+            href="#"
+            style={{
+              fontSize: '12px',
+              fontWeight: 400,
+              letterSpacing: '0.01em',
+              color: 'var(--t3)',
+              textDecoration: 'none',
+              padding: '0 16px',
+              height: '52px',
+              display: 'flex',
+              alignItems: 'center',
+              whiteSpace: 'nowrap',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--t1)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--t3)')}
+          >
+            {link}
+          </a>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <a
+        href="#"
+        style={{
+          fontFamily: 'var(--font-bricolage), sans-serif',
+          fontSize: '12px',
+          fontWeight: 700,
+          letterSpacing: '0.04em',
+          color: 'var(--black)',
+          background: 'var(--white)',
+          border: 'none',
+          padding: '8px 18px',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          display: 'inline-flex',
+          alignItems: 'center',
+          transition: 'background 0.2s, transform 0.15s',
+          flexShrink: 0,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = '#e8e8e8'
+          e.currentTarget.style.transform = 'translateY(-1px)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'var(--white)'
+          e.currentTarget.style.transform = 'translateY(0)'
+        }}
+      >
+        Apply Now
+      </a>
+
+      {/* Mobile: hide center links via inline media handled by CSS in globals */}
+      <style>{`
+        @media (max-width: 768px) { .nav-center { display: none !important; } }
+      `}</style>
+    </nav>
+  )
+}
