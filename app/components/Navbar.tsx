@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -49,17 +50,7 @@ export default function Navbar() {
           flexShrink: 0,
         }}
       >
-        <span
-          style={{
-            width: '7px',
-            height: '7px',
-            background: 'var(--green)',
-            borderRadius: '50%',
-            flexShrink: 0,
-            display: 'inline-block',
-          }}
-        />
-        WAGMI Media
+       <Image src="/logo.png" alt="WAGMI Media" width={60} height={32} />
       </Link>
 
       {/* Center links */}
@@ -92,7 +83,6 @@ export default function Navbar() {
                 whiteSpace: 'nowrap',
                 transition: 'color 0.2s',
                 position: 'relative',
-                borderBottom: isActive ? '2px solid var(--green)' : '2px solid transparent',
               }}
               onMouseEnter={(e) => {
                 if (!isActive) e.currentTarget.style.color = 'var(--t1)'

@@ -16,7 +16,7 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'WAGMI Media — Content That Converts',
+  title: 'WAGMI',
   description:
     'Scripts. Editing. Strategy. Distribution. We run the entire operation — so you stop creating content that gets views and start creating content that gets paid.',
 }
