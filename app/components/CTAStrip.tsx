@@ -47,7 +47,7 @@ export default function CTAStrip({ text }: CTAStripProps) {
           flexShrink: 0,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = '#e0e0e0'
+          e.currentTarget.style.background = 'var(--green)'
           e.currentTarget.style.transform = 'translateY(-1px)'
         }}
         onMouseLeave={(e) => {

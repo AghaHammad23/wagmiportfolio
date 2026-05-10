@@ -145,7 +145,7 @@ export default function Hero() {
             transition: 'background 0.2s, transform 0.15s',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#e0e0e0'
+            e.currentTarget.style.background = 'var(--green)'
             e.currentTarget.style.transform = 'translateY(-1px)'
           }}
           onMouseLeave={(e) => {
@@ -171,7 +171,7 @@ export default function Hero() {
             transition: 'color 0.2s',
             padding: '14px 8px',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--white)')}
+          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green)')}
           onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--t2)')}
         >
           See Our Work ↓

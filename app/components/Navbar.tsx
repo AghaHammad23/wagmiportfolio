@@ -1,8 +1,19 @@
 'use client'
 
-const navLinks = ['Home', 'Work', 'Services', 'Meet the Team', 'Careers']
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Work', href: '/work' },
+  { label: 'Services', href: '/services' },
+  { label: 'Meet the Team', href: '/meet-the-team' },
+  { label: 'Careers', href: '/careers' },
+]
 
 export default function Navbar() {
+  const pathname = usePathname()
+
   return (
     <nav
       style={{
@@ -23,8 +34,8 @@ export default function Navbar() {
       }}
     >
       {/* Logo */}
-      <a
-        href="#"
+      <Link
+        href="/"
         style={{
           fontFamily: 'var(--font-bricolage), sans-serif',
           fontSize: '15px',
@@ -49,7 +60,7 @@ export default function Navbar() {
           }}
         />
         WAGMI Media
-      </a>
+      </Link>
 
       {/* Center links */}
       <div
@@ -62,33 +73,42 @@ export default function Navbar() {
           transform: 'translateX(-50%)',
         }}
       >
-        {navLinks.map((link) => (
-          <a
-            key={link}
-            href="#"
-            style={{
-              fontSize: '12px',
-              fontWeight: 400,
-              letterSpacing: '0.01em',
-              color: 'var(--t3)',
-              textDecoration: 'none',
-              padding: '0 16px',
-              height: '52px',
-              display: 'flex',
-              alignItems: 'center',
-              whiteSpace: 'nowrap',
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--t1)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--t3)')}
-          >
-            {link}
-          </a>
-        ))}
+        {navLinks.map(({ label, href }) => {
+          const isActive = pathname === href
+          return (
+            <Link
+              key={href}
+              href={href}
+              style={{
+                fontSize: '12px',
+                fontWeight: isActive ? 500 : 400,
+                letterSpacing: '0.01em',
+                color: isActive ? 'var(--green)' : 'var(--t3)',
+                textDecoration: 'none',
+                padding: '0 16px',
+                height: '52px',
+                display: 'flex',
+                alignItems: 'center',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s',
+                position: 'relative',
+                borderBottom: isActive ? '2px solid var(--green)' : '2px solid transparent',
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) e.currentTarget.style.color = 'var(--t1)'
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) e.currentTarget.style.color = 'var(--t3)'
+              }}
+            >
+              {label}
+            </Link>
+          )
+        })}
       </div>
 
       {/* CTA */}
-      <a
+      <Link
         href="#"
         style={{
           fontFamily: 'var(--font-bricolage), sans-serif',
@@ -107,7 +127,7 @@ export default function Navbar() {
           flexShrink: 0,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = '#e8e8e8'
+          e.currentTarget.style.background = 'var(--green)'
           e.currentTarget.style.transform = 'translateY(-1px)'
         }}
         onMouseLeave={(e) => {
@@ -116,9 +136,8 @@ export default function Navbar() {
         }}
       >
         Apply Now
-      </a>
+      </Link>
 
-      {/* Mobile: hide center links via inline media handled by CSS in globals */}
       <style>{`
         @media (max-width: 768px) { .nav-center { display: none !important; } }
       `}</style>
