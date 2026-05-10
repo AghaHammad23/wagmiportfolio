@@ -2,20 +2,14 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { useApply } from './Providers'
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
-
-function rise(delay: number) {
-  return {
-    initial: { opacity: 0, y: 24 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.9, ease, delay },
-  }
-}
 
 export default function FinalCTA() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '0px 0px -60px 0px' })
+  const { open } = useApply()
 
   return (
     <div
@@ -48,7 +42,7 @@ export default function FinalCTA() {
         transition={{ duration: 0.9, ease, delay: 0 }}
         style={{
           fontFamily: 'var(--font-bricolage), sans-serif',
-          fontSize: 'clamp(36px, 5.5vw, 70px)',
+          fontSize: 'clamp(32px, 5.5vw, 70px)',
           fontWeight: 800,
           letterSpacing: '-0.03em',
           lineHeight: 1.04,
@@ -94,8 +88,8 @@ export default function FinalCTA() {
         within 48 hours.
       </motion.p>
 
-      <motion.a
-        href="#"
+      <motion.button
+        onClick={open}
         initial={{ opacity: 0, y: 24 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.9, ease, delay: 0.28 }}
@@ -110,14 +104,13 @@ export default function FinalCTA() {
           border: 'none',
           padding: '16px 44px',
           cursor: 'pointer',
-          textDecoration: 'none',
           display: 'inline-block',
           position: 'relative',
           zIndex: 1,
         }}
       >
         Apply to Work With Us
-      </motion.a>
+      </motion.button>
 
       <motion.div
         initial={{ opacity: 0, y: 24 }}
@@ -139,7 +132,7 @@ export default function FinalCTA() {
         }}
       >
         {['No long-term contracts', 'First results in 30 days', '100% done-for-you', 'Cancel anytime'].map(
-          (item) => (
+          item => (
             <span key={item}>
               <span style={{ color: 'rgba(106,255,42,0.5)', marginRight: '4px' }}>✓</span>
               {item}

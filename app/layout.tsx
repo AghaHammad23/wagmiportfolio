@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
+import Providers from './components/Providers'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -29,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bricolage.variable} ${jakarta.variable}`}>
       <body style={{ fontFamily: 'var(--font-jakarta), sans-serif' }}>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )

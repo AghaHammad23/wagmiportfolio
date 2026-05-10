@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useApply } from './Providers'
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
@@ -13,6 +14,8 @@ function rise(delay: number) {
 }
 
 export default function Hero() {
+  const { open } = useApply()
+
   return (
     <section
       style={{
@@ -73,7 +76,7 @@ export default function Hero() {
       <h1
         style={{
           fontFamily: 'var(--font-bricolage), sans-serif',
-          fontSize: 'clamp(40px, 6.5vw, 80px)',
+          fontSize: 'clamp(36px, 6.5vw, 80px)',
           fontWeight: 800,
           lineHeight: 1.0,
           letterSpacing: '-0.03em',
@@ -104,7 +107,7 @@ export default function Hero() {
       <motion.p
         {...rise(0.58)}
         style={{
-          fontSize: 'clamp(16px, 1.8vw, 19px)',
+          fontSize: 'clamp(15px, 1.8vw, 19px)',
           fontWeight: 300,
           lineHeight: 1.7,
           color: 'var(--t2)',
@@ -128,8 +131,8 @@ export default function Hero() {
           justifyContent: 'center',
         }}
       >
-        <a
-          href="#"
+        <button
+          onClick={open}
           style={{
             fontFamily: 'var(--font-bricolage), sans-serif',
             fontSize: '14px',
@@ -144,17 +147,17 @@ export default function Hero() {
             display: 'inline-block',
             transition: 'background 0.2s, transform 0.15s',
           }}
-          onMouseEnter={(e) => {
+          onMouseEnter={e => {
             e.currentTarget.style.background = 'var(--green)'
             e.currentTarget.style.transform = 'translateY(-1px)'
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={e => {
             e.currentTarget.style.background = 'var(--white)'
             e.currentTarget.style.transform = 'translateY(0)'
           }}
         >
           Apply to Work With Us
-        </a>
+        </button>
         <a
           href="#"
           style={{
@@ -171,8 +174,8 @@ export default function Hero() {
             transition: 'color 0.2s',
             padding: '14px 8px',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green)')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--t2)')}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--green)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--t2)')}
         >
           See Our Work ↓
         </a>
@@ -195,7 +198,7 @@ export default function Hero() {
         }}
       >
         {['No long-term contracts', 'Results in 30 days', '100% done-for-you'].map(
-          (item) => (
+          item => (
             <span key={item}>
               <span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '4px' }}>✓</span>
               {item}

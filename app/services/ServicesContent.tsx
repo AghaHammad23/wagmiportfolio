@@ -12,6 +12,7 @@ import {
   RiTeamLine,
   RiSearchLine,
 } from 'react-icons/ri'
+import { useApply } from '../components/Providers'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -71,6 +72,7 @@ const process = [
 
 export default function ServicesContent() {
   const revealRef = useRef<HTMLDivElement>(null)
+  const { open } = useApply()
 
   useEffect(() => {
     const reveals = revealRef.current?.querySelectorAll('.reveal')
@@ -208,13 +210,15 @@ export default function ServicesContent() {
           <p className="reveal" style={{ fontSize: '16px', fontWeight: 300, color: 'var(--t2)', maxWidth: '380px', margin: '0 auto 40px', lineHeight: 1.7, position: 'relative', zIndex: 1 }}>
             Apply today. Limited spots open each month.
           </p>
-          <a href="#" className="reveal"
-            style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px', fontWeight: 700, color: 'var(--black)', background: 'var(--white)', padding: '14px 36px', textDecoration: 'none', display: 'inline-block', transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1 }}
+          <button
+            onClick={open}
+            className="reveal"
+            style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px', fontWeight: 700, color: 'var(--black)', background: 'var(--white)', padding: '14px 36px', border: 'none', cursor: 'pointer', display: 'inline-block', transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1 }}
             onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
             onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
           >
             Apply to Work With Us
-          </a>
+          </button>
         </div>
       </div>
 

@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import PolicyModal from './PolicyModal'
+import { useApply } from './Providers'
 
 type PolicyKey = 'privacy' | 'terms' | 'cookie' | 'refund' | null
 
@@ -107,87 +109,116 @@ const footerLinks: { label: string; key: Exclude<PolicyKey, null> }[] = [
 
 export default function Footer() {
   const [openPolicy, setOpenPolicy] = useState<PolicyKey>(null)
+  const { open } = useApply()
 
   return (
     <>
-      <footer
-        style={{
-          padding: '24px var(--pad)',
+      <footer style={{ background: 'var(--off)', borderTop: '1px solid var(--line2)' }}>
+        {/* Contact strip */}
+        <div style={{
+          padding: 'clamp(40px, 6vw, 72px) var(--pad)',
+          borderBottom: '1px solid var(--line2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '32px',
+          flexWrap: 'wrap',
+        }}>
+          <div>
+            <div style={{
+              fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
+              textTransform: 'uppercase', color: 'var(--t4)',
+              marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px',
+            }}>
+              <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+              Get in Touch
+            </div>
+            <p style={{
+              fontFamily: 'var(--font-bricolage), sans-serif',
+              fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 800,
+              letterSpacing: '-0.025em', color: 'var(--white)',
+              lineHeight: 1.1, marginBottom: '16px',
+            }}>
+              Ready to build your<br />
+              <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>content engine?</em>
+            </p>
+            <a
+              href="mailto:aghasaad@wagmihq.com"
+              style={{
+                fontSize: '14px', fontWeight: 300, color: 'var(--t2)',
+                textDecoration: 'none', letterSpacing: '0.01em',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--green)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--t2)')}
+            >
+              aghasaad@wagmihq.com
+            </a>
+          </div>
+          <button
+            onClick={open}
+            style={{
+              fontFamily: 'var(--font-bricolage), sans-serif',
+              fontSize: '14px', fontWeight: 700, letterSpacing: '0.02em',
+              color: 'var(--black)', background: 'var(--white)',
+              border: 'none', padding: '14px 32px', cursor: 'pointer',
+              transition: 'background 0.2s, transform 0.15s', flexShrink: 0,
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
+          >
+            Apply to Work With Us →
+          </button>
+        </div>
+
+        {/* Bottom bar */}
+        <div style={{
+          padding: '20px var(--pad)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '12px',
-          background: 'var(--off)',
-          borderTop: '1px solid var(--line2)',
-        }}
-      >
-        {/* Logo */}
-        <a
-          href="#"
-          style={{
-            fontFamily: 'var(--font-bricolage), sans-serif',
-            fontSize: '13px',
-            fontWeight: 700,
-            color: 'var(--t3)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '7px',
-            textDecoration: 'none',
-          }}
-        >
-          <span
+        }}>
+          <a
+            href="#"
             style={{
-              width: '6px',
-              height: '6px',
-              background: 'var(--green)',
-              borderRadius: '50%',
-              opacity: 0.5,
-              display: 'inline-block',
+              fontFamily: 'var(--font-bricolage), sans-serif',
+              fontSize: '13px', fontWeight: 700, color: 'var(--t3)',
+              display: 'flex', alignItems: 'center', gap: '7px', textDecoration: 'none',
             }}
-          />
-          WAGMI Media LLC
-        </a>
+          >
+            <span style={{
+              width: '6px', height: '6px', background: 'var(--green)',
+              borderRadius: '50%', opacity: 0.5, display: 'inline-block',
+            }} />
+            WAGMI Media LLC
+          </a>
 
-        {/* Policy links */}
-        <div
-          className="footer-links"
-          style={{ display: 'flex', gap: '24px' }}
-        >
-          {footerLinks.map(({ label, key }) => (
-            <button
-              key={key}
-              onClick={() => setOpenPolicy(key)}
-              style={{
-                fontSize: '11px',
-                fontWeight: 400,
-                color: 'var(--t4)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                letterSpacing: '0.03em',
-                transition: 'color 0.2s',
-                padding: 0,
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--t4)')}
-            >
-              {label}
-            </button>
-          ))}
+          <div className="footer-links" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            {footerLinks.map(({ label, key }) => (
+              <button
+                key={key}
+                onClick={() => setOpenPolicy(key)}
+                style={{
+                  fontSize: '11px', fontWeight: 400, color: 'var(--t4)',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  letterSpacing: '0.03em', transition: 'color 0.2s', padding: 0,
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--green)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--t4)')}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t4)' }}>
+            © 2025 WAGMI Media LLC
+          </span>
         </div>
-
-        {/* Copyright */}
-        <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t4)' }}>
-          © 2025 WAGMI Media LLC · aghasaad@wagmihq.com
-        </span>
-
-        <style>{`
-          @media (max-width: 768px) { .footer-links { display: none !important; } }
-        `}</style>
       </footer>
 
-      {/* Policy Modals */}
       {footerLinks.map(({ key }) => (
         <PolicyModal
           key={key}

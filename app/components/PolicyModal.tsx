@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLenis } from 'lenis/react'
 
 interface PolicyModalProps {
   isOpen: boolean
@@ -11,11 +12,21 @@ interface PolicyModalProps {
 }
 
 export default function PolicyModal({ isOpen, onClose, title, children }: PolicyModalProps) {
+  const lenis = useLenis()
+
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden'
-    else document.body.style.overflow = ''
-    return () => { document.body.style.overflow = '' }
-  }, [isOpen])
+    if (isOpen) {
+      lenis?.stop()
+      document.body.style.overflow = 'hidden'
+    } else {
+      lenis?.start()
+      document.body.style.overflow = ''
+    }
+    return () => {
+      lenis?.start()
+      document.body.style.overflow = ''
+    }
+  }, [isOpen, lenis])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -49,7 +60,7 @@ export default function PolicyModal({ isOpen, onClose, title, children }: Policy
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--line)',
@@ -100,11 +111,11 @@ export default function PolicyModal({ isOpen, onClose, title, children }: Policy
                   transition: 'color 0.2s, border-color 0.2s',
                   flexShrink: 0,
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={e => {
                   e.currentTarget.style.color = 'var(--green)'
                   e.currentTarget.style.borderColor = 'var(--green)'
                 }}
-                onMouseLeave={(e) => {
+                onMouseLeave={e => {
                   e.currentTarget.style.color = 'var(--t3)'
                   e.currentTarget.style.borderColor = 'var(--line)'
                 }}
@@ -116,6 +127,7 @@ export default function PolicyModal({ isOpen, onClose, title, children }: Policy
 
             {/* Body */}
             <div
+              className="apply-modal-body"
               style={{
                 padding: '24px 32px 32px',
                 overflowY: 'auto',

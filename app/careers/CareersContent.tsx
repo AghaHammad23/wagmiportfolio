@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { RiArrowRightLine, RiMapPinLine, RiTimeLine, RiBriefcaseLine } from 'react-icons/ri'
+import { useApply } from '../components/Providers'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -77,6 +78,7 @@ const perks = [
 export default function CareersContent() {
   const [expandedJob, setExpandedJob] = useState<number | null>(null)
   const revealRef = useRef<HTMLDivElement>(null)
+  const { open } = useApply()
 
   useEffect(() => {
     const reveals = revealRef.current?.querySelectorAll('.reveal')
@@ -266,13 +268,15 @@ export default function CareersContent() {
           <p className="reveal" style={{ fontSize: '16px', fontWeight: 300, color: 'var(--t2)', maxWidth: '440px', margin: '0 auto 40px', lineHeight: 1.7, position: 'relative', zIndex: 1 }}>
             We always want to hear from talented people. Send us your work and tell us what you bring to the table.
           </p>
-          <a href="mailto:aghasaad@wagmihq.com?subject=Open Application — WAGMI Media" className="reveal"
-            style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px', fontWeight: 700, color: 'var(--black)', background: 'var(--white)', padding: '14px 36px', textDecoration: 'none', display: 'inline-block', transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1 }}
+          <button
+            onClick={open}
+            className="reveal"
+            style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px', fontWeight: 700, color: 'var(--black)', background: 'var(--white)', padding: '14px 36px', border: 'none', cursor: 'pointer', display: 'inline-block', transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1 }}
             onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
             onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
           >
             Send an Open Application
-          </a>
+          </button>
         </div>
       </div>
 

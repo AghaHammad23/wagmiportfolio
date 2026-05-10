@@ -15,7 +15,7 @@
   --green:   #6aff2a;
   --sage:    rgba(106,255,42,0.45);
   --max:     1100px;
-  --pad:     clamp(24px, 5vw, 80px);
+  --pad:     clamp(20px, 5vw, 80px);
 }
 
 @theme inline {
@@ -30,7 +30,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
 }
 
 body {
@@ -39,6 +39,17 @@ body {
   overflow-x: hidden;
   cursor: default;
 }
+
+/* ─── CUSTOM SCROLLBAR ──────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--off); }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(106,255,42,0.35); }
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) var(--off); }
 
 /* ─── GRAIN OVERLAY ────────────────────────────────── */
 body::after {
@@ -66,4 +77,34 @@ body::after {
 @keyframes riseIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── APPLY MODAL ──────────────────────────────────── */
+.apply-modal-body::-webkit-scrollbar { width: 4px; }
+.apply-modal-body::-webkit-scrollbar-track { background: transparent; }
+.apply-modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+
+.apply-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+select option {
+  background: #111111;
+  color: #ffffff;
+}
+
+/* ─── MOBILE ────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .apply-row { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 768px) {
+  .footer-links {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 16px 20px;
+    justify-content: center;
+  }
 }

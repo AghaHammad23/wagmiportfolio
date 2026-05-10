@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useApply } from '../components/Providers'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -69,6 +70,7 @@ const stats = [
 
 export default function WorkContent() {
   const revealRef = useRef<HTMLDivElement>(null)
+  const { open } = useApply()
 
   useEffect(() => {
     const reveals = revealRef.current?.querySelectorAll('.reveal')
@@ -146,7 +148,7 @@ export default function WorkContent() {
       </section>
 
       {/* Stats bar */}
-      <div style={{
+      <div className="work-stats-bar" style={{
         display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
         borderBottom: '1px solid var(--line)', background: 'var(--off)',
       }}>
@@ -234,23 +236,26 @@ export default function WorkContent() {
         }}>
           Limited spots available. Apply and we&apos;ll get back to you within 48 hours.
         </p>
-        <a
-          href="#"
+        <button
+          onClick={open}
           style={{
             fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px',
             fontWeight: 700, color: 'var(--black)', background: 'var(--white)',
-            padding: '14px 36px', textDecoration: 'none', display: 'inline-block',
+            padding: '14px 36px', border: 'none', cursor: 'pointer', display: 'inline-block',
             transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1,
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
         >
           Apply to Work With Us
-        </a>
+        </button>
       </div>
 
       <style>{`
-        @media (max-width: 768px) { .results-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 768px) {
+          .results-grid { grid-template-columns: 1fr !important; }
+          .work-stats-bar { grid-template-columns: repeat(2, 1fr) !important; }
+        }
       `}</style>
     </main>
   )

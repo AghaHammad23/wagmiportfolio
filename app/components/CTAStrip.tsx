@@ -1,10 +1,14 @@
 'use client'
 
+import { useApply } from './Providers'
+
 interface CTAStripProps {
   text: string
 }
 
 export default function CTAStrip({ text }: CTAStripProps) {
+  const { open } = useApply()
+
   return (
     <div
       style={{
@@ -29,8 +33,8 @@ export default function CTAStrip({ text }: CTAStripProps) {
       >
         {text}
       </span>
-      <a
-        href="#"
+      <button
+        onClick={open}
         style={{
           fontFamily: 'var(--font-bricolage), sans-serif',
           fontSize: '14px',
@@ -41,28 +45,21 @@ export default function CTAStrip({ text }: CTAStripProps) {
           border: 'none',
           padding: '14px 32px',
           cursor: 'pointer',
-          textDecoration: 'none',
           display: 'inline-block',
           transition: 'background 0.2s, transform 0.15s',
           flexShrink: 0,
         }}
-        onMouseEnter={(e) => {
+        onMouseEnter={e => {
           e.currentTarget.style.background = 'var(--green)'
           e.currentTarget.style.transform = 'translateY(-1px)'
         }}
-        onMouseLeave={(e) => {
+        onMouseLeave={e => {
           e.currentTarget.style.background = 'var(--white)'
           e.currentTarget.style.transform = 'translateY(0)'
         }}
       >
         Apply to Work With Us
-      </a>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .cta-strip-inner { flex-direction: column; align-items: flex-start; }
-        }
-      `}</style>
+      </button>
     </div>
   )
 }

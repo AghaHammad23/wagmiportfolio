@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { RiTwitterXLine, RiLinkedinBoxLine, RiInstagramLine } from 'react-icons/ri'
+import { useApply } from '../components/Providers'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -64,6 +64,7 @@ const values = [
 
 export default function TeamContent() {
   const revealRef = useRef<HTMLDivElement>(null)
+  const { open } = useApply()
 
   useEffect(() => {
     const reveals = revealRef.current?.querySelectorAll('.reveal')
@@ -96,7 +97,7 @@ export default function TeamContent() {
         </motion.div>
 
         <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease, delay: 0.1 }}
-          style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.04, color: 'var(--white)', maxWidth: '760px', marginBottom: '24px' }}
+          style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.04, color: 'var(--white)', maxWidth: '760px', marginBottom: '24px' }}
         >
           The People Behind{' '}
           <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>the Engine.</em>
@@ -123,10 +124,9 @@ export default function TeamContent() {
                     display: 'flex', flexDirection: 'column', gap: '16px',
                     transition: 'background 0.25s',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--surface)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--black)')}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'var(--black)')}
                 >
-                  {/* Avatar */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <div style={{
                       width: '56px', height: '56px', borderRadius: '50%',
@@ -146,9 +146,7 @@ export default function TeamContent() {
                       </div>
                     </div>
                   </div>
-
                   <p style={{ fontSize: '14px', fontWeight: 300, lineHeight: 1.7, color: 'var(--t2)' }}>{member.bio}</p>
-
                   <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--t4)', marginTop: '4px' }}>
                     {member.tag}
                   </div>
@@ -183,7 +181,7 @@ export default function TeamContent() {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* Apply CTA */}
         <div style={{ padding: 'clamp(80px, 12vw, 140px) var(--pad)', textAlign: 'center', borderBottom: '1px solid var(--line2)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(106,255,42,0.025) 0%, transparent 60%)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }} />
           <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.06, color: 'var(--white)', maxWidth: '600px', margin: '0 auto 20px', position: 'relative', zIndex: 1 }}>
@@ -192,19 +190,79 @@ export default function TeamContent() {
           <p className="reveal" style={{ fontSize: '16px', fontWeight: 300, color: 'var(--t2)', maxWidth: '380px', margin: '0 auto 40px', lineHeight: 1.7, position: 'relative', zIndex: 1 }}>
             Apply today. Limited spots open each month.
           </p>
-          <a href="#" className="reveal"
-            style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px', fontWeight: 700, color: 'var(--black)', background: 'var(--white)', padding: '14px 36px', textDecoration: 'none', display: 'inline-block', transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1 }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
+          <button
+            onClick={open}
+            className="reveal"
+            style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px', fontWeight: 700, color: 'var(--black)', background: 'var(--white)', padding: '14px 36px', border: 'none', cursor: 'pointer', display: 'inline-block', transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1 }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
           >
             Apply to Work With Us
-          </a>
+          </button>
+        </div>
+
+        {/* Contact section */}
+        <div style={{ padding: 'clamp(64px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)', background: 'var(--off)' }}>
+          <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
+            <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+              Contact
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--line2)' }} className="contact-grid">
+              <div className="reveal" style={{ background: 'var(--off)', padding: 'clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px)' }}>
+                <h3 style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(24px, 3.5vw, 40px)', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--white)', lineHeight: 1.1, marginBottom: '16px' }}>
+                  Have a question?<br />
+                  <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>We&apos;re one email away.</em>
+                </h3>
+                <p style={{ fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'var(--t2)', maxWidth: '340px' }}>
+                  Whether you&apos;re ready to apply or just want to know more about how we work — reach out. We respond to every message within 48 hours.
+                </p>
+              </div>
+              <div className="reveal" style={{ background: 'var(--off)', padding: 'clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px)', display: 'flex', flexDirection: 'column', gap: '24px', justifyContent: 'center' }}>
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '8px' }}>
+                    Email
+                  </div>
+                  <a
+                    href="mailto:aghasaad@wagmihq.com"
+                    style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(16px, 2vw, 22px)', fontWeight: 700, color: 'var(--white)', textDecoration: 'none', letterSpacing: '-0.01em', transition: 'color 0.2s' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--green)')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--white)')}
+                  >
+                    aghasaad@wagmihq.com
+                  </a>
+                </div>
+                <div style={{ width: '100%', height: '1px', background: 'var(--line2)' }} />
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '12px' }}>
+                    Ready to apply?
+                  </div>
+                  <button
+                    onClick={open}
+                    style={{
+                      fontFamily: 'var(--font-bricolage), sans-serif',
+                      fontSize: '13px', fontWeight: 700, letterSpacing: '0.02em',
+                      color: 'var(--black)', background: 'var(--white)',
+                      border: 'none', padding: '12px 28px', cursor: 'pointer',
+                      transition: 'background 0.2s, transform 0.15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
+                  >
+                    Apply to Work With Us →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <style>{`
         @media (max-width: 900px) { .team-grid { grid-template-columns: repeat(2, 1fr) !important; } }
-        @media (max-width: 600px) { .team-grid, .values-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 600px) {
+          .team-grid, .values-grid, .contact-grid { grid-template-columns: 1fr !important; }
+        }
       `}</style>
     </main>
   )
