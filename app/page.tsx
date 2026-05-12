@@ -15,9 +15,9 @@ export default function Page() {
     <>
       <Navbar />
       <Hero />
-      <Ticker />
       <StatsBar />
       <VSL />
+      <Ticker />
       <CTAStrip text="Seen enough? Let's talk." />
       <HowItWorks />
       <CTAStrip text="Ready to hand off your entire content operation?" />

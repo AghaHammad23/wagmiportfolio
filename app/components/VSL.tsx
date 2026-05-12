@@ -1,157 +1,292 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion, AnimatePresence } from 'framer-motion'
+import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function VSL() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const videoRef  = useRef<HTMLVideoElement>(null)
+  const [muted, setMuted]       = useState(true)
+  const [showHint, setShowHint] = useState(true)
+  const [flash, setFlash]       = useState<'muted' | 'unmuted' | null>(null)
+
+  const toggleMute = () => {
+    if (!videoRef.current) return
+    const nowMuted = !muted
+    videoRef.current.muted = nowMuted
+    setMuted(nowMuted)
+    setShowHint(false)
+    setFlash(nowMuted ? 'muted' : 'unmuted')
+    setTimeout(() => setFlash(null), 900)
+  }
 
   useEffect(() => {
-    const reveals = sectionRef.current?.querySelectorAll('.reveal')
-    if (!reveals) return
-
-    reveals.forEach((el, i) => {
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          delay: i * 0.1,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-        }
-      )
-    })
+    const ctx = gsap.context(() => {
+      const reveals = sectionRef.current?.querySelectorAll<HTMLElement>('.vsl-reveal')
+      if (!reveals?.length) return
+      reveals.forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.9,
+            delay: i * 0.1,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          }
+        )
+      })
+    }, sectionRef)
+    return () => ctx.revert()
   }, [])
 
   return (
-    <div
+    <section
       ref={sectionRef}
-      style={{
-        padding: 'clamp(80px, 10vw, 140px) var(--pad)',
-        borderBottom: '1px solid var(--line2)',
-      }}
+      style={{ padding: 'clamp(80px, 10vw, 140px) var(--pad)', borderBottom: '1px solid var(--line2)' }}
     >
       <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
-        {/* Label */}
+
+        {/* Eyebrow */}
         <div
-          className="reveal"
-          style={{
-            fontSize: '10px',
-            fontWeight: 500,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            color: 'var(--t4)',
-            marginBottom: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-          }}
+          className="vsl-reveal"
+          style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}
         >
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
-          Watch This First
+          <span style={{ width: '24px', height: '1px', background: 'var(--green)', opacity: 0.5, display: 'inline-block', flexShrink: 0 }} />
+          <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--t3)' }}>
+            Watch This First
+          </span>
         </div>
 
         {/* Heading */}
         <h2
-          className="reveal"
+          className="vsl-reveal"
           style={{
             fontFamily: 'var(--font-bricolage), sans-serif',
-            fontSize: 'clamp(30px, 4vw, 52px)',
+            fontSize: 'clamp(28px, 4vw, 52px)',
             fontWeight: 800,
             letterSpacing: '-0.025em',
-            lineHeight: 1.06,
+            lineHeight: 1.08,
             color: 'var(--white)',
-            marginBottom: 'clamp(40px, 6vw, 72px)',
+            marginBottom: 'clamp(10px, 1.5vw, 16px)',
           }}
         >
           See how we turn content
           <br />
-          <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>
+          <span style={{ color: 'var(--t3)', fontWeight: 700 }}>
             into clients — in 3 minutes.
-          </em>
+          </span>
         </h2>
 
-        {/* Video placeholder */}
+        {/* Subtext */}
+        <p
+          className="vsl-reveal"
+          style={{
+            fontSize: 'clamp(13px, 1.4vw, 15px)',
+            fontWeight: 300,
+            color: 'var(--t3)',
+            lineHeight: 1.65,
+            maxWidth: '500px',
+            marginBottom: 'clamp(32px, 5vw, 60px)',
+          }}
+        >
+          Watch before applying — this tells you exactly how we operate and whether we&apos;re the right fit for your brand.
+        </p>
+
+        {/* Video frame */}
         <div
-          className="reveal"
+          className="vsl-reveal"
+          onClick={toggleMute}
           style={{
             width: '100%',
             aspectRatio: '16 / 9',
             background: 'var(--surface)',
-            border: '1px solid var(--line)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '20px',
-            cursor: 'pointer',
-            position: 'relative',
+            borderRadius: '16px',
             overflow: 'hidden',
-            transition: 'border-color 0.3s',
+            position: 'relative',
+            cursor: 'pointer',
+            boxShadow: '0 0 0 1px rgba(255,255,255,0.06), 0 32px 80px rgba(0,0,0,0.65)',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)')}
-          onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--line)')}
         >
+          {/* Video */}
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          >
+            <source src="/heroVideo.mp4" type="video/mp4" />
+          </video>
+
+          {/* Duration badge — top left */}
           <div
             style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'radial-gradient(circle at 50% 50%, rgba(106,255,42,0.03), transparent 60%)',
-            }}
-          />
-          <div
-            style={{
-              width: '64px',
-              height: '64px',
-              borderRadius: '50%',
-              border: '1px solid rgba(255,255,255,0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              zIndex: 1,
-              transition: 'border-color 0.3s, transform 0.2s',
+              position: 'absolute', top: '14px', left: '14px', zIndex: 2,
+              background: 'rgba(0,0,0,0.55)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '6px',
+              padding: '4px 10px',
+              fontSize: '10px',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.55)',
+              backdropFilter: 'blur(8px)',
+              userSelect: 'none',
             }}
           >
-            <div
-              style={{
-                width: 0,
-                height: 0,
-                borderLeft: '18px solid var(--white)',
-                borderTop: '10px solid transparent',
-                borderBottom: '10px solid transparent',
-                marginLeft: '4px',
-              }}
-            />
+            3 min
           </div>
-          <div style={{ fontSize: '13px', fontWeight: 300, color: 'var(--t3)', letterSpacing: '0.02em', position: 'relative', zIndex: 1 }}>
-            Your VSL — 2 to 3 minutes
+
+          {/* Volume indicator — top right */}
+          <div
+            style={{
+              position: 'absolute', top: '14px', right: '14px', zIndex: 2,
+              background: 'rgba(0,0,0,0.55)',
+              border: `1px solid ${muted ? 'rgba(255,255,255,0.08)' : 'rgba(171,248,47,0.3)'}`,
+              borderRadius: '50%',
+              width: '36px', height: '36px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              backdropFilter: 'blur(8px)',
+              transition: 'border-color 0.3s',
+              userSelect: 'none',
+            }}
+          >
+            {muted
+              ? <HiSpeakerXMark size={16} style={{ color: 'rgba(255,255,255,0.55)' }} />
+              : <HiSpeakerWave  size={16} style={{ color: 'var(--green)' }} />
+            }
           </div>
-          <div style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t4)', letterSpacing: '0.05em', textTransform: 'uppercase', position: 'relative', zIndex: 1 }}>
-            Agha Saad · Founder, WAGMI Media
+
+          {/* Center mute/unmute flash */}
+          <AnimatePresence>
+            {flash !== null && (
+              <div
+                style={{
+                  position: 'absolute', top: '50%', left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 5, pointerEvents: 'none',
+                }}
+              >
+                <motion.div
+                  key={flash}
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.3 }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  style={{
+                    background: 'rgba(0,0,0,0.65)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: '50%',
+                    width: '72px', height: '72px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    backdropFilter: 'blur(8px)',
+                  }}
+                >
+                  {flash === 'muted'
+                    ? <HiSpeakerXMark size={30} style={{ color: 'rgba(255,255,255,0.9)' }} />
+                    : <HiSpeakerWave  size={30} style={{ color: 'var(--green)' }} />
+                  }
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+
+          {/* Bottom gradient — attribution + hint */}
+          <div
+            style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2,
+              padding: 'clamp(48px, 8vw, 88px) clamp(14px, 2vw, 22px) clamp(14px, 2vw, 20px)',
+              background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 55%, transparent 100%)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              gap: '12px',
+              pointerEvents: 'none',
+            }}
+          >
+            {/* Founder */}
+            <div>
+              <div style={{ fontSize: 'clamp(11px, 1.4vw, 13px)', fontWeight: 500, color: 'var(--white)', marginBottom: '2px' }}>
+                Agha Saad
+              </div>
+              <div style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>
+                Founder, WAGMI Media
+              </div>
+            </div>
+
+            {/* Unmute hint */}
+            <AnimatePresence>
+              {showHint && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 6 }}
+                  transition={{ duration: 0.3, delay: 1.2 }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '6px',
+                    fontSize: '10px',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.5)',
+                    background: 'rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: '4px',
+                    padding: '5px 10px',
+                    backdropFilter: 'blur(4px)',
+                    userSelect: 'none',
+                    pointerEvents: 'auto',
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <HiSpeakerXMark size={12} />
+                  Click to unmute
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
-        <p
-          className="reveal"
+        {/* Below-video row */}
+        <div
+          className="vsl-reveal"
           style={{
-            textAlign: 'center',
-            marginTop: '20px',
-            fontSize: '13px',
-            fontWeight: 300,
-            fontStyle: 'italic',
-            color: 'var(--t3)',
+            marginTop: 'clamp(16px, 2.5vw, 24px)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '10px',
           }}
         >
-          Watch before applying — this tells you if we&apos;re the right fit for your brand.
-        </p>
+          {/* Trust micro-line */}
+          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            {['300+ brands watched this', '3 min', 'No sales pitch'].map((item, i, arr) => (
+              <span key={item} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t3)', letterSpacing: '0.02em' }}>
+                  {item}
+                </span>
+                {i < arr.length - 1 && (
+                  <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'var(--t4)', display: 'inline-block', flexShrink: 0 }} />
+                )}
+              </span>
+            ))}
+          </div>
+
+          {/* Suggestion */}
+          <span style={{ fontSize: '11px', fontStyle: 'italic', fontWeight: 300, color: 'var(--t3)' }}>
+            Best watched with sound on
+          </span>
+        </div>
+
       </div>
-    </div>
+    </section>
   )
 }
