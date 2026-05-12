@@ -2,38 +2,63 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useApply } from './Providers'
+import Dock, { type DockItemData } from './Dock'
+import {
+  HiHome,
+  HiBriefcase,
+  HiSparkles,
+  HiUserGroup,
+  HiAcademicCap,
+  HiPaperAirplane,
+} from 'react-icons/hi2'
 
 const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Work', href: '/work' },
-  { label: 'Services', href: '/services' },
-  { label: 'Meet the Team', href: '/meet-the-team' },
-  { label: 'Careers', href: '/careers' },
+  { label: 'Home', href: '/', icon: <HiHome size={18} /> },
+  { label: 'Work', href: '/work', icon: <HiBriefcase size={18} /> },
+  { label: 'Services', href: '/services', icon: <HiSparkles size={18} /> },
+  { label: 'Meet the Team', href: '/meet-the-team', icon: <HiUserGroup size={18} /> },
+  { label: 'Careers', href: '/careers', icon: <HiAcademicCap size={18} /> },
 ]
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
 export default function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
   const { open } = useApply()
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // Close menu on route change
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
-  // Lock body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
+  const dockItems: DockItemData[] = [
+    ...navLinks.map(({ label, href, icon }) => ({
+      icon,
+      label,
+      onClick: () => router.push(href),
+      isActive: pathname === href,
+    })),
+    {
+      icon: <HiPaperAirplane size={18} />,
+      label: 'Apply Now',
+      onClick: open,
+      isActive: false,
+    },
+  ]
+
   return (
     <>
+      {/* Mobile-only top bar */}
       <nav
+        className="mobile-nav"
         style={{
           position: 'fixed',
           top: 0,
@@ -51,15 +76,9 @@ export default function Navbar() {
           WebkitBackdropFilter: 'blur(20px) saturate(180%)',
         }}
       >
-        {/* Logo */}
         <Link
           href="/"
           style={{
-            fontFamily: 'var(--font-bricolage), sans-serif',
-            fontSize: '15px',
-            fontWeight: 700,
-            letterSpacing: '0.01em',
-            color: 'var(--white)',
             display: 'flex',
             alignItems: 'center',
             gap: '7px',
@@ -70,73 +89,7 @@ export default function Navbar() {
           <Image src="/logo.png" alt="WAGMI Media" width={60} height={32} />
         </Link>
 
-        {/* Center links — desktop */}
-        <div
-          className="nav-center"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-        >
-          {navLinks.map(({ label, href }) => {
-            const isActive = pathname === href
-            return (
-              <Link
-                key={href}
-                href={href}
-                style={{
-                  fontSize: '12px',
-                  fontWeight: isActive ? 500 : 400,
-                  letterSpacing: '0.01em',
-                  color: isActive ? 'var(--green)' : 'var(--t3)',
-                  textDecoration: 'none',
-                  padding: '0 16px',
-                  height: '52px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  whiteSpace: 'nowrap',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--t1)' }}
-                onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--t3)' }}
-              >
-                {label}
-              </Link>
-            )
-          })}
-        </div>
-
-        {/* CTA — desktop */}
         <button
-          onClick={open}
-          className="nav-cta"
-          style={{
-            fontFamily: 'var(--font-bricolage), sans-serif',
-            fontSize: '12px',
-            fontWeight: 700,
-            letterSpacing: '0.04em',
-            color: 'var(--black)',
-            background: 'var(--white)',
-            border: 'none',
-            padding: '8px 18px',
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            transition: 'background 0.2s, transform 0.15s',
-            flexShrink: 0,
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
-        >
-          Apply Now
-        </button>
-
-        {/* Hamburger — mobile */}
-        <button
-          className="nav-burger"
           onClick={() => setMenuOpen(v => !v)}
           aria-label="Toggle menu"
           style={{
@@ -144,7 +97,7 @@ export default function Navbar() {
             border: 'none',
             cursor: 'pointer',
             padding: '8px',
-            display: 'none',
+            display: 'flex',
             flexDirection: 'column',
             gap: '5px',
             alignItems: 'center',
@@ -170,17 +123,29 @@ export default function Navbar() {
             transform: menuOpen ? 'translateY(-6.5px) rotate(-45deg)' : 'none',
           }} />
         </button>
-
-        <style>{`
-          @media (max-width: 768px) {
-            .nav-center { display: none !important; }
-            .nav-cta { display: none !important; }
-            .nav-burger { display: flex !important; }
-          }
-        `}</style>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Desktop dock — fixed at bottom */}
+      <div
+        className="desktop-dock"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+        }}
+      >
+        <Dock
+          items={dockItems}
+          panelHeight={40}
+          baseItemSize={42}
+          magnification={72}
+          distance={150}
+        />
+      </div>
+
+      {/* Mobile full-screen menu overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -269,6 +234,16 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style>{`
+        @media (min-width: 769px) {
+          .mobile-nav { display: none !important; }
+        }
+        @media (max-width: 768px) {
+          .desktop-dock { display: none !important; }
+        }
+
+      `}</style>
     </>
   )
 }
