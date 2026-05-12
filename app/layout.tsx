@@ -4,6 +4,8 @@ import './globals.css'
 import Providers from './components/Providers'
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -39,7 +41,11 @@ export default function RootLayout({
     <html lang="en" className={`${bricolage.variable} ${jakarta.variable} ${orbitron.variable}`}>
       <body style={{ fontFamily: 'var(--font-jakarta), sans-serif' }}>
         <Providers>
+                <Navbar />
+          
           {children}
+                <Footer />
+          
         </Providers>
         <Analytics />
         <SpeedInsights />

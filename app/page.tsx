@@ -13,7 +13,6 @@ import Footer from './components/Footer'
 export default function Page() {
   return (
     <>
-      <Navbar />
       <Hero />
       <StatsBar />
       <VSL />
@@ -25,7 +24,6 @@ export default function Page() {
       <ProofNote />
       <CTAStrip text="Want results like these for your brand?" />
       <FinalCTA />
-      <Footer />
     </>
   )
 }
