@@ -67,7 +67,7 @@ export default function VSL() {
         <h2
           className="vsl-reveal"
           style={{
-            fontFamily: 'var(--font-bricolage), sans-serif',
+            fontFamily: 'var(--font-orbitron), sans-serif',
             fontSize: 'clamp(28px, 4vw, 52px)',
             fontWeight: 800,
             letterSpacing: '-0.025em',
@@ -78,7 +78,7 @@ export default function VSL() {
         >
           See how we turn content
           <br />
-          <span style={{ color: 'var(--t3)', fontWeight: 700 }}>
+          <span style={{ color: 'var(--green)', fontWeight: 900 }}>
             into clients — in 3 minutes.
           </span>
         </h2>
@@ -141,7 +141,7 @@ export default function VSL() {
               userSelect: 'none',
             }}
           >
-            3 min
+            3 min 
           </div>
 
           {/* Volume indicator — top right */}

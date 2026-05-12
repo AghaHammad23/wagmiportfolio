@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Bricolage_Grotesque, Plus_Jakarta_Sans } from 'next/font/google'
+import { Bricolage_Grotesque, Plus_Jakarta_Sans, Orbitron,  } from 'next/font/google'
 import './globals.css'
 import Providers from './components/Providers'
 import { Analytics } from "@vercel/analytics/next"
@@ -18,6 +18,12 @@ const jakarta = Plus_Jakarta_Sans({
   variable: '--font-jakarta',
 })
 
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-orbitron',
+})
+
 export const metadata: Metadata = {
   title: 'WAGMI',
   description:
@@ -30,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${jakarta.variable}`}>
+    <html lang="en" className={`${bricolage.variable} ${jakarta.variable} ${orbitron.variable}`}>
       <body style={{ fontFamily: 'var(--font-jakarta), sans-serif' }}>
         <Providers>
           {children}
