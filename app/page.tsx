@@ -1,4 +1,3 @@
-import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Ticker from './components/Ticker'
 import StatsBar from './components/StatsBar'
@@ -17,12 +16,40 @@ export default function Page() {
       <StatsBar />
       <VSL />
       <Ticker />
-      <CTAStrip text="Seen enough? Let's talk." />
+
+      {/* Post-VSL — low pressure, curiosity hook */}
+      <CTAStrip
+        variant="minimal"
+        badge="Now Accepting Clients"
+        text="Seen enough? Let's talk about your channel."
+        buttonText="Apply Now"
+      />
+
       <HowItWorks />
-      <CTAStrip text="Ready to hand off your entire content operation?" />
+
+      {/* Post-process — medium intent, hand-off framing */}
+      <CTAStrip
+        variant="bold"
+        label="Done For You"
+        text="Ready to hand off your entire content operation?"
+        subtext="Scripts, edits, thumbnails, strategy, distribution — fully managed."
+        badge="3 spots remaining"
+        buttonText="Apply to Work With Us"
+      />
+
       <Results />
       <ProofNote />
-      <CTAStrip text="Want results like these for your brand?" />
+
+      {/* Post-results — high intent, social proof momentum */}
+      <CTAStrip
+        variant="accent"
+        label="Your Turn"
+        text="Want results like these for your brand?"
+        subtext="We've done it across sports, real estate, AI, and marketing. Your niche is next."
+        badge="Response within 48 hours"
+        buttonText="Apply to Work With Us"
+      />
+
       <FinalCTA />
     </>
   )

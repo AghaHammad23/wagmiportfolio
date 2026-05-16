@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import PolicyModal from './PolicyModal'
 import { useApply } from './Providers'
 
@@ -126,18 +125,27 @@ export default function Footer() {
         }}>
           <div>
             <div style={{
-              fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
-              textTransform: 'uppercase', color: 'var(--t4)',
-              marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px',
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'var(--t4)',
+              marginBottom: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
             }}>
               <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
               Get in Touch
             </div>
             <p style={{
               fontFamily: 'var(--font-bricolage), sans-serif',
-              fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 800,
-              letterSpacing: '-0.025em', color: 'var(--white)',
-              lineHeight: 1.1, marginBottom: '16px',
+              fontSize: 'clamp(22px, 3vw, 32px)',
+              fontWeight: 800,
+              letterSpacing: '-0.025em',
+              color: 'var(--white)',
+              lineHeight: 1.1,
+              marginBottom: '16px',
             }}>
               Ready to build your<br />
               <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>content engine?</em>
@@ -145,68 +153,134 @@ export default function Footer() {
             <a
               href="mailto:aghasaad@wagmihq.com"
               style={{
-                fontSize: '14px', fontWeight: 300, color: 'var(--t2)',
-                textDecoration: 'none', letterSpacing: '0.01em',
+                fontSize: '14px',
+                fontWeight: 300,
+                color: 'var(--t2)',
+                textDecoration: 'none',
+                letterSpacing: '0.01em',
                 transition: 'color 0.2s',
               }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--green)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--t2)')}
+              onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'var(--green)')}
+              onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = 'var(--t2)')}
             >
               aghasaad@wagmihq.com
             </a>
           </div>
+
           <button
             onClick={open}
             style={{
               fontFamily: 'var(--font-bricolage), sans-serif',
-              fontSize: '14px', fontWeight: 700, letterSpacing: '0.02em',
-              color: 'var(--black)', background: 'var(--white)',
-              border: 'none', padding: '14px 32px', cursor: 'pointer',
-              transition: 'background 0.2s, transform 0.15s', flexShrink: 0,
+              fontSize: '14px',
+              fontWeight: 700,
+              letterSpacing: '0.02em',
+              color: 'var(--black)',
+              background: 'var(--white)',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '14px 32px',
+              cursor: 'pointer',
+              transition: 'background 0.2s, transform 0.15s',
+              flexShrink: 0,
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
+            onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.currentTarget.style.background = 'var(--green)'
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }}
+            onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.currentTarget.style.background = 'var(--white)'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
           >
             Apply to Work With Us →
           </button>
         </div>
 
-        {/* Bottom bar */}
+        {/* Big WAGMI wordmark */}
         <div style={{
-          padding: '20px var(--pad)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '12px',
+          position: 'relative',
+          overflow: 'hidden',
+          borderBottom: '1px solid var(--line2)',
+          padding: 'clamp(24px, 4vw, 48px) 0 0',
         }}>
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to right, var(--off) 0%, transparent 8%, transparent 92%, var(--off) 100%)',
+            pointerEvents: 'none',
+            zIndex: 1,
+          }} />
+          <div style={{
+            fontSize: 'clamp(100px, 22vw, 280px)',
+            fontFamily: 'var(--font-bricolage), sans-serif',
+            fontWeight: 800,
+            letterSpacing: '-0.04em',
+            lineHeight: 0.85,
+            textAlign: 'center',
+            color: 'transparent',
+            WebkitTextStroke: '1px rgba(255,255,255,0.07)',
+            userSelect: 'none',
+            display: 'block',
+            width: '100%',
+          }}>
+            WAGMI
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div
+          className="footer-bottom"
+          style={{
+            padding: '20px var(--pad)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+          }}
+        >
           <a
             href="#"
             style={{
               fontFamily: 'var(--font-bricolage), sans-serif',
-              fontSize: '13px', fontWeight: 700, color: 'var(--t3)',
-              display: 'flex', alignItems: 'center', gap: '7px', textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: 700,
+              color: 'var(--t3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '7px',
+              textDecoration: 'none',
             }}
           >
             <span style={{
-              width: '6px', height: '6px', background: 'var(--green)',
-              borderRadius: '50%', opacity: 0.5, display: 'inline-block',
+              width: '6px',
+              height: '6px',
+              background: 'var(--green)',
+              borderRadius: '50%',
+              opacity: 0.5,
+              display: 'inline-block',
             }} />
             WAGMI Media LLC
           </a>
 
-          <div className="footer-links" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+          <div className="footer-links" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
             {footerLinks.map(({ label, key }) => (
               <button
                 key={key}
                 onClick={() => setOpenPolicy(key)}
                 style={{
-                  fontSize: '11px', fontWeight: 400, color: 'var(--t4)',
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  letterSpacing: '0.03em', transition: 'color 0.2s', padding: 0,
+                  fontSize: '11px',
+                  fontWeight: 400,
+                  color: 'var(--t4)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  letterSpacing: '0.03em',
+                  transition: 'color 0.2s',
+                  padding: 0,
                 }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--green)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'var(--t4)')}
+                onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => (e.currentTarget.style.color = 'var(--green)')}
+                onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => (e.currentTarget.style.color = 'var(--t4)')}
               >
                 {label}
               </button>
@@ -217,6 +291,9 @@ export default function Footer() {
             © 2025 WAGMI Media LLC
           </span>
         </div>
+
+        {/* Dock spacer — desktop only, keeps footer above fixed bottom dock */}
+        <div className="dock-spacer" style={{ height: '72px' }} />
       </footer>
 
       {footerLinks.map(({ key }) => (
@@ -229,6 +306,23 @@ export default function Footer() {
           {policies[key].body}
         </PolicyModal>
       ))}
+
+      <style>{`
+        @media (min-width: 769px) {
+          .dock-spacer { display: block; }
+        }
+        @media (max-width: 768px) {
+          .dock-spacer { display: none; }
+          .footer-bottom {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 16px !important;
+          }
+          .footer-links {
+            gap: 12px !important;
+          }
+        }
+      `}</style>
     </>
   )
 }

@@ -48,9 +48,48 @@ export default function VSL() {
   return (
     <section
       ref={sectionRef}
-      style={{ padding: 'clamp(80px, 10vw, 140px) var(--pad)', borderBottom: '1px solid var(--line2)' }}
+      style={{ 
+        padding: 'clamp(80px, 10vw, 140px) var(--pad)', 
+        borderBottom: '1px solid var(--line2)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
     >
-      <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
+      {/* Blob 1 - Bottom Left (outside the section partially) */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '-120px',
+          bottom: '-80px',
+          width: '480px',
+          height: '480px',
+          background: 'radial-gradient(circle, rgba(106,255,42,0.12) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          borderRadius: '50%',
+          filter: 'blur(40px)',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Blob 2 - Top Right (within section) */}
+      <div
+        style={{
+          position: 'absolute',
+          right: '-80px',
+          top: '0%',
+          width: '620px',
+          height: '620px',
+          background: 'radial-gradient(circle, rgba(106,255,42,0.12) 0%, transparent 65%)',
+          pointerEvents: 'none',
+          borderRadius: '50%',
+          filter: 'blur(30px)',
+          zIndex: 0,
+        }}
+      />
+
+     
+
+      <div style={{ maxWidth: 'var(--max)', margin: '0 auto', position: 'relative', zIndex: 1 }}>
 
         {/* Eyebrow */}
         <div
@@ -111,6 +150,7 @@ export default function VSL() {
             position: 'relative',
             cursor: 'pointer',
             boxShadow: '0 0 0 1px rgba(255,255,255,0.06), 0 32px 80px rgba(0,0,0,0.65)',
+            zIndex: 2,
           }}
         >
           {/* Video */}
