@@ -48,7 +48,7 @@ export default function FinalCTA() {
       {/* Main Content */}
       <div
         style={{
-          padding: 'clamp(100px, 14vw, 180px) var(--pad)',
+          padding: '200px var(--pad)',
           textAlign: 'center',
           borderBottom: '1px solid var(--line2)',
           position: 'relative',
