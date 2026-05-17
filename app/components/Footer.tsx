@@ -218,7 +218,7 @@ export default function Footer() {
             lineHeight: 0.85,
             textAlign: 'center',
             color: 'transparent',
-            WebkitTextStroke: '1px rgba(255,255,255,0.07)',
+            WebkitTextStroke: '1px var(--green)',
             userSelect: 'none',
             display: 'block',
             width: '100%',

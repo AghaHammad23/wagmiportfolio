@@ -41,14 +41,14 @@ export default function Page() {
       <ProofNote />
 
       {/* Post-results — high intent, social proof momentum */}
-      <CTAStrip
+      {/* <CTAStrip
         variant="accent"
         label="Your Turn"
         text="Want results like these for your brand?"
         subtext="We've done it across sports, real estate, AI, and marketing. Your niche is next."
         badge="Response within 48 hours"
         buttonText="Apply to Work With Us"
-      />
+      /> */}
 
       <FinalCTA />
     </>

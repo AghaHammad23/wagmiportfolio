@@ -17,54 +17,58 @@ export default function FinalCTA() {
       ref={ref}
       style={{
         position: 'relative',
-        minHeight: '80vh',
+        borderBottom: '1px solid var(--line2)',
         overflow: 'hidden',
       }}
     >
-      {/* DotGrid Background */}
+      {/* DotGrid — absolutely fills the section */}
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
           zIndex: 0,
         }}
       >
         <DotGrid
-          dotSize={5}
-          gap={20}
-          baseColor="#1a1a2e"
+          dotSize={4}
+          gap={22}
+          baseColor="#111111"
           activeColor="#6AFF2A"
-          proximity={150}
-          shockRadius={300}
-          shockStrength={4}
-          resistance={600}
-          returnDuration={1.5}
+          proximity={140}
+          shockRadius={320}
+          shockStrength={5}
+          resistance={550}
+          returnDuration={1.4}
         />
       </div>
 
-      {/* Main Content */}
+      {/* Dark overlay so text stays readable */}
       <div
         style={{
-          padding: '200px var(--pad)',
-          textAlign: 'center',
-          borderBottom: '1px solid var(--line2)',
-          position: 'relative',
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(0,0,0,0.55)',
           zIndex: 1,
-          background: 'rgba(0,0,0,0.5)',
-          
-          backdropFilter: 'blur(4px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Content sits on top */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          padding: 'clamp(100px, 16vw, 200px) var(--pad)',
+          textAlign: 'center',
         }}
       >
-        {/* Glow */}
+        {/* Green glow blob */}
         <div
           style={{
             position: 'absolute',
-            width: '800px',
-            height: '800px',
-            background: 'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 60%)',
+            width: '700px',
+            height: '700px',
+            background: 'radial-gradient(circle, rgba(106,255,42,0.07) 0%, transparent 60%)',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -81,60 +85,56 @@ export default function FinalCTA() {
             fontSize: 'clamp(32px, 5.5vw, 70px)',
             fontWeight: 800,
             letterSpacing: '-0.03em',
-            lineHeight: 1.04,
+            lineHeight: 1.08,
             color: 'var(--white)',
-            maxWidth: '800px',
-            margin: '0 auto 20px',
+            maxWidth: '820px',
+            margin: '0 auto 16px',
             position: 'relative',
             zIndex: 1,
           }}
         >
           Your content should be
-          making you <span style={{ color: 'var(--green)',   fontFamily: 'var(--font-jakarta), sans-serif',
- }}>$$$</span>.
-          <br />
-        </motion.h2>
-          <h3
+          making you{' '}
+          <span
             style={{
-              fontStyle: 'italic',
+              color: 'var(--green)',
               fontFamily: 'var(--font-jakarta), sans-serif',
-              fontWeight: 300,
-              color: 'var(--t2)',
-              maxWidth: '600px',
-              margin: '0 auto 40px',
-              lineHeight: 1.6,
-              fontSize: 'clamp(18px, 1.8vw, 22px)',
-              position: 'relative',
-              zIndex: 1,
             }}
           >
-            If it isn&apos;t — that&apos;s  <span style={{ color: 'var(--green)'}}> what we fix</span>
-          </h3>
+            $$$
+          </span>
+          
+        </motion.h2>
 
-        {/* <motion.p
-          initial={{ opacity: 0, y: 24 }}
+        <motion.h3
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, ease, delay: 0.15 }}
+          transition={{ duration: 0.9, ease, delay: 0.12 }}
           style={{
-            fontSize: 'clamp(15px, 1.6vw, 18px)',
+            fontStyle: 'italic',
+            fontFamily: 'var(--font-jakarta), sans-serif',
             fontWeight: 300,
             color: 'var(--t2)',
-            maxWidth: '440px',
+            maxWidth: '560px',
             margin: '0 auto 48px',
-            lineHeight: 1.7,
+            lineHeight: 1.6,
+            fontSize: 'clamp(16px, 1.8vw, 22px)',
             position: 'relative',
             zIndex: 1,
           }}
         >
-          Limited spots available each month. Apply below and we&apos;ll get back to you
-          within 48 hours.
-        </motion.p> */}
+          If it isn&apos;t —{' '}
+          <span style={{ color: 'var(--green)', fontStyle: 'normal' }}>
+            that&apos;s what we fix.
+          </span>
+        </motion.h3>
 
         <motion.button
           onClick={open}
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          whileHover={{ scale: 1.02, y: -1, backgroundColor: 'var(--green)' }}
+          whileHover={{ scale: 1.03, y: -2, backgroundColor: 'var(--green)' }}
+          whileTap={{ scale: 0.98 }}
           style={{
             fontFamily: 'var(--font-bricolage), sans-serif',
             fontSize: '15px',
@@ -149,6 +149,7 @@ export default function FinalCTA() {
             display: 'inline-block',
             position: 'relative',
             zIndex: 1,
+            transition: 'color 0.2s',
           }}
         >
           Apply to Work With Us
@@ -157,7 +158,7 @@ export default function FinalCTA() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, ease, delay: 0.42 }}
+          transition={{ duration: 0.9, ease, delay: 0.38 }}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -176,7 +177,7 @@ export default function FinalCTA() {
           {['No long-term contracts', 'First results in 30 days', '100% done-for-you', 'Cancel anytime'].map(
             item => (
               <span key={item}>
-                <span style={{ color: 'rgba(106,255,42,0.5)', marginRight: '4px' }}>✓</span>
+                <span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '4px' }}>✓</span>
                 {item}
               </span>
             )

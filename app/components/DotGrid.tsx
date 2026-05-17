@@ -151,16 +151,26 @@ const DotGrid: React.FC<DotGridProps> = ({
         const dy = dot.cy - py;
         const dsq = dx * dx + dy * dy;
 
-        let style = baseColor;
-        if (dsq <= proxSq) {
-          const dist = Math.sqrt(dsq);
-          const t = 1 - dist / proximity;
-          const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t);
-          const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t);
-          const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t);
-          style = `rgb(${r},${g},${b})`;
-        }
-
+let style = baseColor;
+if (dsq <= proxSq) {
+  const dist = Math.sqrt(dsq);
+  const raw = 1 - dist / proximity;
+  // Ease the falloff — cubic makes center dots pop much more
+  const t = raw * raw * (3 - 2 * raw);
+  const r = Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t);
+  const g = Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t);
+  const b = Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t);
+  // Add a soft glow shadow at the center of the cursor
+  if (t > 0.6 && ctx) {
+    ctx.shadowColor = activeColor;
+    ctx.shadowBlur = 6 * t;
+  } else if (ctx) {
+    ctx.shadowBlur = 0;
+  }
+  style = `rgb(${r},${g},${b})`;
+}
+// Reset shadow after each dot
+ctx.shadowBlur = 0;
         ctx.save();
         ctx.translate(ox, oy);
         ctx.fillStyle = style;
