@@ -123,7 +123,7 @@ export default function Hero() {
         {/* H1 */}
         <h1
           style={{
-            fontFamily: 'var(--font-bricolage), sans-serif',
+            fontFamily: 'var(--font-jakarta), sans-serif',
             fontSize: 'clamp(32px, 6.5vw, 80px)',
             fontWeight: 800,
             lineHeight: 1.1,
@@ -134,7 +134,7 @@ export default function Hero() {
           }}
         >
           {[
-            { text: 'We Build the Content Engine', delay: 0.2, muted: false },
+            { text: 'We Build the Content ', delay: 0.2, muted: false },
             { text: 'That Turns Your Brand', delay: 0.32, muted: false },
             { text: 'Into a Client Magnet.', delay: 0.44, muted: true },
           ].map(({ text, delay, muted }) => (

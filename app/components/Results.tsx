@@ -199,7 +199,7 @@ export default function Results() {
         <h2
           className="reveal"
           style={{
-            fontFamily: 'var(--font-orbitron), sans-serif',
+            fontFamily: 'var(--font-jakarta), sans-serif',
             fontSize: 'clamp(30px, 4vw, 52px)',
             fontWeight: 800,
             letterSpacing: '-0.025em',

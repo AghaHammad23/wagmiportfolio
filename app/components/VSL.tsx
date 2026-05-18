@@ -106,7 +106,7 @@ export default function VSL() {
         <h2
           className="vsl-reveal"
           style={{
-            fontFamily: 'var(--font-orbitron), sans-serif',
+            fontFamily: 'var(--font-jakarta), sans-serif',
             fontSize: 'clamp(28px, 4vw, 52px)',
             fontWeight: 800,
             letterSpacing: '-0.025em',

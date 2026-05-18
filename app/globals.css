@@ -110,3 +110,17 @@ select option {
 }
 
 
+/* Prevent footer overlap with pinned staircase */
+footer {
+  position: relative;
+  clear: both;
+  margin-top: 0;
+  background: var(--black);
+  z-index: 1;
+}
+
+.services-sticky-wrap,
+.stairs-desktop,
+.services-mobile {
+  isolation: isolate;
+}
