@@ -81,7 +81,7 @@ export default function FinalCTA() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.9, ease, delay: 0 }}
           style={{
-            fontFamily: 'var(--font-orbitron), sans-serif',
+            fontFamily: 'var(--font-jakarta), sans-serif',
             fontSize: 'clamp(32px, 5.5vw, 70px)',
             fontWeight: 800,
             letterSpacing: '-0.03em',
@@ -97,7 +97,8 @@ export default function FinalCTA() {
           making you{' '}
           <span
             style={{
-              color: 'var(--green)',
+            color: 'transparent',
+            WebkitTextStroke: '1px rgba(106,255,42)',
               fontFamily: 'var(--font-jakarta), sans-serif',
             }}
           >

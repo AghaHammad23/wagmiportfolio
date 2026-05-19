@@ -30,7 +30,7 @@ export default function ProofNote() {
       style={{
         textAlign: 'center',
         padding: '40px var(--pad)',
-        fontSize: 'px',
+        fontSize: '`20px',
         fontWeight: 300,
         fontStyle: 'italic',
         color: 'var(--green)',
@@ -40,6 +40,6 @@ export default function ProofNote() {
       }}
     >
       No testimonials needed when the numbers speak this clearly.
-    </div>
+    </div>   
   )
 }
