@@ -1,260 +1,709 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useLenis } from 'lenis/react'
 import { useApply } from '../components/Providers'
 
-gsap.registerPlugin(ScrollTrigger)
-
-const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
-
-const results = [
+// ─── CLIENT DATA ────────────────────────────────────────────────────────────
+// Replace video/poster paths with your actual files in /public/
+// Replace link with the client's YouTube channel or website
+const clients = [
   {
-    number: '14.1M Subscribers',
-    client: 'Omar Raja — ESPN',
+    video: '/heroVideo.mp4',
+    poster: '/logo.png',
+    client: 'Omar Raja',
+    subtitle: 'ESPN',
+    link: 'https://youtube.com/@OmarRajaESPN',
     category: 'Sports Media',
-    desc: 'Sports media channel scaled from 4,000 to 14.1 million subscribers. Over 2.1 billion total views generated through structured short and long-form content.',
-    duration: '14 months',
-    views: '2.1B views',
+    statsLeft: [
+      { label: 'Started At', value: '4,000' },
+      { label: 'Timeline', value: '14 months' },
+    ],
+    statsRight: [
+      { label: 'Subscribers', value: '14.1M' },
+      { label: 'Total Views', value: '2.1B' },
+    ],
   },
   {
-    number: '4.73M Subscribers',
-    client: 'Answered That For You',
+ video: '/heroVideo.mp4',
+    poster: '/name.png',
+    client: 'Answered That',
+    subtitle: 'For You',
+    link: 'https://youtube.com/@AnsweredThatForYou',
     category: 'Documentary / Faceless',
-    desc: 'Faceless documentary channel built from zero to 4.73 million subscribers. 4.9 billion total views across 2,000+ published videos.',
-    duration: '12 months',
-    views: '4.9B views',
+    statsLeft: [
+      { label: 'Started At', value: '0' },
+      { label: 'Timeline', value: '12 months' },
+    ],
+    statsRight: [
+      { label: 'Subscribers', value: '4.73M' },
+      { label: 'Total Views', value: '4.9B' },
+    ],
   },
   {
-    number: '246,000 Subscribers',
-    client: 'Matt Theriault — Epic Real Estate',
+ video: '/heroVideo.mp4',
+    poster: '/logo.png',
+    client: 'Matt Theriault',
+    subtitle: 'Epic Real Estate',
+    link: 'https://youtube.com/@EpicRealEstatePodcast',
     category: 'Real Estate Education',
-    desc: 'Real estate education channel grown from 2,000 to 246,000 subscribers through systematic publishing and content engine strategy.',
-    duration: '12 months',
-    views: '18M views',
+    statsLeft: [
+      { label: 'Started At', value: '2,000' },
+      { label: 'Timeline', value: '12 months' },
+    ],
+    statsRight: [
+      { label: 'Subscribers', value: '246K' },
+      { label: 'Total Views', value: '18M' },
+    ],
   },
   {
-    number: '126,000 Subscribers',
-    client: 'Jonathan Catliff — AI Automation',
+ video: '/heroVideo.mp4',
+    poster: '/name.png',
+    client: 'Jonathan Catliff',
+    subtitle: 'AI Automation',
+    link: 'https://youtube.com/@JonathanCatliff',
     category: 'AI & Tech',
-    desc: 'Channel scaled from 100 to 126,000 subscribers. Paid Skool community simultaneously grown to 362 members generating recurring revenue.',
-    duration: '7 months',
-    views: '9.4M views',
+    statsLeft: [
+      { label: 'Started At', value: '100' },
+      { label: 'Timeline', value: '7 months' },
+    ],
+    statsRight: [
+      { label: 'Subscribers', value: '126K' },
+      { label: 'Total Views', value: '9.4M' },
+    ],
   },
   {
-    number: '89,600 Subscribers',
-    client: 'Marketing Against the Grain',
+ video: '/heroVideo.mp4',
+    poster: '/logo.png',
+    client: 'Marketing Against',
+    subtitle: 'the Grain',
+    link: 'https://youtube.com/@MarketingAgainstTheGrain',
     category: 'Marketing Education',
-    desc: 'Marketing education channel built from zero to 89,600 subscribers with structured long-form content system and weekly optimisation.',
-    duration: '9 months',
-    views: '6.2M views',
+    statsLeft: [
+      { label: 'Started At', value: '0' },
+      { label: 'Timeline', value: '9 months' },
+    ],
+    statsRight: [
+      { label: 'Subscribers', value: '89.6K' },
+      { label: 'Total Views', value: '6.2M' },
+    ],
   },
   {
-    number: '75,700 Subscribers',
-    client: 'Alec Wilcock — AI Education',
+    video: '/heroVideo.mp4',
+    poster: '/name.png',
+    client: 'Alec Wilcock',
+    subtitle: 'AI Education',
+    link: 'https://youtube.com/@AlecWilcock',
     category: 'AI Education',
-    desc: 'AI content channel grown from 5,000 to 75,700 subscribers. Strong authority positioning in a highly competitive AI niche.',
-    duration: '6 months',
-    views: '4.1M views',
+    statsLeft: [
+      { label: 'Started At', value: '5,000' },
+      { label: 'Timeline', value: '6 months' },
+    ],
+    statsRight: [
+      { label: 'Subscribers', value: '75.7K' },
+      { label: 'Total Views', value: '4.1M' },
+    ],
   },
 ]
 
-const stats = [
-  { num: '300+', label: 'Brands Served' },
-  { num: '7B+', label: 'Total Views' },
-  { num: '14.1M', label: 'Peak Subscribers' },
-  { num: '100%', label: 'Done For You' },
-]
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const TRANSITION_LOCK_MS = 700
 
 export default function WorkContent() {
-  const revealRef = useRef<HTMLDivElement>(null)
   const { open } = useApply()
 
+  const [activeSlide, setActiveSlide] = useState(0)
+  const [videosDone, setVideosDone] = useState(false)
+  const [overlayMounted, setOverlayMounted] = useState(true)
+  const [videoReady, setVideoReady] = useState<boolean[]>(() =>
+    Array(clients.length).fill(false)
+  )
+
+  // Refs for imperative state inside event listeners
+  const activeSlideRef = useRef(0)
+  const isTransitioningRef = useRef(false)
+  const videosDoneRef = useRef(false)
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
+
+  const lenis = useLenis() as {
+    stop: () => void
+    start: () => void
+    scrollTo: (target: number, options?: { immediate?: boolean }) => void
+  } | undefined
+
+  // ─── LENIS CONTROL ────────────────────────────────────────────────────────
   useEffect(() => {
-    const reveals = revealRef.current?.querySelectorAll('.reveal')
-    if (!reveals) return
-    reveals.forEach((el, i) => {
-      gsap.fromTo(el, { opacity: 0, y: 24 }, {
-        opacity: 1, y: 0, duration: 0.9, delay: i * 0.08,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-      })
+    if (!lenis) return
+    if (!videosDone) {
+      lenis.stop()
+    } else {
+      // Flush any virtual scroll Lenis accumulated while stopped
+      window.scrollTo(0, 0)
+      const t = setTimeout(() => {
+        lenis.start()
+        lenis.scrollTo(0, { immediate: true })
+      }, 920)
+      return () => clearTimeout(t)
+    }
+  }, [lenis, videosDone])
+
+  // ─── VIDEO PLAYBACK ───────────────────────────────────────────────────────
+  useEffect(() => {
+    videoRefs.current.forEach((video, i) => {
+      if (!video) return
+      if (i === activeSlide) {
+        video.play().catch(() => {})
+      } else {
+        video.pause()
+        video.currentTime = 0
+      }
+    })
+  }, [activeSlide])
+
+  // Ref so re-entry can cancel the pending unmount
+  const overlayUnmountTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // ─── UNMOUNT OVERLAY AFTER EXIT ANIMATION ─────────────────────────────────
+  useEffect(() => {
+    if (!videosDone) return
+    overlayUnmountTimerRef.current = setTimeout(() => setOverlayMounted(false), 1000)
+    return () => {
+      if (overlayUnmountTimerRef.current) clearTimeout(overlayUnmountTimerRef.current)
+    }
+  }, [videosDone])
+
+  // ─── SLIDE NAVIGATION ─────────────────────────────────────────────────────
+  const goNext = useCallback(() => {
+    if (videosDoneRef.current || isTransitioningRef.current) return
+    if (activeSlideRef.current < clients.length - 1) {
+      isTransitioningRef.current = true
+      activeSlideRef.current += 1
+      setActiveSlide(activeSlideRef.current)
+      setTimeout(() => { isTransitioningRef.current = false }, TRANSITION_LOCK_MS)
+    } else {
+      videosDoneRef.current = true
+      window.scrollTo(0, 0) // clear any accumulated native scroll before overlay exits
+      setVideosDone(true)
+    }
+  }, [])
+
+  const goPrev = useCallback(() => {
+    if (videosDoneRef.current || isTransitioningRef.current) return
+    if (activeSlideRef.current > 0) {
+      isTransitioningRef.current = true
+      activeSlideRef.current -= 1
+      setActiveSlide(activeSlideRef.current)
+      setTimeout(() => { isTransitioningRef.current = false }, TRANSITION_LOCK_MS)
+    }
+  }, [])
+
+  // ─── WHEEL ────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (videosDoneRef.current) return
+      e.preventDefault()
+      if (e.deltaY > 0) goNext()
+      else if (e.deltaY < 0) goPrev()
+    }
+    window.addEventListener('wheel', onWheel, { passive: false })
+    return () => window.removeEventListener('wheel', onWheel)
+  }, [goNext, goPrev])
+
+  // ─── TOUCH ────────────────────────────────────────────────────────────────
+  const touchStartY = useRef(0)
+  useEffect(() => {
+    const onStart = (e: TouchEvent) => { touchStartY.current = e.touches[0].clientY }
+    const onEnd = (e: TouchEvent) => {
+      if (videosDoneRef.current) return
+      const diff = touchStartY.current - e.changedTouches[0].clientY
+      if (Math.abs(diff) < 50) return
+      if (diff > 0) goNext()
+      else goPrev()
+    }
+    window.addEventListener('touchstart', onStart, { passive: true })
+    window.addEventListener('touchend', onEnd, { passive: true })
+    return () => {
+      window.removeEventListener('touchstart', onStart)
+      window.removeEventListener('touchend', onEnd)
+    }
+  }, [goNext, goPrev])
+
+  // ─── KEYBOARD ─────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (videosDoneRef.current) return
+      if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); goNext() }
+      else if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); goPrev() }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [goNext, goPrev])
+
+  // ─── RE-ENTRY: scroll up at top of CTA goes back to last video slide ──────
+  const reenterCarousel = useCallback(() => {
+    if (overlayUnmountTimerRef.current) {
+      clearTimeout(overlayUnmountTimerRef.current)
+      overlayUnmountTimerRef.current = null
+    }
+    videosDoneRef.current = false
+    activeSlideRef.current = clients.length - 1
+    isTransitioningRef.current = false
+    setVideosDone(false)
+    setActiveSlide(clients.length - 1)
+    setOverlayMounted(true)
+    lenis?.stop()
+  }, [lenis])
+
+  useEffect(() => {
+    if (!videosDone) return
+    const onWheel = (e: WheelEvent) => {
+      if (window.scrollY > 10 || e.deltaY >= 0) return
+      e.preventDefault()
+      reenterCarousel()
+    }
+    window.addEventListener('wheel', onWheel, { passive: false })
+    return () => window.removeEventListener('wheel', onWheel)
+  }, [videosDone, reenterCarousel])
+
+  useEffect(() => {
+    if (!videosDone) return
+    let startY = 0
+    const onStart = (e: TouchEvent) => { startY = e.touches[0].clientY }
+    const onEnd = (e: TouchEvent) => {
+      if (window.scrollY > 10) return
+      // diff < 0 means finger moved down → user is scrolling up
+      if (startY - e.changedTouches[0].clientY >= -50) return
+      reenterCarousel()
+    }
+    window.addEventListener('touchstart', onStart, { passive: true })
+    window.addEventListener('touchend', onEnd, { passive: true })
+    return () => {
+      window.removeEventListener('touchstart', onStart)
+      window.removeEventListener('touchend', onEnd)
+    }
+  }, [videosDone, reenterCarousel])
+
+  useEffect(() => {
+    if (!videosDone) return
+    const onKey = (e: KeyboardEvent) => {
+      if (window.scrollY > 10) return
+      if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); reenterCarousel() }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [videosDone, reenterCarousel])
+
+  // ─── MARK VIDEO READY ─────────────────────────────────────────────────────
+  const markReady = useCallback((index: number) => {
+    setVideoReady(prev => {
+      const next = [...prev]
+      next[index] = true
+      return next
     })
   }, [])
 
+  const current = clients[activeSlide]
+
   return (
-    <main style={{ paddingTop: '52px' }}>
-      {/* Hero */}
+    <main>
+      {/* ── FULL-SCREEN VIDEO OVERLAY ──────────────────────────────────────── */}
+      {overlayMounted && (
+        <motion.div
+          initial={{ y: 0 }}
+          animate={{ y: videosDone ? '-100%' : 0 }}
+          transition={{ duration: 0.9, ease: EASE }}
+          onAnimationComplete={() => { if (videosDone) setOverlayMounted(false) }}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 999,
+            background: '#000',
+            overflow: 'hidden',
+          }}
+        >
+          {/* ── VIDEOS ────────────────────────────────────────────────────── */}
+          {clients.map((client, i) => (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                opacity: i === activeSlide ? 1 : 0,
+                transition: 'opacity 0.65s ease',
+                pointerEvents: 'none',
+              }}
+            >
+              {/* Poster: visible until video is ready */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundImage: `url(${client.poster})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  opacity: videoReady[i] ? 0 : 1,
+                  transition: 'opacity 1s ease',
+                  zIndex: 1,
+                }}
+              />
+              <video
+                ref={el => { videoRefs.current[i] = el }}
+                src={client.video}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                onCanPlay={() => markReady(i)}
+              />
+              {/* Cinematic gradients */}
+              <div style={{
+                position: 'absolute', inset: 0, zIndex: 2,
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.08) 35%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.72) 100%)',
+              }} />
+              <div style={{
+                position: 'absolute', inset: 0, zIndex: 2,
+                background: 'linear-gradient(to right, rgba(0,0,0,0.6) 0%, transparent 32%, transparent 68%, rgba(0,0,0,0.6) 100%)',
+              }} />
+            </div>
+          ))}
+
+          {/* ── SLIDE CONTENT ─────────────────────────────────────────────── */}
+          <div style={{ position: 'absolute', inset: 0, zIndex: 10 }}>
+
+            {/* Slide counter */}
+            <div className="slide-counter" style={{
+              position: 'absolute',
+              top: '28px',
+              right: 'clamp(24px, 6vw, 100px)',
+              fontFamily: 'var(--font-bricolage), sans-serif',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.12em',
+              color: 'rgba(255,255,255,0.28)',
+              userSelect: 'none',
+            }}>
+              {String(activeSlide + 1).padStart(2, '0')} / {String(clients.length).padStart(2, '0')}
+            </div>
+
+            {/* Center layout: stats-left | name | stats-right */}
+            <div className="slide-content-area" style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSlide}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -32 }}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  className="slide-layout"
+                  style={{
+                    width: '100%',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr auto 1fr',
+                    alignItems: 'center',
+                    gap: 'clamp(20px, 4vw, 80px)',
+                    padding: '0 clamp(24px, 6vw, 100px)',
+                  }}
+                >
+                  {/* Left stats */}
+                  <div className="slide-col-left" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    {current.statsLeft.map((stat, j) => (
+                      <div key={j}>
+                        <div style={{
+                          fontSize: '9px',
+                          fontWeight: 500,
+                          letterSpacing: '0.18em',
+                          textTransform: 'uppercase',
+                          color: 'rgba(255,255,255,0.35)',
+                          marginBottom: '7px',
+                        }}>
+                          {stat.label}
+                        </div>
+                        <div style={{
+                          fontFamily: 'var(--font-bricolage), sans-serif',
+                          fontSize: 'clamp(22px, 3vw, 44px)',
+                          fontWeight: 800,
+                          color: '#fff',
+                          letterSpacing: '-0.03em',
+                          lineHeight: 1,
+                        }}>
+                          {stat.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Client name — center */}
+                  <div className="slide-center" style={{ textAlign: 'center', minWidth: 0 }}>
+                    <div style={{
+                      fontSize: '9px',
+                      fontWeight: 500,
+                      letterSpacing: '0.2em',
+                      textTransform: 'uppercase',
+                      color: 'var(--green)',
+                      marginBottom: '20px',
+                      userSelect: 'none',
+                    }}>
+                      {current.category}
+                    </div>
+                    <a
+                      href={current.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'block',
+                        fontFamily: 'var(--font-bricolage), sans-serif',
+                        fontSize: 'clamp(36px, 6.5vw, 100px)',
+                        fontWeight: 800,
+                        letterSpacing: '-0.045em',
+                        lineHeight: 0.9,
+                        color: '#fff',
+                        textDecoration: 'none',
+                        transition: 'color 0.2s',
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--green)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#fff' }}
+                    >
+                      {current.client}
+                    </a>
+                    <div style={{
+                      fontFamily: 'var(--font-bricolage), sans-serif',
+                      fontSize: 'clamp(18px, 2.8vw, 44px)',
+                      fontWeight: 300,
+                      letterSpacing: '-0.02em',
+                      color: 'rgba(255,255,255,0.32)',
+                      lineHeight: 1.1,
+                      marginTop: '6px',
+                    }}>
+                      {current.subtitle}
+                    </div>
+                  </div>
+
+                  {/* Right stats */}
+                  <div className="slide-col-right" style={{ display: 'flex', flexDirection: 'column', gap: '32px', alignItems: 'flex-end', textAlign: 'right' }}>
+                    {current.statsRight.map((stat, j) => (
+                      <div key={j}>
+                        <div style={{
+                          fontSize: '9px',
+                          fontWeight: 500,
+                          letterSpacing: '0.18em',
+                          textTransform: 'uppercase',
+                          color: 'rgba(255,255,255,0.35)',
+                          marginBottom: '7px',
+                        }}>
+                          {stat.label}
+                        </div>
+                        <div style={{
+                          fontFamily: 'var(--font-bricolage), sans-serif',
+                          fontSize: 'clamp(22px, 3vw, 44px)',
+                          fontWeight: 800,
+                          color: '#fff',
+                          letterSpacing: '-0.03em',
+                          lineHeight: 1,
+                        }}>
+                          {stat.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Bottom — progress dots + hint */}
+            <div style={{
+              position: 'absolute',
+              bottom: '40px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '14px',
+              userSelect: 'none',
+            }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {clients.map((_, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      height: '4px',
+                      borderRadius: '2px',
+                      width: i === activeSlide ? '28px' : '6px',
+                      background: i === activeSlide ? 'var(--green)' : 'rgba(255,255,255,0.2)',
+                      transition: 'all 0.45s cubic-bezier(0.16,1,0.3,1)',
+                    }}
+                  />
+                ))}
+              </div>
+              <div style={{
+                fontSize: '9px',
+                fontWeight: 400,
+                paddingBottom: '8px',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.22)',
+              }}>
+                {activeSlide < clients.length - 1 ? '' : ''}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── CTA (revealed after all videos) ────────────────────────────────── */}
       <section
         style={{
-          minHeight: '50vh',
+          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
-          padding: '100px var(--pad) 80px',
-          borderBottom: '1px solid var(--line2)',
+          padding: 'clamp(80px, 12vw, 160px) var(--pad)',
+          paddingTop: '80px',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
         <div style={{
-          position: 'absolute', width: '600px', height: '600px',
-          background: 'radial-gradient(circle, rgba(106,255,42,0.04) 0%, transparent 65%)',
-          top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none',
+          position: 'absolute',
+          width: '700px',
+          height: '700px',
+          background: 'radial-gradient(circle, rgba(106,255,42,0.03) 0%, transparent 60%)',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%,-50%)',
+          pointerEvents: 'none',
         }} />
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease }}
-          style={{
-            fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
-            textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '20px',
-            display: 'flex', alignItems: 'center', gap: '12px',
-          }}
-        >
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
-          Client Results
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: 0.1 }}
-          style={{
-            fontFamily: 'var(--font-bricolage), sans-serif',
-            fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 800,
-            letterSpacing: '-0.03em', lineHeight: 1.04, color: 'var(--white)',
-            maxWidth: '760px', marginBottom: '24px',
-          }}
-        >
-          Work That Speaks{' '}
-          <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>for Itself.</em>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.22 }}
-          style={{
-            fontSize: 'clamp(15px, 1.6vw, 18px)', fontWeight: 300,
-            lineHeight: 1.7, color: 'var(--t2)', maxWidth: '480px',
-          }}
-        >
-          300+ brands. 7 billion views. These are the numbers that happen when
-          you hand the content machine to the right team.
-        </motion.p>
-      </section>
-
-      {/* Stats bar */}
-      <div className="work-stats-bar" style={{
-        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-        borderBottom: '1px solid var(--line)', background: 'var(--off)',
-      }}>
-        {stats.map((s, i) => (
-          <div key={i} style={{
-            padding: 'clamp(20px, 3vw, 40px) clamp(20px, 4vw, 48px)',
-            borderRight: i < stats.length - 1 ? '1px solid var(--line)' : 'none',
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{
+            fontSize: '10px',
+            fontWeight: 500,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'var(--t4)',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
           }}>
-            <div style={{
+            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+            Client Results
+          </div>
+
+          <h2 style={{
+            fontFamily: 'var(--font-bricolage), sans-serif',
+            fontSize: 'clamp(34px, 5.5vw, 72px)',
+            fontWeight: 800,
+            letterSpacing: '-0.03em',
+            lineHeight: 1.04,
+            color: 'var(--white)',
+            maxWidth: '680px',
+            margin: '0 auto 24px',
+          }}>
+            Ready to be the next{' '}
+            <em style={{ fontStyle: 'normal', color: 'var(--green)' }}>success story?</em>
+          </h2>
+
+          <p style={{
+            fontSize: 'clamp(15px, 1.5vw, 18px)',
+            fontWeight: 300,
+            color: 'var(--t2)',
+            maxWidth: '420px',
+            margin: '0 auto 40px',
+            lineHeight: 1.7,
+          }}>
+            Limited spots available. Apply and we&apos;ll get back to you within 48 hours.
+          </p>
+
+          <button
+            onClick={open}
+            style={{
               fontFamily: 'var(--font-bricolage), sans-serif',
-              fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 800,
-              letterSpacing: '-0.03em', color: 'var(--white)', lineHeight: 1, marginBottom: '6px',
-            }}>{s.num}</div>
-            <div style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--t3)' }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Results grid */}
-      <div ref={revealRef} style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)' }}>
-        <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
-          <div
-            className="results-grid"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1px', background: 'var(--line2)' }}
+              fontSize: '14px',
+              fontWeight: 700,
+              color: 'var(--black)',
+              background: 'var(--white)',
+              padding: '16px 40px',
+              border: 'none',
+              cursor: 'pointer',
+              letterSpacing: '0.02em',
+              transition: 'background 0.2s, transform 0.15s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'var(--green)'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--white)'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
           >
-            {results.map((r, i) => (
-              <div
-                key={i}
-                className="reveal"
-                style={{
-                  background: 'var(--black)',
-                  padding: 'clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px)',
-                  display: 'flex', flexDirection: 'column', gap: '12px',
-                  transition: 'background 0.25s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--surface)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--black)')}
-              >
-                <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(106,255,42,0.5)' }}>
-                  {r.category}
-                </div>
-                <div style={{
-                  fontFamily: 'var(--font-bricolage), sans-serif',
-                  fontSize: 'clamp(24px, 3vw, 40px)', fontWeight: 800,
-                  letterSpacing: '-0.03em', color: 'var(--white)', lineHeight: 1,
-                }}>{r.number}</div>
-                <div style={{ fontSize: '12px', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--t3)' }}>
-                  {r.client}
-                </div>
-                <div style={{ fontSize: '14px', fontWeight: 300, color: 'var(--t2)', lineHeight: 1.65 }}>{r.desc}</div>
-                <div style={{ display: 'flex', gap: '20px', marginTop: '4px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t4)', letterSpacing: '0.04em' }}>{r.duration}</span>
-                  <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t4)', letterSpacing: '0.04em' }}>{r.views}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+            Apply to Work With Us
+          </button>
         </div>
-      </div>
-
-      {/* CTA */}
-      <div style={{
-        padding: 'clamp(80px, 12vw, 160px) var(--pad)',
-        textAlign: 'center', borderBottom: '1px solid var(--line2)',
-        position: 'relative', overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', width: '600px', height: '600px',
-          background: 'radial-gradient(circle, rgba(106,255,42,0.025) 0%, transparent 60%)',
-          top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none',
-        }} />
-        <h2 style={{
-          fontFamily: 'var(--font-bricolage), sans-serif',
-          fontSize: 'clamp(30px, 4.5vw, 56px)', fontWeight: 800,
-          letterSpacing: '-0.03em', lineHeight: 1.06, color: 'var(--white)',
-          maxWidth: '640px', margin: '0 auto 20px', position: 'relative', zIndex: 1,
-        }}>
-          Ready to be the next{' '}
-          <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>success story?</em>
-        </h2>
-        <p style={{
-          fontSize: '16px', fontWeight: 300, color: 'var(--t2)',
-          maxWidth: '400px', margin: '0 auto 40px', lineHeight: 1.7,
-          position: 'relative', zIndex: 1,
-        }}>
-          Limited spots available. Apply and we&apos;ll get back to you within 48 hours.
-        </p>
-        <button
-          onClick={open}
-          style={{
-            fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px',
-            fontWeight: 700, color: 'var(--black)', background: 'var(--white)',
-            padding: '14px 36px', border: 'none', cursor: 'pointer', display: 'inline-block',
-            transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1,
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
-        >
-          Apply to Work With Us
-        </button>
-      </div>
+      </section>
 
       <style>{`
         @media (max-width: 768px) {
-          .results-grid { grid-template-columns: 1fr !important; }
-          .work-stats-bar { grid-template-columns: repeat(2, 1fr) !important; }
+          /* Push counter below the mobile top nav (52px) */
+          .slide-counter {
+            top: 60px !important;
+            right: 20px !important;
+          }
+
+          /* Add top clearance so content isn't hidden under mobile nav */
+          .slide-content-area {
+            padding-top: 52px !important;
+            padding-bottom: 80px !important;
+          }
+
+          /* Collapse 3-column grid → flex column, name first */
+          .slide-layout {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 24px !important;
+            padding: 0 20px !important;
+          }
+
+          .slide-center { order: 1; width: 100%; }
+
+          /* Left stats: vertical → horizontal row, centered */
+          .slide-col-left {
+            order: 2;
+            flex-direction: row !important;
+            gap: 28px !important;
+            justify-content: center !important;
+            text-align: center !important;
+            width: 100% !important;
+          }
+
+          /* Right stats: vertical → horizontal row, centered */
+          .slide-col-right {
+            order: 3;
+            flex-direction: row !important;
+            gap: 28px !important;
+            align-items: flex-start !important;
+            justify-content: center !important;
+            text-align: center !important;
+            width: 100% !important;
+          }
         }
       `}</style>
     </main>
