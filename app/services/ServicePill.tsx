@@ -2,10 +2,8 @@
 
 import { motion, Easing } from 'framer-motion'
 import { gsap } from 'gsap'
-import { useRef, useState } from 'react'
+import { useRef, useState, useCallback } from 'react'
 
-// Define the custom cubic-bezier easing as an array of numbers,
-// then cast to Easing[] to satisfy TypeScript.
 const ease: Easing[] = [0.16, 1, 0.3, 1] as unknown as Easing[]
 
 export default function ServicePill({ label, icon: Icon, index, onClick }: {
@@ -18,49 +16,66 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
   const fillRef = useRef<HTMLSpanElement>(null)
   const textRef = useRef<HTMLSpanElement>(null)
   const iconRef = useRef<SVGElement>(null)
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+  
+  // Use RAF to batch DOM reads/writes and prevent forced reflows
+  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     if (!fillRef.current || !pillRef.current) return
-    const rect = pillRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    gsap.set(fillRef.current, { left: x, top: y, scale: 0, opacity: 1 })
-    gsap.to(fillRef.current, { scale: 6, duration: 0.5, ease: 'power2.out' })
     
-    // Change text color immediately via CSS class instead of state
-    if (textRef.current) {
-      textRef.current.style.color = 'var(--black)'
-    }
-    if (iconRef.current) {
-      iconRef.current.style.color = 'var(--black)'
-      iconRef.current.style.opacity = '1'
-    }
-  }
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!fillRef.current || !pillRef.current) return
+    // Batch DOM reads
     const rect = pillRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    gsap.to(fillRef.current, {
-      scale: 0,
-      left: x,
-      top: y,
-      duration: 0.4,
-      ease: 'power2.in',
-      onComplete: () => {
-        gsap.set(fillRef.current, { opacity: 0 })
-        // Reset text color after animation completes
-        if (textRef.current) {
-          textRef.current.style.color = ''
-        }
-        if (iconRef.current) {
-          iconRef.current.style.color = ''
-          iconRef.current.style.opacity = ''
-        }
-      },
+    
+    // Use requestAnimationFrame to batch DOM writes
+    requestAnimationFrame(() => {
+      if (!fillRef.current) return
+      gsap.set(fillRef.current, { left: x, top: y, scale: 0, opacity: 1 })
+      gsap.to(fillRef.current, { scale: 6, duration: 0.4, ease: 'power2.out' }) // Reduced duration
+      
+      // Change text colors
+      if (textRef.current) {
+        textRef.current.style.color = 'var(--black)'
+      }
+      if (iconRef.current) {
+        iconRef.current.style.color = 'var(--black)'
+        iconRef.current.style.opacity = '1'
+      }
     })
-  }
+  }, [])
+
+  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!fillRef.current || !pillRef.current) return
+    
+    const rect = pillRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    
+    requestAnimationFrame(() => {
+      if (!fillRef.current) return
+      gsap.to(fillRef.current, {
+        scale: 0,
+        left: x,
+        top: y,
+        duration: 0.3, // Reduced duration
+        ease: 'power2.in',
+        onComplete: () => {
+          if (!fillRef.current) return
+          gsap.set(fillRef.current, { opacity: 0 })
+          // Reset text colors
+          if (textRef.current) {
+            textRef.current.style.color = ''
+          }
+          if (iconRef.current) {
+            iconRef.current.style.color = ''
+            iconRef.current.style.opacity = ''
+          }
+        },
+      })
+    })
+  }, [])
+
+  // Reduced initial animation delay for better perceived performance
+  const delay = 0.3 + index * 0.05 // Reduced from 0.4 + index * 0.07
 
   return (
     <motion.button
@@ -68,7 +83,7 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease, delay: 0.4 + index * 0.07 }}
+      transition={{ duration: 0.5, ease, delay }} // Reduced duration from 0.6
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
@@ -86,8 +101,9 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
         fontSize: 'clamp(14px, 1.8vw, 18px)',
         fontWeight: 600,
         letterSpacing: '-0.01em',
-        transition: 'border-color 0.25s',
+        transition: 'border-color 0.2s', // Faster transition
         zIndex: 0,
+        willChange: 'transform', // Optimize for performance
       }}
       whileHover={{ borderColor: 'rgba(106,255,42,0.6)' }}
     >
@@ -103,6 +119,7 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
           opacity: 0,
           pointerEvents: 'none',
           zIndex: -1,
+          willChange: 'transform', // Optimize for performance
         }}
       />
       <Icon 

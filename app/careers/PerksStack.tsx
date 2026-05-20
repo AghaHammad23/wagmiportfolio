@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Image from 'next/image'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -148,7 +149,7 @@ export default function PerksStack({ perks }: { perks: Perk[] }) {
           >
             {/* Image */}
             <div style={{ flexShrink: 0, width: '72px', height: '72px', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(171,248,47,0.18)' }}>
-              <img
+              <Image
                 src={p.img}
                 alt={p.title}
                 width={72}

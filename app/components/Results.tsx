@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Image from 'next/image'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -257,9 +258,12 @@ export default function Results() {
                   <source src={currentResult.mediaUrl} type="video/mp4" />
                 </video>
               ) : (
-                <img
+                <Image
                   src={currentResult.mediaUrl}
                   alt={currentResult.client}
+                  width={100}
+                  height={100}
+                  
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
               )}

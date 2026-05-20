@@ -27,26 +27,31 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
         overflow: 'hidden',
       }}
     >
-      {/* Grid background */}
+      {/* Grid background - optimized with will-change */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 0,
         backgroundImage: 'linear-gradient(rgba(106,255,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.03) 1px, transparent 1px)',
         backgroundSize: '64px 64px',
         pointerEvents: 'none',
+        willChange: 'transform', // Optimize for performance
       }} />
-      {/* Glow */}
+      
+      {/* Glow - optimized */}
       <div style={{
         position: 'absolute', zIndex: 0,
         width: '800px', height: '800px',
         background: 'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 65%)',
         top: '40%', left: '50%', transform: 'translate(-50%,-50%)',
         pointerEvents: 'none',
+        willChange: 'transform', // Optimize for performance
       }} />
 
       <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+        {/* Reduced animation duration for better LCP */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease }} // Reduced from 0.8
           style={{
             fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
             textTransform: 'uppercase', color: 'var(--t4)',
@@ -59,9 +64,11 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
           <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
         </motion.div>
 
+        {/* Optimized H1 - reduced animation delay for faster LCP */}
         <motion.h1
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: 0.1 }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease, delay: 0.05 }} // Reduced delay from 0.1
           style={{
             fontFamily: 'var(--font-bricolage), sans-serif',
             fontSize: 'clamp(36px, 6vw, 80px)',
@@ -76,9 +83,11 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
           </em>
         </motion.h1>
 
+        {/* Optimized paragraph */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.22 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease, delay: 0.1 }} // Reduced delay from 0.22
           style={{
             fontSize: 'clamp(15px, 1.6vw, 18px)', fontWeight: 300,
             lineHeight: 1.7, color: 'var(--t2)', maxWidth: '480px',
@@ -88,6 +97,7 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
           We don&apos;t offer à la carte. We build the entire content engine — strategy, production, distribution, and optimisation — all under one roof.
         </motion.p>
 
+        {/* Service pills - reduced stagger delay */}
         <div style={{
           display: 'flex', flexWrap: 'wrap', gap: '12px',
           justifyContent: 'center', maxWidth: '860px', margin: '0 auto',
@@ -103,9 +113,11 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
           ))}
         </div>
 
+        {/* Scroll indicator - optimized animation */}
         <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }} // Reduced from 1.2
           style={{
             marginTop: 'clamp(48px, 6vw, 72px)',
             display: 'flex', flexDirection: 'column',
@@ -119,7 +131,7 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
           </span>
           <motion.div
             animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }} // Slightly faster
             style={{ color: 'rgba(106,255,42,0.5)', fontSize: '18px' }}
           >
             ↓

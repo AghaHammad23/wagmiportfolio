@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useApply } from '../components/Providers'
 import Link from 'next/link'
 import ServicePill from '../services/ServicePill'
+import Image from 'next/image'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -141,9 +142,11 @@ function ImageWithFallback({ src, alt, initials, style }: { src: string; alt: st
   }
 
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
+      width={400}
+      height={400}
       style={style}
       onError={() => setImgError(true)}
     />

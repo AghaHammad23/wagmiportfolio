@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Image from 'next/image'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -159,11 +160,13 @@ export default function Testimonials() {
               border: '1px solid rgba(171,248,47,0.12)',
               borderRadius: '16px', overflow: 'hidden',
             }}>
-              {/* Image */}
+              {/* Image - FIXED: added width and height props */}
               <div style={{ position: 'relative', height: 'clamp(150px, 22vh, 240px)', flexShrink: 0, overflow: 'hidden' }}>
-                <img
+                <Image
                   src={t.img}
                   alt={t.company}
+                  width={600}
+                  height={380}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(0.7) grayscale(15%)' }}
                 />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, #0d0d0d 100%)' }} />
@@ -188,9 +191,11 @@ export default function Testimonials() {
                   "{t.quote}"
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '11px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-                  <img
-                    src={t.avatar} alt={t.name}
-                    width={36} height={36}
+                  <Image
+                    src={t.avatar} 
+                    alt={t.name}
+                    width={36} 
+                    height={36}
                     style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(171,248,47,0.25)', flexShrink: 0 }}
                   />
                   <div>
