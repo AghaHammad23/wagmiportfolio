@@ -137,6 +137,8 @@ export default function WorkContent() {
     if (!lenis) return
     if (!videosDone) {
       lenis.stop()
+      // Restart Lenis when navigating away so other pages can scroll
+      return () => lenis.start()
     } else {
       // Flush any virtual scroll Lenis accumulated while stopped
       window.scrollTo(0, 0)

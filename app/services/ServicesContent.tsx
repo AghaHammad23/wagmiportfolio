@@ -196,9 +196,7 @@ export default function ServicesContent() {
       )}
 
       {/* Process staircase – with bottom margin to prevent footer overlap */}
-      <div style={{ marginBottom: 'clamp(60px, 10vw, 120px)' }}>
         <ProcessStaircase process={process} onApplyClick={open} isMobile={isMobile} />
-      </div>
     </main>
   )
 }
