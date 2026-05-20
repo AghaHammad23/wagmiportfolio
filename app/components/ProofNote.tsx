@@ -30,13 +30,12 @@ export default function ProofNote() {
       style={{
         textAlign: 'center',
         padding: '40px var(--pad)',
-        fontSize: '`20px',
+        fontSize: '20px',
         fontWeight: 300,
         fontStyle: 'italic',
         color: 'var(--green)',
-        borderColor: 'var(--green)',
-        borderBottom: '1px solid ',
-        borderTop: '1px solid ',
+        borderBottom: '1px solid var(--green)',
+        borderTop: '1px solid var(--green)',
       }}
     >
       No testimonials needed when the numbers speak this clearly.

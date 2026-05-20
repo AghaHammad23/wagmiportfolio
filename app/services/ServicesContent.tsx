@@ -41,7 +41,7 @@ const services = [
     tag: 'Authority',
     desc: 'YouTube is still the most powerful platform for building trust and inbound leads. We manage full production end-to-end: research, scripting, editing, thumbnails, and optimisation.',
     features: ['Full video editing', 'Thumbnail design', 'Title & SEO optimisation', 'Chapter structuring'],
-    media: { type: 'video', src: '/pic.png' },
+    media: { type: 'image', src: '/team/aamir.png' },
   },
   {
     icon: (props: any) => <RiLineChartLine {...props} />,
@@ -57,7 +57,7 @@ const services = [
     tag: 'Retention',
     desc: 'Views are vanity. Community is revenue. We help you convert subscribers into buyers — through engagement strategies, community management, and content that drives people to your offer.',
     features: ['Engagement strategy', 'Comment management', 'Community platform setup', 'Newsletter integration'],
-    media: { type: 'image', src: '/logo.png' },
+    media: { type: 'image', src: '/name.png' },
   },
   {
     icon: (props: any) => <RiSearchLine {...props} />,
@@ -81,6 +81,7 @@ export default function ServicesContent() {
   const [activeIndex, setActiveIndex] = useState(0)
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([])
   const mobileSectionRefs = useRef<(HTMLDivElement | null)[]>([])
+  const stickyGridRef = useRef<HTMLDivElement>(null)
   const { open } = useApply()
 
   useEffect(() => {
@@ -109,22 +110,30 @@ export default function ServicesContent() {
     refs[i]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
+  const scrollToServices = () => {
+    if (stickyGridRef.current) {
+      stickyGridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   if (isMobile === null) {
     return <div style={{ minHeight: '100vh' }} />
   }
 
   return (
     <main style={{ paddingTop: '52px' }}>
-      <ServicesHero services={services} onPillClick={scrollToService} />
+      <ServicesHero services={services} onPillClick={scrollToService} onScrollToServices={scrollToServices} />
 
       {/* Desktop sticky grid */}
-      <ServicesStickyGrid
-        services={services}
-        activeIndex={activeIndex}
-        setActiveIndex={setActiveIndex}
-        sectionRefs={sectionRefs}
-        isMobile={isMobile}
-      />
+      <div ref={stickyGridRef}>
+        <ServicesStickyGrid
+          services={services}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+          sectionRefs={sectionRefs}
+          isMobile={isMobile}
+        />
+      </div>
 
       {/* Mobile cards (simple vertical stack) */}
       {isMobile && (

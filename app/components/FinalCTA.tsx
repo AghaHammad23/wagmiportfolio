@@ -98,7 +98,7 @@ export default function FinalCTA() {
           <span
             style={{
             color: 'transparent',
-            WebkitTextStroke: '1px rgba(106,255,42)',
+            WebkitTextStroke: '1px var(--green)',
               fontFamily: 'var(--font-jakarta), sans-serif',
             }}
           >

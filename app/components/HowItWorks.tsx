@@ -20,7 +20,7 @@ const steps = [
   },
 ]
 
-const GREEN = '#6AFF2A'
+const GREEN = '#ABF82F'
 const BLACK = '#000000'
 
 /* Easing */

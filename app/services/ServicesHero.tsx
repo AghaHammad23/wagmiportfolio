@@ -8,9 +8,10 @@ const ease: Easing[] = [0.16, 1, 0.3, 1] as unknown as Easing[]
 interface ServicesHeroProps {
   services: Array<{ title: string; icon: React.ElementType }>
   onPillClick: (index: number) => void
+  onScrollToServices: () => void
 }
 
-export default function ServicesHero({ services, onPillClick }: ServicesHeroProps) {
+export default function ServicesHero({ services, onPillClick, onScrollToServices }: ServicesHeroProps) {
   return (
     <section
       style={{
@@ -109,7 +110,9 @@ export default function ServicesHero({ services, onPillClick }: ServicesHeroProp
             marginTop: 'clamp(48px, 6vw, 72px)',
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', gap: '8px',
+            cursor: 'pointer',
           }}
+          onClick={onScrollToServices}
         >
           <span style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--t4)' }}>
             Scroll to explore

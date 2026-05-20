@@ -6,6 +6,7 @@ import CTAStrip from './components/CTAStrip'
 import HowItWorks from './components/HowItWorks'
 import Results from './components/Results'
 import ProofNote from './components/ProofNote'
+import Testimonials from './components/Testimonials'
 import FinalCTA from './components/FinalCTA'
 import Footer from './components/Footer'
 
@@ -38,7 +39,8 @@ export default function Page() {
       />
 
       <Results />
-      <ProofNote />
+      {/* <ProofNote /> */}
+      <Testimonials />
 
       {/* Post-results — high intent, social proof momentum */}
       {/* <CTAStrip

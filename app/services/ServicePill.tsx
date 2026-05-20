@@ -16,20 +16,28 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
 }) {
   const pillRef = useRef<HTMLButtonElement>(null)
   const fillRef = useRef<HTMLSpanElement>(null)
-  const [hovered, setHovered] = useState(false)
+  const textRef = useRef<HTMLSpanElement>(null)
+  const iconRef = useRef<SVGElement>(null)
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setHovered(true)
     if (!fillRef.current || !pillRef.current) return
     const rect = pillRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
     gsap.set(fillRef.current, { left: x, top: y, scale: 0, opacity: 1 })
     gsap.to(fillRef.current, { scale: 6, duration: 0.5, ease: 'power2.out' })
+    
+    // Change text color immediately via CSS class instead of state
+    if (textRef.current) {
+      textRef.current.style.color = 'var(--black)'
+    }
+    if (iconRef.current) {
+      iconRef.current.style.color = 'var(--black)'
+      iconRef.current.style.opacity = '1'
+    }
   }
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setHovered(false)
     if (!fillRef.current || !pillRef.current) return
     const rect = pillRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
@@ -40,7 +48,17 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
       top: y,
       duration: 0.4,
       ease: 'power2.in',
-      onComplete: () => gsap.set(fillRef.current, { opacity: 0 }),
+      onComplete: () => {
+        gsap.set(fillRef.current, { opacity: 0 })
+        // Reset text color after animation completes
+        if (textRef.current) {
+          textRef.current.style.color = ''
+        }
+        if (iconRef.current) {
+          iconRef.current.style.color = ''
+          iconRef.current.style.opacity = ''
+        }
+      },
     })
   }
 
@@ -64,12 +82,11 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
         background: 'transparent',
         borderRadius: '999px',
         cursor: 'pointer',
-        color: hovered ? 'var(--black)' : 'var(--white)',
         fontFamily: 'var(--font-bricolage), sans-serif',
         fontSize: 'clamp(14px, 1.8vw, 18px)',
         fontWeight: 600,
         letterSpacing: '-0.01em',
-        transition: 'border-color 0.25s, color 0.15s',
+        transition: 'border-color 0.25s',
         zIndex: 0,
       }}
       whileHover={{ borderColor: 'rgba(106,255,42,0.6)' }}
@@ -88,8 +105,29 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
           zIndex: -1,
         }}
       />
-      <Icon size={16} style={{ opacity: 0.7, flexShrink: 0, position: 'relative', zIndex: 1 }} />
-      <span style={{ position: 'relative', zIndex: 1 }}>{label}</span>
+      <Icon 
+        ref={iconRef}
+        size={16} 
+        style={{ 
+          opacity: 0.7, 
+          flexShrink: 0, 
+          position: 'relative', 
+          zIndex: 1,
+          color: 'var(--white)',
+          transition: 'color 0.15s, opacity 0.15s',
+        }} 
+      />
+      <span 
+        ref={textRef}
+        style={{ 
+          position: 'relative', 
+          zIndex: 1,
+          color: 'var(--white)',
+          transition: 'color 0.15s',
+        }}
+      >
+        {label}
+      </span>
     </motion.button>
   )
 }

@@ -94,6 +94,7 @@ const perks = [
 
 export default function CareersContent() {
   const revealRef = useRef<HTMLDivElement>(null)
+  const openRolesRef = useRef<HTMLDivElement>(null)
   const { open } = useApply()
   const [selectedJob, setSelectedJob] = useState<CareerCardData | null>(null)
 
@@ -108,6 +109,12 @@ export default function CareersContent() {
       })
     })
   }, [])
+
+  const scrollToOpenRoles = () => {
+    if (openRolesRef.current) {
+      openRolesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
   return (
     <main>
@@ -128,8 +135,8 @@ export default function CareersContent() {
         {/* Grid background */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 0,
-          backgroundImage: 'linear-gradient(rgba(106,255,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.03) 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
+          backgroundImage: 'linear-gradient(rgba(106,255,42,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.05) 1px, transparent 1px)',
+          backgroundSize: '94px 94px',
           pointerEvents: 'none',
         }} />
         
@@ -198,13 +205,7 @@ export default function CareersContent() {
                 label={category.title}
                 icon={category.icon}
                 index={i}
-                onClick={() => {
-                  // Scroll to open roles section or filter jobs
-                  const openRolesSection = document.getElementById('open-roles')
-                  if (openRolesSection) {
-                    openRolesSection.scrollIntoView({ behavior: 'smooth' })
-                  }
-                }}
+                onClick={scrollToOpenRoles}
               />
             ))}
           </div>
@@ -216,7 +217,9 @@ export default function CareersContent() {
               marginTop: 'clamp(48px, 6vw, 72px)',
               display: 'flex', flexDirection: 'column',
               alignItems: 'center', gap: '8px',
+              cursor: 'pointer',
             }}
+            onClick={scrollToOpenRoles}
           >
             <span style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--t4)' }}>
               Scroll to explore
@@ -235,7 +238,7 @@ export default function CareersContent() {
       <div ref={revealRef}>
 
         {/* ── Open Roles ───────────────────────────────────── */}
-        <section id="open-roles" style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)' }}>
+        <section ref={openRolesRef} id="open-roles" style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)' }}>
           <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
             <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
