@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import PolicyModal from './PolicyModal'
 import { useApply } from './Providers'
 
@@ -202,7 +203,6 @@ function SocialLink({
       className="
         flex items-center justify-center
         w-10 h-10 rounded-[10px]
-        // border border-(--line2)
         text-(--t3)
         transition-all duration-200
         hover:border-(--green)
@@ -219,6 +219,7 @@ function SocialLink({
 
 export default function Footer() {
   const [openPolicy, setOpenPolicy] = useState<PolicyKey>(null)
+  const currentYear = new Date().getFullYear()
 
   return (
     <>
@@ -332,14 +333,14 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* BIG WORDMARK */}
+        {/* BIG WORDMARK - Now with Logo */}
 
         <div
           style={{
             position: 'relative',
             overflow: 'hidden',
             borderBottom: '1px solid var(--line2)',
-            padding: 'clamp(24px, 4vw, 48px) 0 0',
+            padding: 'clamp(24px, 4vw, 48px) 0',
           }}
         >
           <div
@@ -356,19 +357,24 @@ export default function Footer() {
           <div
             className="text-center"
             style={{
-              fontSize: 'clamp(100px, 22vw, 280px)',
-              fontFamily: 'var(--font-bricolage), sans-serif',
-              fontWeight: 800,
-              letterSpacing: '-0.04em',
-              lineHeight: 0.85,
-              color: 'transparent',
-              WebkitTextStroke: '1px rgba(106,255,42,0.2)',
-              userSelect: 'none',
-              display: 'block',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               width: '100%',
             }}
           >
-            WAGMI
+            <Image
+              src="/wlogo.png"
+              alt="WAGMI Media Logo"
+              width={280}
+              height={80}
+              className="w-auto h-auto"
+              style={{
+                maxWidth: 'clamp(180px, 40vw, 280px)',
+                height: 'auto',
+              }}
+              priority
+            />
           </div>
         </div>
 
@@ -447,7 +453,7 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* COPYRIGHT */}
+          {/* COPYRIGHT - Dynamic Year */}
 
           <span
             style={{
@@ -456,7 +462,7 @@ export default function Footer() {
               color: 'var(--t4)',
             }}
           >
-            © 2025 WAGMI Media LLC
+            © {currentYear} WAGMI Media LLC
           </span>
         </div>
 

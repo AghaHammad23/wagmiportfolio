@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useApply } from '../components/Providers'
+import Link from 'next/link'
+import ServicePill from '../services/ServicePill'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -103,11 +105,19 @@ const team = [
   },
 ]
 
-// Image component with fallback - FIXED: resets error state when src changes
+const teamCategories = [
+  { title: 'Teamwork', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> },
+  { title: 'Excellence', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> },
+  { title: 'Innovation', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 2a10 10 0 0 1 10 10c0 4.5-3 8-6 10h-8c-3-2-6-5.5-6-10a10 10 0 0 1 10-10z"/><path d="M12 6v4"/><path d="M12 14h.01"/></svg> },
+  { title: 'Integrity', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> },
+  { title: 'Growth', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/><path d="M2 20h20"/><path d="M22 4l-4 4-4-4-4 4-4-4-4 4"/></svg> },
+  { title: 'Impact', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> },
+]
+
+// Image component with fallback
 function ImageWithFallback({ src, alt, initials, style }: { src: string; alt: string; initials: string; style?: React.CSSProperties }) {
   const [imgError, setImgError] = useState(false)
 
-  // Reset error state when src changes (important for switching between members)
   useEffect(() => {
     setImgError(false)
   }, [src])
@@ -144,6 +154,7 @@ export default function TeamContent() {
   const [selected, setSelected] = useState<number | null>(null)
   const [isClosing, setIsClosing] = useState(false)
   const revealRef = useRef<HTMLDivElement>(null)
+  const teamCirclesRef = useRef<HTMLDivElement>(null)
   const { open } = useApply()
 
   useEffect(() => {
@@ -174,350 +185,214 @@ export default function TeamContent() {
     }
   }
 
+  const scrollToTeamCircles = () => {
+    if (teamCirclesRef.current) {
+      teamCirclesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   const selectedMember = selected !== null ? team[selected] : null
 
   return (
-    <main>
-      <section style={{
-        minHeight: '60vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        padding: '100px var(--pad) 80px',
-        borderBottom: '1px solid var(--line2)',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 0,
-          backgroundImage: 'url(/team/team.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'brightness(0.18) saturate(0.4)',
-        }} />
+    <div style={{ 
+      backgroundColor: '#0a0a0a', 
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      {/* Unified green background orb - spans the entire component (unchanged) */}
+      <div style={{
+        position: 'absolute',
+        top: '90%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '50%',
+        height: '50%',
+        background: 'radial-gradient(circle at 50% 30%, rgba(106,255,42,0.2) 0%, rgba(106,255,42,0) 70%)',
+        pointerEvents: 'none',
+        borderRadius: '50%',
+        filter: 'blur(80px)',
+        zIndex: 0,
+      }} />
 
-        <div style={{
-          position: 'absolute', zIndex: 1,
-          width: '700px', height: '700px',
-          background: 'radial-gradient(circle, rgba(106,255,42,0.06) 0%, transparent 65%)',
-          top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          pointerEvents: 'none',
-        }} />
-
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease }}
-            style={{
-              fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
-              textTransform: 'uppercase', color: 'var(--t4)',
-              marginBottom: '20px', display: 'flex', alignItems: 'center',
-              gap: '12px', justifyContent: 'center',
-            }}
-          >
-            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
-            The People
-            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease, delay: 0.1 }}
-            style={{
-              fontFamily: 'var(--font-bricolage), sans-serif',
-              fontSize: 'clamp(40px, 6vw, 80px)',
-              fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.04,
-              color: 'var(--white)', maxWidth: '800px', marginBottom: '24px',
-            }}
-          >
-            The Team Behind<br />
-            <em style={{ fontStyle: 'normal', color: 'var(--green)' }}>Every Result.</em>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease, delay: 0.22 }}
-            style={{
-              fontSize: 'clamp(15px, 1.6vw, 18px)', fontWeight: 300,
-              lineHeight: 1.7, color: 'var(--t2)', maxWidth: '460px',
-              margin: '0 auto 40px',
-            }}
-          >
-            A small, obsessive team that builds content engines for brands that want to grow — fast, and for the long term.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease, delay: 0.34 }}
-            style={{
-              display: 'flex', gap: '24px', flexWrap: 'wrap',
-              justifyContent: 'center', fontSize: '12px',
-              fontWeight: 400, color: 'var(--t4)', letterSpacing: '0.04em',
-            }}
-          >
-            {['6 specialists', '300+ brands served', '7B+ views generated'].map(item => (
-              <span key={item}>
-                <span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '6px' }}>✓</span>
-                {item}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <div ref={revealRef}>
-        <div style={{
-          padding: 'clamp(60px, 8vw, 100px) var(--pad)',
+      <main style={{ position: 'relative', zIndex: 1 }}>
+        {/* ── Hero (updated to match CareersHero style) ── */}
+        <section style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          padding: 'clamp(80px, 10vw, 120px) var(--pad) clamp(60px, 8vw, 100px)',
           borderBottom: '1px solid var(--line2)',
+          position: 'relative',
+          overflow: 'hidden',
         }}>
-          <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
-            <motion.div 
+          {/* Grid background */}
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 0,
+            backgroundImage: 'linear-gradient(rgba(106,255,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.03) 1px, transparent 1px)',
+            backgroundSize: '64px 64px',
+            pointerEvents: 'none',
+          }} />
+
+          {/* Background image */}
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 0,
+            backgroundImage: 'url(/team/team.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.18) saturate(0.4)',
+            pointerEvents: 'none',
+          }} />
+
+          {/* Glow */}
+          <div style={{
+            position: 'absolute', zIndex: 0,
+            width: '800px', height: '800px',
+            background: 'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 65%)',
+            top: '40%', left: '50%', transform: 'translate(-50%,-50%)',
+            pointerEvents: 'none',
+          }} />
+
+          <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease }}
               style={{
-                display: 'grid',
-                gap: '48px',
+                fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
+                textTransform: 'uppercase', color: 'var(--t4)',
+                marginBottom: '20px', display: 'flex', alignItems: 'center',
+                gap: '12px', justifyContent: 'center',
               }}
-              animate={{
-                gridTemplateColumns: selectedMember && !isClosing ? '1fr 1fr' : '1fr',
-              }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Left side - Member details */}
-              {(selectedMember && !isClosing) && (
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -30 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div style={{
-                    border: '1px solid rgba(106,255,42,0.15)',
-                    borderRadius: '20px',
-                    overflow: 'hidden',
-                    background: 'rgba(0,0,0,0.4)',
-                    backdropFilter: 'blur(12px)',
-                    height: '100%',
-                  }}>
+              <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+              The People
+              <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease, delay: 0.1 }}
+              style={{
+                fontFamily: 'var(--font-bricolage), sans-serif',
+                fontSize: 'clamp(36px, 6vw, 80px)',
+                fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.04,
+                color: 'var(--white)', maxWidth: '900px',
+                margin: '0 auto 20px',
+              }}
+            >
+              The Team Behind{' '}
+              <em style={{ fontStyle: 'normal', color: 'var(--green)' }}>
+                Every Result.
+              </em>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease, delay: 0.22 }}
+              style={{
+                fontSize: 'clamp(15px, 1.6vw, 18px)', fontWeight: 300,
+                lineHeight: 1.7, color: 'var(--t2)', maxWidth: '560px',
+                margin: '0 auto clamp(48px, 7vw, 80px)',
+              }}
+            >
+              A small, obsessive team that builds content engines for brands that want to grow — fast, and for the long term.
+            </motion.p>
+
+            {/* Team Category Pills */}
+            <div style={{
+              display: 'flex', flexWrap: 'wrap', gap: '12px',
+              justifyContent: 'center', maxWidth: '860px', margin: '0 auto',
+            }}>
+              {teamCategories.map((category, i) => (
+                <ServicePill
+                  key={i}
+                  label={category.title}
+                  icon={category.icon}
+                  index={i}
+                  onClick={scrollToTeamCircles}
+                />
+              ))}
+            </div>
+
+            {/* Scroll indicator */}
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+              style={{
+                marginTop: 'clamp(48px, 6vw, 72px)',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', gap: '8px',
+                cursor: 'pointer',
+              }}
+              onClick={scrollToTeamCircles}
+            >
+              <span style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--t4)' }}>
+                Scroll to explore
+              </span>
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                style={{ color: 'rgba(106,255,42,0.5)', fontSize: '18px' }}
+              >
+                ↓
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        <div ref={revealRef}>
+          <div ref={teamCirclesRef} style={{
+            padding: 'clamp(60px, 8vw, 100px) var(--pad)',
+            borderBottom: '1px solid var(--line2)',
+          }}>
+            <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
+              <motion.div 
+                style={{
+                  display: 'grid',
+                  gap: '48px',
+                }}
+                animate={{
+                  gridTemplateColumns: selectedMember && !isClosing ? '1fr 1fr' : '1fr',
+                }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {/* Left side - Member details */}
+                {(selectedMember && !isClosing) && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    style={{
+                      overflow: 'hidden',
+                    }}
+                  >
                     <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
+                      border: '1px solid rgba(106,255,42,0.15)',
+                      borderRadius: '20px',
+                      overflow: 'hidden',
+                      background: 'rgba(0,0,0,0.4)',
+                      backdropFilter: 'blur(12px)',
                       height: '100%',
                     }}>
                       <div style={{
-                        position: 'relative',
-                        overflow: 'hidden',
-                        background: 'var(--surface)',
-                        minHeight: '300px',
-                        maxHeight: '400px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
                       }}>
-                        <ImageWithFallback
-                          src={selectedMember.portrait}
-                          alt={selectedMember.name}
-                          initials={selectedMember.initials}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            objectPosition: 'center top',
-                            display: 'block',
-                          }}
-                        />
                         <div style={{
-                          position: 'absolute', bottom: 0, left: 0, right: 0,
-                          height: '100px',
-                          background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                          pointerEvents: 'none',
-                        }} />
-                        <div style={{
-                          position: 'absolute', top: '16px', left: '16px',
-                          background: 'rgba(106,255,42,0.9)',
-                          color: 'var(--black)',
-                          fontSize: '9px', fontWeight: 700,
-                          letterSpacing: '0.1em', textTransform: 'uppercase',
-                          padding: '5px 10px', borderRadius: '4px',
+                          position: 'relative',
+                          overflow: 'hidden',
+                          background: 'var(--surface)',
+                          minHeight: '300px',
+                          maxHeight: '400px',
                         }}>
-                          {selectedMember.role}
-                        </div>
-                      </div>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                        style={{
-                          padding: 'clamp(24px, 3vw, 32px)',
-                          flex: 1,
-                        }}
-                      >
-                        <h2 style={{
-                          fontFamily: 'var(--font-bricolage), sans-serif',
-                          fontSize: 'clamp(24px, 3vw, 36px)',
-                          fontWeight: 800, letterSpacing: '-0.025em',
-                          color: 'var(--white)', lineHeight: 1.1,
-                          marginBottom: '8px',
-                        }}>
-                          {selectedMember.name}
-                        </h2>
-
-                        <div style={{
-                          fontSize: '11px', fontWeight: 500,
-                          letterSpacing: '0.08em', textTransform: 'uppercase',
-                          color: 'rgba(106,255,42,0.6)', marginBottom: '20px',
-                        }}>
-                          {selectedMember.tag}
-                        </div>
-
-                        <blockquote style={{
-                          borderLeft: '2px solid rgba(106,255,42,0.4)',
-                          paddingLeft: '16px',
-                          margin: '0 0 20px',
-                          fontFamily: 'var(--font-jakarta), sans-serif',
-                          fontSize: 'clamp(14px, 1.6vw, 16px)',
-                          fontStyle: 'italic',
-                          fontWeight: 300,
-                          color: 'var(--t2)',
-                          lineHeight: 1.6,
-                        }}>
-                          &ldquo;{selectedMember.quote}&rdquo;
-                        </blockquote>
-
-                        <p style={{
-                          fontSize: '14px', fontWeight: 300,
-                          lineHeight: 1.75, color: 'var(--t3)',
-                          marginBottom: '24px',
-                        }}>
-                          {selectedMember.bio}
-                        </p>
-
-                        <div style={{
-                          display: 'flex', gap: '1px',
-                          background: 'rgba(255,255,255,0.06)',
-                          borderRadius: '10px', overflow: 'hidden',
-                        }}>
-                          {selectedMember.stats.map((stat, si) => (
-                            <motion.div
-                              key={si}
-                              initial={{ opacity: 0, y: 12 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 + si * 0.08 }}
-                              style={{
-                                flex: 1, padding: '16px 12px',
-                                background: 'rgba(255,255,255,0.03)',
-                                textAlign: 'center',
-                              }}
-                            >
-                              <div style={{
-                                fontFamily: 'var(--font-bricolage), sans-serif',
-                                fontSize: 'clamp(18px, 2.5vw, 24px)',
-                                fontWeight: 800, color: 'var(--white)',
-                                letterSpacing: '-0.02em', lineHeight: 1,
-                                marginBottom: '4px',
-                              }}>
-                                {stat.value}
-                              </div>
-                              <div style={{
-                                fontSize: '10px', fontWeight: 500,
-                                letterSpacing: '0.06em', textTransform: 'uppercase',
-                                color: 'var(--t4)',
-                              }}>
-                                {stat.label}
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-
-                        <button
-                          onClick={handleClose}
-                          style={{
-                            width: '100%', marginTop: '20px',
-                            padding: '12px',
-                            background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.06)',
-                            borderRadius: '8px',
-                            cursor: 'pointer', color: 'var(--t4)',
-                            fontSize: '11px', fontWeight: 500,
-                            letterSpacing: '0.1em', textTransform: 'uppercase',
-                            transition: 'all 0.2s',
-                            display: 'flex', alignItems: 'center',
-                            justifyContent: 'center', gap: '8px',
-                          }}
-                          onMouseEnter={e => {
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
-                            e.currentTarget.style.color = 'var(--white)'
-                            e.currentTarget.style.borderColor = 'rgba(106,255,42,0.3)'
-                          }}
-                          onMouseLeave={e => {
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
-                            e.currentTarget.style.color = 'var(--t4)'
-                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'
-                          }}
-                        >
-                          <span style={{ fontSize: '14px', lineHeight: 1 }}>←</span>
-                          Close
-                        </button>
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Right side - Team circles */}
-              <motion.div
-                animate={{
-                  opacity: 1,
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="team-circles" style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 'clamp(24px, 4vw, 48px)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                  {team.map((member, i) => {
-                    const isSelected = selected === i
-                    return (
-                      <motion.div
-                        key={i}
-                        className="reveal"
-                        onClick={() => handleSelect(i)}
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          gap: '14px',
-                          cursor: 'pointer',
-                          userSelect: 'none',
-                        }}
-                        whileHover={{ y: -4 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
-                      >
-                        <motion.div
-                          animate={{
-                            scale: isSelected ? 1.08 : 1,
-                          }}
-                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                          style={{
-                            width: 'clamp(90px, 12vw, 120px)',
-                            height: 'clamp(90px, 12vw, 120px)',
-                            borderRadius: '50%',
-                            overflow: 'hidden',
-                            background: 'transparent',
-                            position: 'relative',
-                            flexShrink: 0,
-                            border: isSelected ? '2px solid var(--green)' : '2px solid transparent',
-                          }}
-                        >
                           <ImageWithFallback
-                            src={member.headshot}
-                            alt={member.name}
-                            initials={member.initials}
+                            src={selectedMember.portrait}
+                            alt={selectedMember.name}
+                            initials={selectedMember.initials}
                             style={{
                               width: '100%',
                               height: '100%',
@@ -526,98 +401,300 @@ export default function TeamContent() {
                               display: 'block',
                             }}
                           />
-                        </motion.div>
-
-                        <div style={{ textAlign: 'center' }}>
-                          <motion.div
-                            animate={{ color: isSelected ? 'var(--green)' : 'var(--white)' }}
-                            transition={{ duration: 0.25 }}
-                            style={{
-                              fontFamily: 'var(--font-bricolage), sans-serif',
-                              fontSize: 'clamp(13px, 1.5vw, 15px)',
-                              fontWeight: 700,
-                              letterSpacing: '-0.01em',
-                              marginBottom: '3px',
-                            }}
-                          >
-                            {member.name}
-                          </motion.div>
                           <div style={{
-                            fontSize: '11px', fontWeight: 400,
-                            color: 'var(--t4)', letterSpacing: '0.02em',
+                            position: 'absolute', bottom: 0, left: 0, right: 0,
+                            height: '100px',
+                            background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                            pointerEvents: 'none',
+                          }} />
+                          <div style={{
+                            position: 'absolute', top: '16px', left: '16px',
+                            background: 'rgba(106,255,42,0.9)',
+                            color: 'var(--black)',
+                            fontSize: '9px', fontWeight: 700,
+                            letterSpacing: '0.1em', textTransform: 'uppercase',
+                            padding: '5px 10px', borderRadius: '4px',
                           }}>
-                            {member.role}
+                            {selectedMember.role}
                           </div>
                         </div>
 
                         <motion.div
-                          animate={{ opacity: isSelected ? 1 : 0, scaleX: isSelected ? 1 : 0 }}
-                          transition={{ duration: 0.3 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
                           style={{
-                            width: '24px', height: '2px',
-                            background: 'var(--green)',
-                            borderRadius: '1px',
-                            marginTop: '-6px',
+                            padding: 'clamp(24px, 3vw, 32px)',
+                            flex: 1,
                           }}
-                        />
-                      </motion.div>
-                    )
-                  })}
-                </div>
+                        >
+                          <h2 style={{
+                            fontFamily: 'var(--font-bricolage), sans-serif',
+                            fontSize: 'clamp(24px, 3vw, 36px)',
+                            fontWeight: 800, letterSpacing: '-0.025em',
+                            color: 'var(--white)', lineHeight: 1.1,
+                            marginBottom: '8px',
+                          }}>
+                            {selectedMember.name}
+                          </h2>
+
+                          <div style={{
+                            fontSize: '11px', fontWeight: 500,
+                            letterSpacing: '0.08em', textTransform: 'uppercase',
+                            color: 'rgba(106,255,42,0.6)', marginBottom: '20px',
+                          }}>
+                            {selectedMember.tag}
+                          </div>
+
+                          <blockquote style={{
+                            borderLeft: '2px solid rgba(106,255,42,0.4)',
+                            paddingLeft: '16px',
+                            margin: '0 0 20px',
+                            fontFamily: 'var(--font-jakarta), sans-serif',
+                            fontSize: 'clamp(14px, 1.6vw, 16px)',
+                            fontStyle: 'italic',
+                            fontWeight: 300,
+                            color: 'var(--t2)',
+                            lineHeight: 1.6,
+                          }}>
+                            &ldquo;{selectedMember.quote}&rdquo;
+                          </blockquote>
+
+                          <p style={{
+                            fontSize: '14px', fontWeight: 300,
+                            lineHeight: 1.75, color: 'var(--t3)',
+                            marginBottom: '24px',
+                          }}>
+                            {selectedMember.bio}
+                          </p>
+
+                          <div style={{
+                            display: 'flex', gap: '1px',
+                            background: 'rgba(255,255,255,0.06)',
+                            borderRadius: '10px', overflow: 'hidden',
+                          }}>
+                            {selectedMember.stats.map((stat, si) => (
+                              <motion.div
+                                key={si}
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 + si * 0.08 }}
+                                style={{
+                                  flex: 1, padding: '16px 12px',
+                                  background: 'rgba(255,255,255,0.03)',
+                                  textAlign: 'center',
+                                }}
+                              >
+                                <div style={{
+                                  fontFamily: 'var(--font-bricolage), sans-serif',
+                                  fontSize: 'clamp(18px, 2.5vw, 24px)',
+                                  fontWeight: 800, color: 'var(--white)',
+                                  letterSpacing: '-0.02em', lineHeight: 1,
+                                  marginBottom: '4px',
+                                }}>
+                                  {stat.value}
+                                </div>
+                                <div style={{
+                                  fontSize: '10px', fontWeight: 500,
+                                  letterSpacing: '0.06em', textTransform: 'uppercase',
+                                  color: 'var(--t4)',
+                                }}>
+                                  {stat.label}
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+
+                          <button
+                            onClick={handleClose}
+                            style={{
+                              width: '100%', marginTop: '20px',
+                              padding: '12px',
+                              background: 'rgba(255,255,255,0.03)',
+                              border: '1px solid rgba(255,255,255,0.06)',
+                              borderRadius: '8px',
+                              cursor: 'pointer', color: 'var(--t4)',
+                              fontSize: '11px', fontWeight: 500,
+                              letterSpacing: '0.1em', textTransform: 'uppercase',
+                              transition: 'all 0.2s',
+                              display: 'flex', alignItems: 'center',
+                              justifyContent: 'center', gap: '8px',
+                            }}
+                            onMouseEnter={e => {
+                              e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
+                              e.currentTarget.style.color = 'var(--white)'
+                              e.currentTarget.style.borderColor = 'rgba(106,255,42,0.3)'
+                            }}
+                            onMouseLeave={e => {
+                              e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
+                              e.currentTarget.style.color = 'var(--t4)'
+                              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'
+                            }}
+                          >
+                            <span style={{ fontSize: '14px', lineHeight: 1 }}>←</span>
+                            Close
+                          </button>
+                        </motion.div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Right side - Team circles */}
+                <motion.div
+                  animate={{
+                    opacity: 1,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="team-circles" style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 'clamp(24px, 4vw, 48px)',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    {team.map((member, i) => {
+                      const isSelected = selected === i
+                      return (
+                        <motion.div
+                          key={i}
+                          className="reveal"
+                          onClick={() => handleSelect(i)}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '14px',
+                            cursor: 'pointer',
+                            userSelect: 'none',
+                          }}
+                          whileHover={{ y: -4 }}
+                          transition={{ duration: 0.25, ease: 'easeOut' }}
+                        >
+                          <motion.div
+                            animate={{
+                              scale: isSelected ? 1.08 : 1,
+                            }}
+                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            style={{
+                              width: 'clamp(90px, 12vw, 120px)',
+                              height: 'clamp(90px, 12vw, 120px)',
+                              borderRadius: '50%',
+                              overflow: 'hidden',
+                              background: 'transparent',
+                              position: 'relative',
+                              flexShrink: 0,
+                              border: isSelected ? `2px solid var(--green)` : '2px solid transparent',
+                            }}
+                          >
+                            <ImageWithFallback
+                              src={member.headshot}
+                              alt={member.name}
+                              initials={member.initials}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                objectPosition: 'center top',
+                                display: 'block',
+                              }}
+                            />
+                          </motion.div>
+
+                          <div style={{ textAlign: 'center' }}>
+                            <motion.div
+                              animate={{ color: isSelected ? 'var(--green)' : 'var(--white)' }}
+                              transition={{ duration: 0.25 }}
+                              style={{
+                                fontFamily: 'var(--font-bricolage), sans-serif',
+                                fontSize: 'clamp(13px, 1.5vw, 15px)',
+                                fontWeight: 700,
+                                letterSpacing: '-0.01em',
+                                marginBottom: '3px',
+                              }}
+                            >
+                              {member.name}
+                            </motion.div>
+                            <div style={{
+                              fontSize: '11px', fontWeight: 400,
+                              color: 'var(--t4)', letterSpacing: '0.02em',
+                            }}>
+                              {member.role}
+                            </div>
+                          </div>
+
+                          <motion.div
+                            animate={{ opacity: isSelected ? 1 : 0, scaleX: isSelected ? 1 : 0 }}
+                            transition={{ duration: 0.3 }}
+                            style={{
+                              width: '24px', height: '2px',
+                              background: 'var(--green)',
+                              borderRadius: '1px',
+                              marginTop: '-6px',
+                            }}
+                          />
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </motion.div>
               </motion.div>
+            </div>
+          </div>
+
+          {/* Apply CTA - unchanged, keeps the orb glow */}
+          <div style={{
+            padding: 'clamp(80px, 12vw, 140px) var(--pad)',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            <h2 className="reveal" style={{
+              fontFamily: 'var(--font-bricolage), sans-serif',
+              fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800,
+              letterSpacing: '-0.03em', lineHeight: 1.06,
+              color: 'var(--white)', maxWidth: '600px',
+              margin: '0 auto 20px', position: 'relative', zIndex: 2,
+            }}>
+              Want this <span style={{ color: 'var(--green)' }}>team</span> working on your brand?
+            </h2>
+            <p className="reveal" style={{
+              fontSize: '16px', fontWeight: 300, color: 'var(--t2)',
+              maxWidth: '380px', margin: '0 auto 40px',
+              lineHeight: 1.7, position: 'relative', zIndex: 2,
+            }}>
+              Apply today. Limited spots open each month.
+            </p>
+            
+            <motion.div
+              className="reveal"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease, delay: 0.1 }}
+              style={{ position: 'relative', zIndex: 2 }}
+            >
+              <Link
+                href="/careers"
+                style={{
+                  fontFamily: 'var(--font-bricolage), sans-serif',
+                  fontSize: '14px', fontWeight: 700,
+                  color: 'var(--black)', background: 'var(--white)',
+                  padding: '14px 36px', border: 'none', cursor: 'pointer',
+                  display: 'inline-block',
+                  transition: 'background 0.2s, transform 0.15s',
+                  borderRadius: '4px',
+                  textDecoration: 'none',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
+              >
+                Work With Us →
+              </Link>
             </motion.div>
           </div>
         </div>
-
-        {/* Apply CTA */}
-        <div style={{
-          padding: 'clamp(80px, 12vw, 140px) var(--pad)',
-          textAlign: 'center',
-          borderBottom: '1px solid var(--line2)',
-          position: 'relative', overflow: 'hidden',
-        }}>
-          <div style={{
-            position: 'absolute', width: '600px', height: '600px',
-            background: 'radial-gradient(circle, rgba(106,255,42,0.025) 0%, transparent 60%)',
-            top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-            pointerEvents: 'none',
-          }} />
-          <h2 className="reveal" style={{
-            fontFamily: 'var(--font-bricolage), sans-serif',
-            fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800,
-            letterSpacing: '-0.03em', lineHeight: 1.06,
-            color: 'var(--white)', maxWidth: '600px',
-            margin: '0 auto 20px', position: 'relative', zIndex: 1,
-          }}>
-            Want this team working on your brand?
-          </h2>
-          <p className="reveal" style={{
-            fontSize: '16px', fontWeight: 300, color: 'var(--t2)',
-            maxWidth: '380px', margin: '0 auto 40px',
-            lineHeight: 1.7, position: 'relative', zIndex: 1,
-          }}>
-            Apply today. Limited spots open each month.
-          </p>
-          <button
-            onClick={open}
-            className="reveal"
-            style={{
-              fontFamily: 'var(--font-bricolage), sans-serif',
-              fontSize: '14px', fontWeight: 700,
-              color: 'var(--black)', background: 'var(--white)',
-              padding: '14px 36px', border: 'none', cursor: 'pointer',
-              display: 'inline-block',
-              transition: 'background 0.2s, transform 0.15s',
-              position: 'relative', zIndex: 1,
-              borderRadius: '4px',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
-          >
-            ∞Apply∞
-          </button>
-        </div>
-      </div>
+      </main>
 
       <style>{`
         @media (max-width: 768px) {
@@ -626,6 +703,6 @@ export default function TeamContent() {
           }
         }
       `}</style>
-    </main>
+    </div>
   )
 }

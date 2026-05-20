@@ -4,12 +4,25 @@ import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { RiArrowRightLine, RiMapPinLine, RiTimeLine, RiBriefcaseLine } from 'react-icons/ri'
 import { useApply } from '../components/Providers'
+import MagicBento from '../components/MagicBento'
+import type { CareerCardData } from '../components/MagicBento'
+import JobApplyModal from '../components/JobApplyModal'
+import PerksStack from './PerksStack'
+import ServicePill from './../services/ServicePill'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
+
+const careerCategories = [
+  { title: 'Video Editing', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10 8 16 12 10 16 10 8"/></svg> },
+  { title: 'Content Strategy', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9"/></svg> },
+  { title: 'Script Writing', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg> },
+  { title: 'Distribution', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.03.03A10 10 0 0 0 12 17.66a10 10 0 0 0 6.37-2.63z"/><path d="M12 3v2"/><path d="M12 19v2"/><path d="M3 12h2"/><path d="M19 12h2"/></svg> },
+  { title: 'Thumbnail Design', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg> },
+  { title: 'Analytics', icon: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9"/></svg> },
+]
 
 const openings = [
   {
@@ -69,23 +82,27 @@ const openings = [
 ]
 
 const perks = [
-  { icon: '🌍', title: '100% Remote', desc: 'Work from anywhere. We don\'t care about location — we care about output.' },
-  { icon: '📈', title: 'Real Ownership', desc: 'You\'ll see your work go from idea to millions of views. The feedback loop is immediate.' },
-  { icon: '⚡', title: 'Fast-moving team', desc: 'No bureaucracy. No pointless meetings. You\'ll ship more here in a month than most places do in a year.' },
-  { icon: '💰', title: 'Competitive Pay', desc: 'We pay above market for people who deliver above average. Performance is rewarded directly.' },
+  { icon: '🌍', img: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=144&h=144&fit=crop&auto=format&q=80', title: '100% Remote', desc: 'Work from anywhere in the world. We judge you by your output, not your timezone or office presence.' },
+  { icon: '🕐', img: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=144&h=144&fit=crop&auto=format&q=80', title: 'Flexible Hours', desc: 'Build your schedule around your life. We set deadlines, not clocks — work when you do your best thinking.' },
+  { icon: '🎂', img: 'https://images.unsplash.com/photo-1558636508-e0969a0b0c96?w=144&h=144&fit=crop&auto=format&q=80', title: 'Birthday Off', desc: 'Your birthday is a fully paid day off, every year. No forms, no approvals — just enjoy your day.' },
+  { icon: '📚', img: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=144&h=144&fit=crop&auto=format&q=80', title: 'Learners Are Earners', desc: 'Books, courses, tools — if it makes you sharper, we cover it. Growth is a team investment here.' },
+  { icon: '💰', img: 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?w=144&h=144&fit=crop&auto=format&q=80', title: 'Annual Bonus', desc: 'Hit targets, share the upside. The people who drive results should benefit directly from them.' },
+  { icon: '📈', img: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=144&h=144&fit=crop&auto=format&q=80', title: 'Real Ownership', desc: 'See your work go from idea to millions of views. The feedback loop is immediate and genuinely yours.' },
+  { icon: '🎉', img: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=144&h=144&fit=crop&auto=format&q=80', title: 'Social & Family Events', desc: 'Quarterly team events, family-inclusive gatherings, and proper celebrations for every milestone we hit together.' },
+  { icon: '🥳', img: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=144&h=144&fit=crop&auto=format&q=80', title: 'Ice Breaking Party', desc: 'Every new hire gets a proper welcome. We make sure you know the faces behind the screens from day one.' },
 ]
 
 export default function CareersContent() {
-  const [expandedJob, setExpandedJob] = useState<number | null>(null)
   const revealRef = useRef<HTMLDivElement>(null)
   const { open } = useApply()
+  const [selectedJob, setSelectedJob] = useState<CareerCardData | null>(null)
 
   useEffect(() => {
     const reveals = revealRef.current?.querySelectorAll('.reveal')
     if (!reveals) return
     reveals.forEach((el, i) => {
       gsap.fromTo(el, { opacity: 0, y: 24 }, {
-        opacity: 1, y: 0, duration: 0.9, delay: i * 0.1,
+        opacity: 1, y: 0, duration: 0.9, delay: i * 0.08,
         ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 88%', once: true },
       })
@@ -93,197 +110,259 @@ export default function CareersContent() {
   }, [])
 
   return (
-    <main style={{ paddingTop: '52px' }}>
-      {/* Hero */}
+    <main>
+
+      {/* ── Hero (ServicesHero style with pills) ─────────────────────────────────────────── */}
       <section style={{
-        minHeight: '50vh', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', textAlign: 'center',
-        padding: '100px var(--pad) 80px', borderBottom: '1px solid var(--line2)',
-        position: 'relative', overflow: 'hidden',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: 'clamp(80px, 10vw, 120px) var(--pad) clamp(60px, 8vw, 100px)',
+        borderBottom: '1px solid var(--line2)',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(106,255,42,0.04) 0%, transparent 65%)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }} />
+        {/* Grid background */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 0,
+          backgroundImage: 'linear-gradient(rgba(106,255,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.03) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+          pointerEvents: 'none',
+        }} />
+        
+        {/* Glow */}
+        <div style={{
+          position: 'absolute', zIndex: 0,
+          width: '800px', height: '800px',
+          background: 'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 65%)',
+          top: '40%', left: '50%', transform: 'translate(-50%,-50%)',
+          pointerEvents: 'none',
+        }} />
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease }}
-          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}
-        >
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
-          We&apos;re Hiring
-        </motion.div>
+        <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease }}
+            style={{
+              fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
+              textTransform: 'uppercase', color: 'var(--t4)',
+              marginBottom: '20px', display: 'flex', alignItems: 'center',
+              gap: '12px', justifyContent: 'center',
+            }}
+          >
+            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+            We&apos;re Hiring
+            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+          </motion.div>
 
-        <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease, delay: 0.1 }}
-          style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.04, color: 'var(--white)', maxWidth: '760px', marginBottom: '24px' }}
-        >
-          Join the team that builds{' '}
-          <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>what others can&apos;t.</em>
-        </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease, delay: 0.1 }}
+            style={{
+              fontFamily: 'var(--font-bricolage), sans-serif',
+              fontSize: 'clamp(36px, 6vw, 80px)',
+              fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.04,
+              color: 'var(--white)', maxWidth: '900px',
+              margin: '0 auto 20px',
+            }}
+          >
+            Join the team that builds{' '}
+            <em style={{ fontStyle: 'normal', color: 'var(--green)' }}>
+              what others can&apos;t.
+            </em>
+          </motion.h1>
 
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.22 }}
-          style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', fontWeight: 300, lineHeight: 1.7, color: 'var(--t2)', maxWidth: '480px', marginBottom: '40px' }}
-        >
-          We&apos;re looking for obsessed people who want to work on channels that actually matter — and see the results of their work in real time.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease, delay: 0.22 }}
+            style={{
+              fontSize: 'clamp(15px, 1.6vw, 18px)', fontWeight: 300,
+              lineHeight: 1.7, color: 'var(--t2)', maxWidth: '560px',
+              margin: '0 auto clamp(48px, 7vw, 80px)',
+            }}
+          >
+            We&apos;re looking for obsessed people who want to work on channels that actually matter — and see the results of their work in real time.
+          </motion.p>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.34 }}
-          style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center', fontSize: '12px', fontWeight: 400, color: 'var(--t4)', letterSpacing: '0.04em' }}
-        >
-          <span><span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '6px' }}>✓</span>100% remote</span>
-          <span><span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '6px' }}>✓</span>Fast-paced environment</span>
-          <span><span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '6px' }}>✓</span>Real ownership</span>
-          <span><span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '6px' }}>✓</span>Competitive pay</span>
-        </motion.div>
+          {/* Career Category Pills */}
+          <div style={{
+            display: 'flex', flexWrap: 'wrap', gap: '12px',
+            justifyContent: 'center', maxWidth: '860px', margin: '0 auto',
+          }}>
+            {careerCategories.map((category, i) => (
+              <ServicePill
+                key={i}
+                label={category.title}
+                icon={category.icon}
+                index={i}
+                onClick={() => {
+                  // Scroll to open roles section or filter jobs
+                  const openRolesSection = document.getElementById('open-roles')
+                  if (openRolesSection) {
+                    openRolesSection.scrollIntoView({ behavior: 'smooth' })
+                  }
+                }}
+              />
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            style={{
+              marginTop: 'clamp(48px, 6vw, 72px)',
+              display: 'flex', flexDirection: 'column',
+              alignItems: 'center', gap: '8px',
+            }}
+          >
+            <span style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--t4)' }}>
+              Scroll to explore
+            </span>
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+              style={{ color: 'rgba(106,255,42,0.5)', fontSize: '18px' }}
+            >
+              ↓
+            </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       <div ref={revealRef}>
-        {/* Open roles */}
-        <div style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)' }}>
+
+        {/* ── Open Roles ───────────────────────────────────── */}
+        <section id="open-roles" style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)' }}>
           <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
             <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
               Open Positions
             </div>
-            <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white)', marginBottom: 'clamp(40px, 5vw, 56px)' }}>
+            <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white)', marginBottom: 'clamp(36px, 5vw, 52px)' }}>
               {openings.length} roles open now.
             </h2>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--line2)' }}>
-              {openings.map((job, i) => {
-                const isOpen = expandedJob === i
-                return (
-                  <div key={i} className="reveal" style={{ background: 'var(--black)', transition: 'background 0.25s' }}>
-                    {/* Header row */}
-                    <button
-                      onClick={() => setExpandedJob(isOpen ? null : i)}
-                      style={{
-                        width: '100%', background: 'none', border: 'none', cursor: 'pointer',
-                        padding: 'clamp(24px, 3vw, 36px) clamp(24px, 3vw, 40px)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        gap: '16px', textAlign: 'left',
-                      }}
-                    >
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <span style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(16px, 2vw, 20px)', fontWeight: 700, color: 'var(--white)', letterSpacing: '-0.01em' }}>
-                          {job.title}
-                        </span>
-                        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                          <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t3)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <RiBriefcaseLine size={12} /> {job.department}
-                          </span>
-                          <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t3)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <RiTimeLine size={12} /> {job.type}
-                          </span>
-                          <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t3)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <RiMapPinLine size={12} /> {job.location}
-                          </span>
-                        </div>
-                      </div>
-                      <div style={{
-                        width: '32px', height: '32px', border: '1px solid var(--line)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: isOpen ? 'var(--green)' : 'var(--t3)',
-                        borderColor: isOpen ? 'var(--green)' : 'var(--line)',
-                        transition: 'all 0.25s', flexShrink: 0,
-                        transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-                      }}>
-                        <RiArrowRightLine size={14} />
-                      </div>
-                    </button>
-
-                    {/* Expanded content */}
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] }}
-                        style={{
-                          padding: '0 clamp(24px, 3vw, 40px) clamp(28px, 3vw, 40px)',
-                          borderTop: '1px solid var(--line2)',
-                        }}
-                      >
-                        <p style={{ fontSize: '14px', fontWeight: 300, lineHeight: 1.75, color: 'var(--t2)', marginBottom: '24px', paddingTop: '24px' }}>
-                          {job.desc}
-                        </p>
-                        <div style={{ marginBottom: '28px' }}>
-                          <div style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '12px' }}>Requirements</div>
-                          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            {job.requirements.map((req, j) => (
-                              <li key={j} style={{ fontSize: '13px', fontWeight: 300, color: 'var(--t2)', display: 'flex', gap: '10px', alignItems: 'flex-start', lineHeight: 1.6 }}>
-                                <span style={{ color: 'rgba(106,255,42,0.5)', marginTop: '2px', flexShrink: 0 }}>✓</span>
-                                {req}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <a
-                          href={`mailto:aghasaad@wagmihq.com?subject=Application: ${job.title}`}
-                          style={{
-                            fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '13px',
-                            fontWeight: 700, color: 'var(--black)', background: 'var(--white)',
-                            padding: '12px 28px', textDecoration: 'none', display: 'inline-block',
-                            transition: 'background 0.2s, transform 0.15s',
-                          }}
-                          onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
-                        >
-                          Apply for this Role →
-                        </a>
-                      </motion.div>
-                    )}
-                  </div>
-                )
-              })}
+            <div className="reveal">
+              <MagicBento
+                cards={openings}
+                onApply={setSelectedJob}
+                enableStars={true}
+                enableSpotlight={true}
+                enableBorderGlow={true}
+                enableTilt={false}
+                enableMagnetism={false}
+                clickEffect={true}
+                particleCount={8}
+                spotlightRadius={280}
+                glowColor="171, 248, 47"
+              />
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Perks */}
-        <div style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)', background: 'var(--off)' }}>
-          <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
-            <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
-              Why Join Us
-            </div>
-            <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white)', marginBottom: 'clamp(40px, 6vw, 64px)' }}>
-              A team that ships.<br />
-              <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>Not one that talks about it.</em>
-            </h2>
-            <div className="perks-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1px', background: 'var(--line2)' }}>
-              {perks.map((p, i) => (
-                <div key={i} className="reveal" style={{ background: 'var(--off)', padding: 'clamp(28px, 3vw, 44px) clamp(20px, 2.5vw, 32px)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <span style={{ fontSize: '28px' }}>{p.icon}</span>
-                  <div style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '16px', fontWeight: 700, color: 'var(--white)', letterSpacing: '-0.01em' }}>{p.title}</div>
-                  <p style={{ fontSize: '13px', fontWeight: 300, lineHeight: 1.7, color: 'var(--t2)' }}>{p.desc}</p>
+      </div>
+
+      {/* ── Why Join Us — pinned card stack ──────────────── */}
+      <PerksStack perks={perks} />
+
+      <div>
+
+        {/* ── Open Application ─────────────────────────────── */}
+        <section style={{
+          padding: 'clamp(80px, 12vw, 140px) var(--pad)',
+          borderBottom: '1px solid var(--line2)',
+          position: 'relative', overflow: 'hidden',
+        }}>
+          {/* BG glow */}
+          <div style={{
+            position: 'absolute', width: '800px', height: '800px',
+            background: 'radial-gradient(circle, rgba(171,248,47,0.03) 0%, transparent 60%)',
+            top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+          }} />
+
+          <div style={{ maxWidth: 'var(--max)', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+            <div className="open-app-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 6vw, 80px)', alignItems: 'center' }}>
+
+              {/* Left — copy */}
+              <div>
+                <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+                  Open Application
                 </div>
-              ))}
+                <h2 style={{
+                  fontFamily: 'var(--font-bricolage), sans-serif',
+                  fontSize: 'clamp(28px, 3.5vw, 52px)', fontWeight: 800,
+                  letterSpacing: '-0.03em', lineHeight: 1.06,
+                  color: 'var(--white)', marginBottom: '20px',
+                }}>
+                  Don&apos;t see your role listed?
+                </h2>
+                <p style={{
+                  fontSize: 'clamp(14px, 1.5vw, 17px)', fontWeight: 300,
+                  color: 'var(--t2)', lineHeight: 1.75, maxWidth: '420px',
+                }}>
+                  We always want to hear from talented people. Send us your work and tell us what you bring to the table — if you&apos;re exceptional we&apos;ll make room.
+                </p>
+              </div>
+
+              {/* Right — CTAs */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
+                <div style={{ borderLeft: '2px solid rgba(171,248,47,0.3)', paddingLeft: '20px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '8px' }}>
+                    What to include
+                  </div>
+                  {['Your best work — links, portfolio, showreel', 'What role you\'re going for or creating', 'Why WAGMI specifically, not just any agency'].map((item, i) => (
+                    <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '6px', fontSize: '13px', fontWeight: 300, color: 'var(--t2)', lineHeight: 1.6 }}>
+                      <span style={{ color: 'rgba(171,248,47,0.5)', flexShrink: 0, marginTop: '2px', fontSize: '10px' }}>✓</span>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+                  <button
+                    onClick={open}
+                    style={{
+                      fontFamily: 'var(--font-bricolage), sans-serif',
+                      fontSize: '14px', fontWeight: 700,
+                      color: 'var(--black)', background: 'var(--green)',
+                      padding: '15px 32px', border: 'none', cursor: 'pointer',
+                      display: 'inline-block', alignSelf: 'flex-start',
+                      transition: 'transform 0.15s, opacity 0.15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.opacity = '0.9' }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.opacity = '1' }}
+                  >
+                    Send an Open Application →
+                  </button>
+                  <a
+                    href="mailto:aghasaad@wagmihq.com"
+                    style={{ fontSize: '12px', fontWeight: 300, color: 'var(--t3)', textDecoration: 'none', letterSpacing: '0.02em' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = 'var(--t2)' }}
+                    onMouseLeave={e => { e.currentTarget.style.color = 'var(--t3)' }}
+                  >
+                    or email aghasaad@wagmihq.com
+                  </a>
+                </div>
+              </div>
+
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Open application */}
-        <div style={{ padding: 'clamp(80px, 12vw, 140px) var(--pad)', textAlign: 'center', borderBottom: '1px solid var(--line2)', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(106,255,42,0.025) 0%, transparent 60%)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }} />
-          <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.06, color: 'var(--white)', maxWidth: '600px', margin: '0 auto 16px', position: 'relative', zIndex: 1 }}>
-            Don&apos;t see your role listed?
-          </h2>
-          <p className="reveal" style={{ fontSize: '16px', fontWeight: 300, color: 'var(--t2)', maxWidth: '440px', margin: '0 auto 40px', lineHeight: 1.7, position: 'relative', zIndex: 1 }}>
-            We always want to hear from talented people. Send us your work and tell us what you bring to the table.
-          </p>
-          <button
-            onClick={open}
-            className="reveal"
-            style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '14px', fontWeight: 700, color: 'var(--black)', background: 'var(--white)', padding: '14px 36px', border: 'none', cursor: 'pointer', display: 'inline-block', transition: 'background 0.2s, transform 0.15s', position: 'relative', zIndex: 1 }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--green)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--white)'; e.currentTarget.style.transform = 'translateY(0)' }}
-          >
-            Send an Open Application
-          </button>
-        </div>
       </div>
 
       <style>{`
-        @media (max-width: 900px) { .perks-grid { grid-template-columns: repeat(2, 1fr) !important; } }
-        @media (max-width: 600px) { .perks-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 600px) {
+          .open-app-layout { grid-template-columns: 1fr !important; }
+        }
       `}</style>
+
+      <JobApplyModal job={selectedJob} onClose={() => setSelectedJob(null)} />
     </main>
   )
 }
