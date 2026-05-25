@@ -88,6 +88,10 @@ export default function Results() {
     setCurrentIndex((prev) => (prev + 1) % results.length)
   }
 
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + results.length) % results.length)
+  }
+
   const goToSlide = (index: number) => {
     setCurrentIndex(index)
   }
@@ -168,13 +172,14 @@ export default function Results() {
   const currentResult = results[currentIndex]
 
   return (
-    <div
-      ref={sectionRef}
-      style={{
-        padding: 'clamp(80px, 10vw, 140px) var(--pad)',
-        borderBottom: '1px solid var(--line2)',
-      }}
-    >
+<div
+  id="results-section"  // Add this line
+  ref={sectionRef}
+  style={{
+    padding: 'clamp(80px, 10vw, 140px) var(--pad)',
+    borderBottom: '1px solid var(--line2)',
+  }}
+>
       <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
 
         {/* Label */}
@@ -185,14 +190,14 @@ export default function Results() {
             fontWeight: 500,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'var(--t4)',
+            color: 'var(--t2)',
             marginBottom: '16px',
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
           }}
         >
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+          <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
           Proven Results
         </div>
 
@@ -217,7 +222,37 @@ export default function Results() {
         </h2>
 
         {/* Slider Container */}
-        <div className="slider-container" style={{ position: 'relative' }}>
+        <div className="slider-container" style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '16px' }}>
+
+          {/* Prev Arrow */}
+
+          <button
+            onClick={prevSlide}
+            onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.1, duration: 0.2 })}
+            onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
+            style={{
+              flexShrink: 0,
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              border: '1px solid rgba(106,255,42,0.25)',
+              background: 'rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(8px)',
+              color: 'var(--white)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            aria-label="Previous slide"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          {/* Slide + dots column */}
+          <div style={{ flex: 1, minWidth: 0 }}>
 
           {/* Main Slide */}
           <div
@@ -441,6 +476,33 @@ export default function Results() {
           >
             {String(currentIndex + 1).padStart(2, '0')} / {String(results.length).padStart(2, '0')}
           </div>
+          </div>
+
+          {/* Next Arrow */}
+          <button
+            onClick={nextSlide}
+            onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.1, duration: 0.2 })}
+            onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.2 })}
+            style={{
+              flexShrink: 0,
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              border: '1px solid rgba(106,255,42,0.25)',
+              background: 'rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(8px)',
+              color: 'var(--white)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            aria-label="Next slide"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
         </div>
       </div>
 

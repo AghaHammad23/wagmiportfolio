@@ -297,8 +297,8 @@ export default function HowItWorks() {
 
       <div style={{ maxWidth: 'var(--max,1200px)', margin: '0 auto', position: 'relative', zIndex: 2 }}>
 
-        <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--t4,rgba(255,255,255,0.4))', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span style={{ width: '16px', height: '1px', background: 'currentColor', display: 'inline-block' }} />
+        <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--t2)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ width: '16px', height: '1px', background: 'currentColor', color: 'var(--green)', display: 'inline-block',  }} />
           The Process
         </div>
 

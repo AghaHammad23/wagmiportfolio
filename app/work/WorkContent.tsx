@@ -597,14 +597,14 @@ export default function WorkContent() {
             fontWeight: 500,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'var(--t4)',
+            color: 'var(--t2)',
             marginBottom: '20px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '12px',
           }}>
-            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+            <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
             Client Results
           </div>
 

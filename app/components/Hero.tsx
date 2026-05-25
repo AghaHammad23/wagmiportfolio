@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import { useApply } from './Providers'
 import Image from 'next/image'
+import { useRef } from 'react'
+import ApplyButton from './ApplyButton'
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
@@ -16,6 +18,14 @@ function rise(delay: number) {
 
 export default function Hero() {
   const { open } = useApply()
+  const resultsRef = useRef<HTMLDivElement | null>(null)
+
+  const scrollToResults = () => {
+    const resultsSection = document.getElementById('results-section')
+    if (resultsSection) {
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
   return (
     <section
@@ -49,6 +59,7 @@ export default function Hero() {
           loop
           muted
           playsInline
+          preload="none"
           style={{
             position: 'absolute',
             top: '50%',
@@ -62,12 +73,10 @@ export default function Hero() {
           }}
         >
           <source src="/heroVideo.mp4" type="video/mp4" />
-          {/* Add fallback formats for better browser support */}
-          <source src="/path-to-your-video.webm" type="video/webm" />
           Your browser does not support the video tag.
         </video>
-        
-        {/* Dark overlay for better text readability */}
+
+        {/* Dark overlay */}
         <div
           style={{
             position: 'absolute',
@@ -81,7 +90,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Glow - keep this on top of video */}
+      {/* Glow */}
       <div
         style={{
           position: 'absolute',
@@ -96,28 +105,15 @@ export default function Hero() {
         }}
       />
 
-      {/* Content - ensure it appears above video */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 2,
-        }}
-      >
-        {/* Badge */}
+      {/* Content */}
+      <div style={{ position: 'relative', zIndex: 2 }}>
+
+        {/* Logo */}
         <motion.div
           {...rise(0.1)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '11px',
-            fontWeight: 400,
-            letterSpacing: '0.08em',
-            color: 'var(--t3)',
-            textTransform: 'uppercase',
-          }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
         >
-         <Image src="/logo.png" alt="Badge" width={154} height={24} />
+          <Image src="/logo.png" alt="WAGMI Media Logo" width={154} height={24} priority />
         </motion.div>
 
         {/* H1 */}
@@ -134,9 +130,9 @@ export default function Hero() {
           }}
         >
           {[
-            { text: 'We Build the Content ', delay: 0.2, muted: false },
+            { text: 'We Build the Content ', delay: 0.2,  muted: false },
             { text: 'That Turns Your Brand', delay: 0.32, muted: false },
-            { text: 'Into a Client Magnet.', delay: 0.44, muted: true },
+            { text: 'Into a Client Magnet.', delay: 0.44, muted: true  },
           ].map(({ text, delay, muted }) => (
             <motion.span
               key={text}
@@ -161,7 +157,7 @@ export default function Hero() {
             lineHeight: 1.6,
             color: 'var(--t2)',
             maxWidth: '560px',
-            margin : 'auto',
+            margin: 'auto',
             padding: '0 16px 40px',
           }}
         >
@@ -182,8 +178,8 @@ export default function Hero() {
             padding: '0 16px',
           }}
         >
-          <button
-            onClick={open}
+                    <button
+   onClick={open}
             style={{
               fontFamily: 'var(--font-bricolage), sans-serif',
               fontSize: 'clamp(12px, 1.5vw, 14px)',
@@ -212,57 +208,68 @@ export default function Hero() {
           >
             Apply to Work With Us
           </button>
-          <a
-            href="#"
-            style={{
-              fontSize: 'clamp(12px, 1.5vw, 13px)',
-              fontWeight: 400,
-              color: 'var(--t2)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'color 0.2s',
-              padding: 'clamp(12px, 2vw, 14px) clamp(8px, 2vw, 8px)',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--green)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--t2)')}
+          <button
+            onClick={scrollToResults}
+            className="shine-btn"
           >
             See Our Work ↓
-          </a>
+          </button>
         </motion.div>
 
         {/* Risk strip */}
         <motion.div
           {...rise(0.86)}
+          className="flex items-center justify-center flex-wrap gap-3 md:gap-6 mt-7 px-4"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'clamp(12px, 3vw, 24px)',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            marginTop: '28px',
             fontSize: 'clamp(10px, 1.2vw, 11px)',
             fontWeight: 400,
-            color: 'var(--green)',
             letterSpacing: '0.04em',
-            padding: '0 16px',
+            paddingTop: '28px',
           }}
         >
-          {['No long-term contracts', 'Results in 30 days', '100% done-for-you'].map(
-            item => (
-              <span key={item}>
-                <span style={{ color: 'var(--t2)', marginRight: '4px' }}>✓</span>
+          {['No long-term contracts', 'Results in 30 days', '100% done-for-you'].map((item) => (
+            <span
+              key={item}
+              className="relative cursor-default border-2 border-(--green) px-3 py-2 rounded-full transition-all duration-300 hover:text-black overflow-hidden group"
+              style={{ padding: '10px', borderRadius: '30px' }}
+            >
+              {/* Fill layer */}
+              <span className="absolute inset-0 bg-(--green) rounded-full transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+              {/* Text */}
+              <span className="relative z-10 inline-block transition-colors duration-300 group-hover:text-black text-(--green)">
                 {item}
               </span>
-            )
-          )}
+            </span>
+          ))}
         </motion.div>
       </div>
+
+      <style>{`
+        .shine-btn {
+          position: relative;
+          padding: 12px 48px;
+          background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
+          background-position: 0;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shine 3s infinite linear;
+          animation-fill-mode: forwards;
+          font-weight: 600;
+          font-size: 16px;
+          font-family: var(--font-jakarta), sans-serif;
+          white-space: nowrap;
+          border: none;
+          cursor: pointer;
+          background-color: transparent;
+        }
+
+        @keyframes shine {
+          0%   { background-position: 0; }
+          60%  { background-position: 180px; }
+          100% { background-position: 180px; }
+        }
+      `}</style>
     </section>
   )
 }

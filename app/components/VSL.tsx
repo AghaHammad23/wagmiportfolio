@@ -97,7 +97,7 @@ export default function VSL() {
           style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}
         >
           <span style={{ width: '24px', height: '1px', background: 'var(--green)', opacity: 0.5, display: 'inline-block', flexShrink: 0 }} />
-          <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--t3)' }}>
+          <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--t2)' }}>
             Watch This First
           </span>
         </div>

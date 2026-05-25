@@ -117,10 +117,10 @@ export default function Testimonials() {
           }}>
             <div style={{
               fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
-              textTransform: 'uppercase', color: 'var(--t4)',
+              textTransform: 'uppercase', color: 'var(--t2)',
               marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px',
             }}>
-              <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+              <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
               Client Stories
             </div>
             <h2 style={{

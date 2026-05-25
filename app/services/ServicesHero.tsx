@@ -54,14 +54,14 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
           transition={{ duration: 0.5, ease }} // Reduced from 0.8
           style={{
             fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
-            textTransform: 'uppercase', color: 'var(--t4)',
+            textTransform: 'uppercase', color: 'var(--t2)',
             marginBottom: '20px', display: 'flex', alignItems: 'center',
             gap: '12px', justifyContent: 'center',
           }}
         >
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+          <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
           What We Do
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+          <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
         </motion.div>
 
         {/* Optimized H1 - reduced animation delay for faster LCP */}

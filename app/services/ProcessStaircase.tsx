@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import ApplyButton from '../components/ApplyButton'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -173,8 +174,8 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
     >
       {/* Heading (stays visible while pinned) */}
       <div style={{ padding: 'clamp(72px, 9vw, 112px) var(--pad) clamp(36px, 4.5vw, 52px)', maxWidth: 'var(--max)', margin: '0 auto', width: '100%' }}>
-        <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+        <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t2)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
           How We Onboard You
         </div>
         <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white)' }}>
@@ -213,14 +214,14 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
               }}
             >
               <div className="step-content" style={{ opacity: 0 }}>
-                <div style={{
+                <div className="step-number" style={{
                   fontFamily: 'var(--font-bricolage), sans-serif',
                   fontSize: 'clamp(36px, 5vw, 64px)',
                   fontWeight: 800,
                   letterSpacing: '-0.04em',
-                              color: 'transparent',
-            WebkitTextStroke: '1px rgba(106,255,42,0.2)',
-
+                  color: 'rgba(106,255,42,0)',
+                  WebkitTextStroke: '1px var(--green)',
+                  transition: 'color 0.7s ease',
                   lineHeight: 1,
                   marginBottom: '12px',
                   userSelect: 'none',
@@ -248,30 +249,7 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
                 </div>
                 {isLast && (
                   <div style={{ marginTop: 'clamp(14px, 1.8vw, 22px)' }}>
-                    <button
-                      onClick={onApplyClick}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '7px',
-                        padding: 'clamp(9px, 1.1vw, 13px) clamp(14px, 1.8vw, 22px)',
-                        background: 'var(--green)',
-                        color: 'var(--black)',
-                        border: 'none',
-                        borderRadius: '6px',
-                        fontSize: 'clamp(10px, 1.1vw, 12px)',
-                        fontWeight: 700,
-                        letterSpacing: '0.06em',
-                        textTransform: 'uppercase',
-                        cursor: 'pointer',
-                        fontFamily: 'var(--font-bricolage), sans-serif',
-                        transition: 'opacity 0.2s, transform 0.2s',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-                      onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)' }}
-                    >
-                      Apply Now <span>→</span>
-                    </button>
+                    <ApplyButton text="Apply Now" />
                   </div>
                 )}
               </div>
@@ -293,8 +271,8 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
           box-shadow: 0 -4px 20px rgba(106,255,42,0.2);
           background: rgba(106,255,42,0.03);
         }
-        .stair-step.step-active .step-content div:first-of-type {
-          color: rgba(106,255,42,0.15);
+        .stair-step.step-active .step-number {
+          color: var(--green) !important;
         }
       `}</style>
     </div>

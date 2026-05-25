@@ -34,7 +34,6 @@ export default function Page() {
         label="Done For You"
         text="Ready to hand off your entire content operation?"
         subtext="Scripts, edits, thumbnails, strategy, distribution — fully managed."
-        badge="3 spots remaining"
         buttonText="Apply to Work With Us"
       />
 
