@@ -106,12 +106,12 @@ export default function PerksStack({ perks }: { perks: Perk[] }) {
       <div style={{ textAlign: 'center', marginBottom: 'clamp(36px, 6vh, 60px)', flexShrink: 0 }}>
         <div style={{
           fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
-          textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '14px',
+          textTransform: 'uppercase', color: 'var(--t2)', marginBottom: '14px',
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
         }}>
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+          <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
           Why Join Us
-          <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+          <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
         </div>
         <h2 style={{
           fontFamily: 'var(--font-bricolage), sans-serif',

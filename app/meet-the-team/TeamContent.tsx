@@ -155,7 +155,6 @@ function ImageWithFallback({ src, alt, initials, style }: { src: string; alt: st
 
 export default function TeamContent() {
   const [selected, setSelected] = useState<number | null>(null)
-  const [isClosing, setIsClosing] = useState(false)
   const revealRef = useRef<HTMLDivElement>(null)
   const teamCirclesRef = useRef<HTMLDivElement>(null)
   const { open } = useApply()
@@ -172,29 +171,15 @@ export default function TeamContent() {
     })
   }, [])
 
-  const handleClose = () => {
-    setIsClosing(true)
-    setTimeout(() => {
-      setSelected(null)
-      setIsClosing(false)
-    }, 400)
-  }
+  const handleClose = () => setSelected(null)
 
   const handleSelect = (index: number) => {
-    if (selected === index) {
-      handleClose()
-    } else {
-      setSelected(index)
-    }
+    setSelected(selected === index ? null : index)
   }
 
   const scrollToTeamCircles = () => {
-    if (teamCirclesRef.current) {
-      teamCirclesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    teamCirclesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
-
-  const selectedMember = selected !== null ? team[selected] : null
 
   return (
     <div style={{ 
@@ -351,204 +336,192 @@ export default function TeamContent() {
             borderBottom: '1px solid var(--line2)',
           }}>
             <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
-              <motion.div 
-                style={{
-                  display: 'grid',
-                  gap: '48px',
-                }}
-                animate={{
-                  gridTemplateColumns: selectedMember && !isClosing ? '1fr 1fr' : '1fr',
-                }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {/* Left side - Member details */}
-                {(selectedMember && !isClosing) && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <div style={{
-                      border: '1px solid rgba(106,255,42,0.15)',
-                      borderRadius: '20px',
-                      overflow: 'hidden',
-                      background: 'rgba(0,0,0,0.4)',
-                      backdropFilter: 'blur(12px)',
-                      height: '100%',
-                    }}>
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%',
-                      }}>
-                        <div style={{
-                          position: 'relative',
-                          overflow: 'hidden',
-                          background: 'var(--surface)',
-                          minHeight: '300px',
-                          maxHeight: '400px',
-                        }}>
-                          <ImageWithFallback
-                            src={selectedMember.portrait}
-                            alt={selectedMember.name}
-                            initials={selectedMember.initials}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
-                              objectPosition: 'center top',
-                              display: 'block',
-                            }}
-                          />
-                          <div style={{
-                            position: 'absolute', bottom: 0, left: 0, right: 0,
-                            height: '100px',
-                            background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                            pointerEvents: 'none',
-                          }} />
-                          <div style={{
-                            position: 'absolute', top: '16px', left: '16px',
-                            background: 'rgba(106,255,42,0.9)',
-                            color: 'var(--black)',
-                            fontSize: '9px', fontWeight: 700,
-                            letterSpacing: '0.1em', textTransform: 'uppercase',
-                            padding: '5px 10px', borderRadius: '4px',
-                          }}>
-                            {selectedMember.role}
-                          </div>
-                        </div>
+              {/* Flex container: detail panel slides in from left, circles reflow */}
+              <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
 
+                {/* Detail panel — animates width 0 → 440px */}
+                <AnimatePresence>
+                  {selected !== null && (
+                    <motion.div
+                      key="detail-panel"
+                      initial={{ width: 0, opacity: 0 }}
+                      animate={{ width: 440, opacity: 1 }}
+                      exit={{ width: 0, opacity: 0 }}
+                      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ flexShrink: 0, overflow: 'hidden' }}
+                    >
+                      {/* Inner content keyed by selected — fades when switching members */}
+                      <AnimatePresence mode="wait" initial={false}>
                         <motion.div
-                          initial={{ opacity: 0, y: 20 }}
+                          key={selected}
+                          initial={{ opacity: 0, y: 18 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                          style={{
-                            padding: 'clamp(24px, 3vw, 32px)',
-                            flex: 1,
-                          }}
+                          exit={{ opacity: 0, y: -14 }}
+                          transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ width: 440 }}
                         >
-                          <h2 style={{
-                            fontFamily: 'var(--font-bricolage), sans-serif',
-                            fontSize: 'clamp(24px, 3vw, 36px)',
-                            fontWeight: 800, letterSpacing: '-0.025em',
-                            color: 'var(--white)', lineHeight: 1.1,
-                            marginBottom: '8px',
-                          }}>
-                            {selectedMember.name}
-                          </h2>
-
-                          <div style={{
-                            fontSize: '11px', fontWeight: 500,
-                            letterSpacing: '0.08em', textTransform: 'uppercase',
-                            color: 'rgba(106,255,42,0.6)', marginBottom: '20px',
-                          }}>
-                            {selectedMember.tag}
-                          </div>
-
-                          <blockquote style={{
-                            borderLeft: '2px solid rgba(106,255,42,0.4)',
-                            paddingLeft: '16px',
-                            margin: '0 0 20px',
-                            fontFamily: 'var(--font-jakarta), sans-serif',
-                            fontSize: 'clamp(14px, 1.6vw, 16px)',
-                            fontStyle: 'italic',
-                            fontWeight: 300,
-                            color: 'var(--t2)',
-                            lineHeight: 1.6,
-                          }}>
-                            &ldquo;{selectedMember.quote}&rdquo;
-                          </blockquote>
-
-                          <p style={{
-                            fontSize: '14px', fontWeight: 300,
-                            lineHeight: 1.75, color: 'var(--t3)',
-                            marginBottom: '24px',
-                          }}>
-                            {selectedMember.bio}
-                          </p>
-
-                          <div style={{
-                            display: 'flex', gap: '1px',
-                            background: 'rgba(255,255,255,0.06)',
-                            borderRadius: '10px', overflow: 'hidden',
-                          }}>
-                            {selectedMember.stats.map((stat, si) => (
-                              <motion.div
-                                key={si}
-                                initial={{ opacity: 0, y: 12 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 + si * 0.08 }}
-                                style={{
-                                  flex: 1, padding: '16px 12px',
-                                  background: 'rgba(255,255,255,0.03)',
-                                  textAlign: 'center',
-                                }}
-                              >
+                          {(() => {
+                            const m = team[selected]
+                            return (
+                              <div style={{
+                                border: '1px solid rgba(106,255,42,0.15)',
+                                borderRadius: '20px',
+                                overflow: 'hidden',
+                                background: 'rgba(0,0,0,0.4)',
+                                backdropFilter: 'blur(12px)',
+                                minHeight: '680px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                              }}>
+                                {/* Portrait */}
                                 <div style={{
-                                  fontFamily: 'var(--font-bricolage), sans-serif',
-                                  fontSize: 'clamp(18px, 2.5vw, 24px)',
-                                  fontWeight: 800, color: 'var(--white)',
-                                  letterSpacing: '-0.02em', lineHeight: 1,
-                                  marginBottom: '4px',
+                                  position: 'relative',
+                                  overflow: 'hidden',
+                                  background: 'var(--surface)',
+                                  height: '320px',
+                                  flexShrink: 0,
                                 }}>
-                                  {stat.value}
+                                  <ImageWithFallback
+                                    src={m.portrait}
+                                    alt={m.name}
+                                    initials={m.initials}
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+                                  />
+                                  <div style={{
+                                    position: 'absolute', bottom: 0, left: 0, right: 0,
+                                    height: '100px',
+                                    background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                                    pointerEvents: 'none',
+                                  }} />
+                                  <div style={{
+                                    position: 'absolute', top: '16px', left: '16px',
+                                    background: 'rgba(106,255,42,0.9)', color: 'var(--black)',
+                                    fontSize: '9px', fontWeight: 700,
+                                    letterSpacing: '0.1em', textTransform: 'uppercase',
+                                    padding: '5px 10px', borderRadius: '4px',
+                                  }}>
+                                    {m.role}
+                                  </div>
                                 </div>
-                                <div style={{
-                                  fontSize: '10px', fontWeight: 500,
-                                  letterSpacing: '0.06em', textTransform: 'uppercase',
-                                  color: 'var(--t4)',
-                                }}>
-                                  {stat.label}
-                                </div>
-                              </motion.div>
-                            ))}
-                          </div>
 
-                          <button
-                            onClick={handleClose}
-                            style={{
-                              width: '100%', marginTop: '20px',
-                              padding: '12px',
-                              background: 'rgba(255,255,255,0.03)',
-                              border: '1px solid rgba(255,255,255,0.06)',
-                              borderRadius: '8px',
-                              cursor: 'pointer', color: 'var(--t4)',
-                              fontSize: '11px', fontWeight: 500,
-                              letterSpacing: '0.1em', textTransform: 'uppercase',
-                              transition: 'all 0.2s',
-                              display: 'flex', alignItems: 'center',
-                              justifyContent: 'center', gap: '8px',
-                            }}
-                            onMouseEnter={e => {
-                              e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
-                              e.currentTarget.style.color = 'var(--white)'
-                              e.currentTarget.style.borderColor = 'rgba(106,255,42,0.3)'
-                            }}
-                            onMouseLeave={e => {
-                              e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
-                              e.currentTarget.style.color = 'var(--t4)'
-                              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'
-                            }}
-                          >
-                            <span style={{ fontSize: '14px', lineHeight: 1 }}>←</span>
-                            Close
-                          </button>
+                                {/* Content */}
+                                <div style={{ padding: 'clamp(24px, 3vw, 32px)', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                  <h2 style={{
+                                    fontFamily: 'var(--font-bricolage), sans-serif',
+                                    fontSize: 'clamp(24px, 3vw, 36px)',
+                                    fontWeight: 800, letterSpacing: '-0.025em',
+                                    color: 'var(--white)', lineHeight: 1.1,
+                                    marginBottom: '8px',
+                                  }}>
+                                    {m.name}
+                                  </h2>
+
+                                  <div style={{
+                                    fontSize: '11px', fontWeight: 500,
+                                    letterSpacing: '0.08em', textTransform: 'uppercase',
+                                    color: 'rgba(106,255,42,0.6)', marginBottom: '20px',
+                                  }}>
+                                    {m.tag}
+                                  </div>
+
+                                  <blockquote style={{
+                                    borderLeft: '2px solid rgba(106,255,42,0.4)',
+                                    paddingLeft: '16px', margin: '0 0 20px',
+                                    fontFamily: 'var(--font-jakarta), sans-serif',
+                                    fontSize: 'clamp(14px, 1.6vw, 16px)',
+                                    fontStyle: 'italic', fontWeight: 300,
+                                    color: 'var(--t2)', lineHeight: 1.6,
+                                  }}>
+                                    &ldquo;{m.quote}&rdquo;
+                                  </blockquote>
+
+                                  <p style={{
+                                    fontSize: '14px', fontWeight: 300,
+                                    lineHeight: 1.75, color: 'var(--t3)',
+                                    marginBottom: '24px', flex: 1,
+                                  }}>
+                                    {m.bio}
+                                  </p>
+
+                                  {/* Stats */}
+                                  <div style={{
+                                    display: 'flex', gap: '1px',
+                                    background: 'rgba(255,255,255,0.06)',
+                                    borderRadius: '10px', overflow: 'hidden',
+                                    marginBottom: '20px',
+                                  }}>
+                                    {m.stats.map((stat: { label: string; value: string }, si: number) => (
+                                      <div
+                                        key={si}
+                                        style={{
+                                          flex: 1, padding: '16px 12px',
+                                          background: 'rgba(255,255,255,0.03)',
+                                          textAlign: 'center',
+                                        }}
+                                      >
+                                        <div style={{
+                                          fontFamily: 'var(--font-bricolage), sans-serif',
+                                          fontSize: 'clamp(18px, 2.5vw, 24px)',
+                                          fontWeight: 800, color: 'var(--white)',
+                                          letterSpacing: '-0.02em', lineHeight: 1,
+                                          marginBottom: '4px',
+                                        }}>
+                                          {stat.value}
+                                        </div>
+                                        <div style={{
+                                          fontSize: '10px', fontWeight: 500,
+                                          letterSpacing: '0.06em', textTransform: 'uppercase',
+                                          color: 'var(--t4)',
+                                        }}>
+                                          {stat.label}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+
+                                  {/* Close */}
+                                  <button
+                                    onClick={handleClose}
+                                    style={{
+                                      width: '100%', padding: '12px',
+                                      background: 'rgba(255,255,255,0.03)',
+                                      border: '1px solid rgba(255,255,255,0.06)',
+                                      borderRadius: '8px', cursor: 'pointer',
+                                      color: 'var(--t4)', fontSize: '11px',
+                                      fontWeight: 500, letterSpacing: '0.1em',
+                                      textTransform: 'uppercase', transition: 'all 0.25s',
+                                      display: 'flex', alignItems: 'center',
+                                      justifyContent: 'center', gap: '8px',
+                                    }}
+                                    onMouseEnter={e => {
+                                      e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
+                                      e.currentTarget.style.color = 'var(--white)'
+                                      e.currentTarget.style.borderColor = 'rgba(106,255,42,0.3)'
+                                    }}
+                                    onMouseLeave={e => {
+                                      e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
+                                      e.currentTarget.style.color = 'var(--t4)'
+                                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'
+                                    }}
+                                  >
+                                    <span style={{ fontSize: '14px', lineHeight: 1 }}>←</span>
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                            )
+                          })()}
                         </motion.div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
+                      </AnimatePresence>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                {/* Right side - Team circles */}
+                {/* Circles — layout prop makes them smoothly reflow as panel opens/closes */}
                 <motion.div
-                  animate={{
-                    opacity: 1,
-                  }}
-                  transition={{ duration: 0.3 }}
+                  layout
+                  style={{ flex: 1, minWidth: 0 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <div className="team-circles" style={{
                     display: 'flex',
@@ -562,6 +535,7 @@ export default function TeamContent() {
                       return (
                         <motion.div
                           key={i}
+                          layout
                           className="reveal"
                           onClick={() => handleSelect(i)}
                           style={{
@@ -573,11 +547,15 @@ export default function TeamContent() {
                             userSelect: 'none',
                           }}
                           whileHover={{ y: -4 }}
-                          transition={{ duration: 0.25, ease: 'easeOut' }}
+                          transition={{
+                            layout: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+                            default: { duration: 0.25, ease: 'easeOut' },
+                          }}
                         >
                           <motion.div
                             animate={{
                               scale: isSelected ? 1.08 : 1,
+                              borderColor: isSelected ? 'var(--green)' : 'rgba(255,255,255,0)',
                             }}
                             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                             style={{
@@ -585,10 +563,9 @@ export default function TeamContent() {
                               height: 'clamp(90px, 12vw, 120px)',
                               borderRadius: '50%',
                               overflow: 'hidden',
-                              background: 'transparent',
                               position: 'relative',
                               flexShrink: 0,
-                              border: isSelected ? `2px solid var(--green)` : '2px solid transparent',
+                              border: '2px solid rgba(255,255,255,0)',
                             }}
                           >
                             <ImageWithFallback
@@ -596,10 +573,8 @@ export default function TeamContent() {
                               alt={member.name}
                               initials={member.initials}
                               style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                objectPosition: 'center top',
+                                width: '100%', height: '100%',
+                                objectFit: 'cover', objectPosition: 'center top',
                                 display: 'block',
                               }}
                             />
@@ -612,17 +587,13 @@ export default function TeamContent() {
                               style={{
                                 fontFamily: 'var(--font-bricolage), sans-serif',
                                 fontSize: 'clamp(13px, 1.5vw, 15px)',
-                                fontWeight: 700,
-                                letterSpacing: '-0.01em',
+                                fontWeight: 700, letterSpacing: '-0.01em',
                                 marginBottom: '3px',
                               }}
                             >
                               {member.name}
                             </motion.div>
-                            <div style={{
-                              fontSize: '11px', fontWeight: 400,
-                              color: 'var(--t4)', letterSpacing: '0.02em',
-                            }}>
+                            <div style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t4)', letterSpacing: '0.02em' }}>
                               {member.role}
                             </div>
                           </div>
@@ -632,8 +603,7 @@ export default function TeamContent() {
                             transition={{ duration: 0.3 }}
                             style={{
                               width: '24px', height: '2px',
-                              background: 'var(--green)',
-                              borderRadius: '1px',
+                              background: 'var(--green)', borderRadius: '1px',
                               marginTop: '-6px',
                             }}
                           />
@@ -642,7 +612,7 @@ export default function TeamContent() {
                     })}
                   </div>
                 </motion.div>
-              </motion.div>
+              </div>
             </div>
           </div>
 

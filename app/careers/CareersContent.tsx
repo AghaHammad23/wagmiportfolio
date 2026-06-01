@@ -10,6 +10,7 @@ import type { CareerCardData } from '../components/MagicBento'
 import JobApplyModal from '../components/JobApplyModal'
 import PerksStack from './PerksStack'
 import ServicePill from './../services/ServicePill'
+import ApplyButton from '../components/ApplyButton'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -155,14 +156,14 @@ export default function CareersContent() {
             transition={{ duration: 0.8, ease }}
             style={{
               fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em',
-              textTransform: 'uppercase', color: 'var(--t4)',
+              textTransform: 'uppercase', color: 'var(--t2)',
               marginBottom: '20px', display: 'flex', alignItems: 'center',
               gap: '12px', justifyContent: 'center',
             }}
           >
-            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+            <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
             We&apos;re Hiring
-            <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+            <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
           </motion.div>
 
           <motion.h1
@@ -240,8 +241,8 @@ export default function CareersContent() {
         {/* ── Open Roles ───────────────────────────────────── */}
         <section ref={openRolesRef} id="open-roles" style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)' }}>
           <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
-            <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+            <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t2)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
               Open Positions
             </div>
             <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white)', marginBottom: 'clamp(36px, 5vw, 52px)' }}>
@@ -292,8 +293,8 @@ export default function CareersContent() {
 
               {/* Left — copy */}
               <div>
-                <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
+                <div style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t2)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
                   Open Application
                 </div>
                 <h2 style={{
@@ -326,22 +327,8 @@ export default function CareersContent() {
                   ))}
                 </div>
 
+                 <ApplyButton text="Send us your work" />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-                  <button
-                    onClick={open}
-                    style={{
-                      fontFamily: 'var(--font-bricolage), sans-serif',
-                      fontSize: '14px', fontWeight: 700,
-                      color: 'var(--black)', background: 'var(--green)',
-                      padding: '15px 32px', border: 'none', cursor: 'pointer',
-                      display: 'inline-block', alignSelf: 'flex-start',
-                      transition: 'transform 0.15s, opacity 0.15s',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.opacity = '0.9' }}
-                    onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.opacity = '1' }}
-                  >
-                    Send an Open Application →
-                  </button>
                   <a
                     href="mailto:aghasaad@wagmihq.com"
                     style={{ fontSize: '12px', fontWeight: 300, color: 'var(--t3)', textDecoration: 'none', letterSpacing: '0.02em' }}
