@@ -115,10 +115,10 @@ export default function VSL() {
             marginBottom: 'clamp(10px, 1.5vw, 16px)',
           }}
         >
-          See how we turn content
+          Watch This Before You Apply.
           <br />
           <span style={{ color: 'var(--green)', fontWeight: 900 }}>
-            into clients — in 3 minutes.
+            It Tells You Exactly How We Work.
           </span>
         </h2>
 
@@ -134,7 +134,7 @@ export default function VSL() {
             marginBottom: 'clamp(32px, 5vw, 60px)',
           }}
         >
-          Watch before applying — this tells you exactly how we operate and whether we&apos;re the right fit for your brand.
+          3 minutes. No sales pitch. By the end you will know if we are the right fit for your brand, or not.
         </p>
 
         {/* Video frame */}
@@ -308,7 +308,7 @@ export default function VSL() {
         >
           {/* Trust micro-line */}
           <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-            {['300+ brands watched this', '3 min', 'No sales pitch'].map((item, i, arr) => (
+            {['3 min', 'No sales pitch'].map((item, i, arr) => (
               <span key={item} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--t3)', letterSpacing: '0.02em' }}>
                   {item}

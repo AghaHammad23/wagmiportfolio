@@ -116,6 +116,22 @@ export default function Hero() {
           <Image src="/logo.png" alt="WAGMI Media Logo" width={154} height={24} priority />
         </motion.div>
 
+        {/* Eyebrow */}
+        <motion.div
+          {...rise(0.15)}
+          style={{
+            fontSize: '10px',
+            fontWeight: 500,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'var(--t4)',
+            marginTop: '20px',
+            marginBottom: '16px',
+          }}
+        >
+          For coaches, consultants and agency owners with a high-ticket offer
+        </motion.div>
+
         {/* H1 */}
         <h1
           style={{
@@ -130,9 +146,9 @@ export default function Hero() {
           }}
         >
           {[
-            { text: 'We Build the Content ', delay: 0.2,  muted: false },
-            { text: 'That Turns Your Brand', delay: 0.32, muted: false },
-            { text: 'Into a Client Magnet.', delay: 0.44, muted: true  },
+            { text: 'Do You Want Your Personal Brand', delay: 0.2,  muted: false },
+            { text: 'Bringing You Clients', delay: 0.32, muted: false },
+            { text: 'in the Next 90 Days?', delay: 0.44, muted: true  },
           ].map(({ text, delay, muted }) => (
             <motion.span
               key={text}
@@ -161,9 +177,7 @@ export default function Hero() {
             padding: '0 16px 40px',
           }}
         >
-          Scripts. Editing. Strategy. Distribution. We run the entire operation — so
-          you stop creating content that gets views and start creating content that
-          gets paid.
+          You record one day a week, 2 to 3 hours max. We handle everything else. Strategy, scripts, editing, posting, and optimization. Without hiring a team, learning to edit, or guessing what to post.
         </motion.p>
 
         {/* CTAs */}
@@ -206,7 +220,7 @@ export default function Hero() {
               e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
-            Apply to Work With Us
+            I WANT CLIENTS COMING TO ME
           </button>
           <button
             onClick={scrollToResults}
@@ -227,7 +241,7 @@ export default function Hero() {
             paddingTop: '28px',
           }}
         >
-          {['No long-term contracts', 'Results in 30 days', '100% done-for-you'].map((item) => (
+          {['First content live in 48 hours after onboarding', '100% done for you', '90-Day Traction Guarantee'].map((item) => (
             <span
               key={item}
               className="relative cursor-default border-2 border-(--green) px-3 py-2 rounded-full transition-all duration-300 hover:text-black overflow-hidden group"

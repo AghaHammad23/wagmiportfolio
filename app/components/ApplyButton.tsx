@@ -6,7 +6,7 @@ interface ApplyButtonProps {
   text?: string
 }
 
-export default function ApplyButton({ text = 'Apply to Work With Us' }: ApplyButtonProps) {
+export default function ApplyButton({ text = 'I WANT CLIENTS COMING TO ME' }: ApplyButtonProps) {
   const { open } = useApply()
 
   return (

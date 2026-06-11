@@ -5,18 +5,33 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 const steps = [
   {
     num: '01',
-    title: 'Strategy & Roadmap',
-    body: "We audit your content, identify your biggest growth lever, and build a 90-day content roadmap tailored to your offer and audience. You never stare at a blank screen again.",
+    label: 'Ideation',
+    title: 'Nothing gets made on a guess.',
+    body: "We map your niche's pain points, research what is already going viral in your space, and find your unique angle. Your content pillars rotate weekly, so you never face a blank page.",
   },
   {
     num: '02',
-    title: 'We Build the Machine',
-    body: 'Scripts, edits, thumbnails, hooks, shorts, long-form, posting schedules, weekly performance reviews. Our team handles full production end-to-end. You just show up.',
+    label: 'Scripting',
+    title: 'Written to be repurposed from the first line.',
+    body: 'Every long form script has clip moments planned before you ever hit record. Every hook gets 2 to 3 variations written, because we test, we do not hope.',
   },
   {
     num: '03',
-    title: 'You Grow. We Optimise.',
-    body: "Every week we cut what's dead and double what's working. Over time the system compounds — more views, more authority, more inbound clients. That's the engine.",
+    label: 'Production. Your Only Job',
+    title: 'One day. One sitting. Done.',
+    body: 'You pick one day a week. You show up, record one long form video and 3 to 4 short forms in a single sitting, and you are done. That is your entire role in this machine. Everything before and after that camera is ours.',
+  },
+  {
+    num: '04',
+    label: 'Distribution',
+    title: 'One sitting. 55 to 94 pieces. Every week.',
+    body: 'Edited videos, repurposed clips, carousels, tweet graphics, pushed across YouTube, Instagram, and TikTok. Every piece opens with a hook and ends with a CTA that pulls people toward your offer. No exceptions.',
+  },
+  {
+    num: '05',
+    label: 'Feedback Loop',
+    title: 'The system gets smarter every seven days.',
+    body: "Every week we track which hooks won, which topics triggered DMs, what drove clicks. Next week's roadmap is built on that data, not written 90 days in advance. A system that learns beats a calendar that guesses.",
   },
 ]
 
@@ -59,42 +74,25 @@ function animateFill(
 function pause(ms: number) { return new Promise<void>(r => setTimeout(r, ms)) }
 
 export default function HowItWorks() {
-  const [isMobile, setIsMobile] = useState(false)
   const [isClient, setIsClient] = useState(false)
 
   const sectionRef = useRef<HTMLDivElement>(null)
 
-  const boxBgRefs  = useRef<(HTMLDivElement | null)[]>([null, null, null])
-  const fillRefs   = useRef<(HTMLDivElement | null)[]>([null, null, null])
-  const numRefs    = useRef<(HTMLDivElement | null)[]>([null, null, null])
-  const titleRefs  = useRef<(HTMLDivElement | null)[]>([null, null, null])
-  const bodyRefs   = useRef<(HTMLDivElement | null)[]>([null, null, null])
+  const boxBgRefs  = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null])
+  const fillRefs   = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null])
+  const numRefs    = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null])
+  const titleRefs  = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null])
+  const bodyRefs   = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null])
 
-  const line1Ref = useRef<SVGPathElement>(null)
-  const dot1Ref  = useRef<SVGCircleElement>(null)
-  const line2Ref = useRef<SVGPathElement>(null)
-  const dot2Ref  = useRef<SVGCircleElement>(null)
-
-  const mLine1Ref = useRef<SVGLineElement>(null)
-  const mDot1Ref  = useRef<SVGCircleElement>(null)
-  const mLine2Ref = useRef<SVGLineElement>(null)
-  const mDot2Ref  = useRef<SVGCircleElement>(null)
+  const lineRefs = useRef<(SVGLineElement | null)[]>([null, null, null, null])
+  const dotRefs  = useRef<(SVGCircleElement | null)[]>([null, null, null, null])
 
   const cycleRef         = useRef<boolean>(false)
   const runningRef       = useRef<boolean>(false)
   const animationStarted = useRef(false)
-  const isMobileRef      = useRef(false)
 
   useEffect(() => {
     setIsClient(true)
-    const check = () => {
-      const m = window.innerWidth <= 900
-      setIsMobile(m)
-      isMobileRef.current = m
-    }
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
   }, [])
 
   const setTextColors = useCallback((solidBgColor: string) => {
@@ -128,15 +126,13 @@ export default function HowItWorks() {
 
   // Smooth line color transition (no abrupt reset)
   const transitionLineColors = useCallback((newColor: string) => {
-    const lines = [line1Ref.current, line2Ref.current, mLine1Ref.current, mLine2Ref.current]
-    const dots = [dot1Ref.current, dot2Ref.current, mDot1Ref.current, mDot2Ref.current]
-    lines.forEach(line => {
+    lineRefs.current.forEach(line => {
       if (line) {
         line.style.transition = 'stroke 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1)'
         line.style.stroke = newColor
       }
     })
-    dots.forEach(dot => {
+    dotRefs.current.forEach(dot => {
       if (dot) {
         dot.style.transition = 'fill 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1)'
         dot.style.fill = newColor
@@ -177,25 +173,12 @@ export default function HowItWorks() {
 
     const FILL_DUR = 1800
     const GAP      = 60
-    const mobile   = isMobileRef.current
 
-    if (fillRefs.current[0]) {
-      await animateFill(fillRefs.current[0]!, fillColor, FILL_DUR, () => transitionTextAt(fillColor, 0))
-    }
-    await pause(GAP)
-
-    // Lines appear at this point with the current color (already correct)
-    await pause(GAP)
-
-    if (fillRefs.current[1]) {
-      await animateFill(fillRefs.current[1]!, fillColor, FILL_DUR, () => transitionTextAt(fillColor, 1))
-    }
-    await pause(GAP)
-
-    await pause(GAP)
-
-    if (fillRefs.current[2]) {
-      await animateFill(fillRefs.current[2]!, fillColor, FILL_DUR, () => transitionTextAt(fillColor, 2))
+    for (let i = 0; i < steps.length; i++) {
+      if (fillRefs.current[i]) {
+        await animateFill(fillRefs.current[i]!, fillColor, FILL_DUR, () => transitionTextAt(fillColor, i))
+      }
+      await pause(GAP)
     }
 
     await pause(1200)
@@ -224,12 +207,8 @@ export default function HowItWorks() {
           setTextColors(BLACK)
 
           // Set initial line colors (green so they're visible on dark bg)
-          const allLines = [line1Ref.current, line2Ref.current, mLine1Ref.current, mLine2Ref.current]
-          const allDots = [dot1Ref.current, dot2Ref.current, mDot1Ref.current, mDot2Ref.current]
-          allLines.forEach(l => { if (l) l.style.stroke = GREEN })
-          allDots.forEach(d => { if (d) d.style.fill = GREEN })
-          // Ensure dash offsets are zero (lines fully drawn)
-          allLines.forEach(l => { if (l) l.style.strokeDashoffset = '0' })
+          lineRefs.current.forEach(l => { if (l) { l.style.stroke = GREEN; l.style.strokeDashoffset = '0' } })
+          dotRefs.current.forEach(d => { if (d) d.style.fill = GREEN })
 
           cycleRef.current = true // first fill will be GREEN
           setTimeout(() => runCycle(), 500)
@@ -302,88 +281,52 @@ export default function HowItWorks() {
           The Process
         </div>
 
-        <h2 style={{ fontFamily: 'var(--font-jakarta,sans-serif)', fontSize: 'clamp(30px,4vw,52px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white,#fff)', marginBottom: 'clamp(48px,7vw,90px)' }}>
-          Three movements.<br />
-          <em style={{ fontStyle: 'normal', color: GREEN }}>One continuous flow.</em>
+        <h2 style={{ fontFamily: 'var(--font-jakarta,sans-serif)', fontSize: 'clamp(30px,4vw,52px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white,#fff)', marginBottom: '16px' }}>
+          One Recording Day a Week Becomes<br />
+          <em style={{ fontStyle: 'normal', color: GREEN }}>55 to 94 Pieces of Content.</em>
         </h2>
 
-        {/* DESKTOP */}
-        <div style={{ position: 'relative', minHeight: 'clamp(480px,60vh,640px)', display: isClient && isMobile ? 'none' : 'block' }}>
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'visible' }} viewBox="0 0 1200 600" preserveAspectRatio="none">
-            <path d="M 200,150 C 380,150 450,450 600,450 C 750,450 820,150 1000,150" fill="none" stroke="rgba(106,255,42,0.07)" strokeWidth="2" strokeLinecap="round" />
-            <path ref={line1Ref} d="M 200,150 C 380,150 450,450 600,450" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="400" strokeDashoffset="0" />
-            <circle ref={dot1Ref} cx="600" cy="450" r="5" />
-            <path ref={line2Ref} d="M 600,450 C 750,450 820,150 1000,150" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="400" strokeDashoffset="0" />
-            <circle ref={dot2Ref} cx="1000" cy="150" r="5" />
-            <circle cx="200" cy="150" r="4" fill="rgba(106,255,42,0.2)" />
-          </svg>
+        <p style={{ fontSize: 'clamp(13px,1.4vw,15px)', fontWeight: 300, color: 'var(--t3,rgba(255,255,255,0.5))', lineHeight: 1.65, maxWidth: '620px', marginBottom: 'clamp(48px,7vw,90px)' }}>
+          Five layers. Each one feeds the next. Follow the line, this is exactly what happens to your content every single week.
+        </p>
 
-          {/* Box 1 */}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: 'clamp(260px,27vw,320px)' }}>
-            <div style={boxShell}>
-              <div ref={el => { boxBgRefs.current[0] = el }} style={absInset} />
-              <div ref={el => { fillRefs.current[0] = el }} style={fillBase} />
-              <div style={contentD}>
-                <div ref={el => { numRefs.current[0] = el }} style={numD}>{steps[0].num}</div>
-                <div ref={el => { titleRefs.current[0] = el }} style={titleD}>{steps[0].title}</div>
-                <div ref={el => { bodyRefs.current[0] = el }} style={bodyD}>{steps[0].body}</div>
+        {/* Unified column — all screen sizes */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '600px', margin: '0 auto' }}>
+          {steps.map((step, idx) => (
+            <div key={idx} style={{ width: '100%' }}>
+              <div style={boxShell}>
+                <div ref={el => { boxBgRefs.current[idx] = el }} style={absInset} />
+                <div ref={el => { fillRefs.current[idx] = el }} style={fillBase} />
+                <div style={contentD}>
+                  <div style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--green)', opacity: 0.7, marginBottom: '8px' }}>
+                    {step.label}
+                  </div>
+                  <div ref={el => { numRefs.current[idx] = el }} style={numD}>{step.num}</div>
+                  <div ref={el => { titleRefs.current[idx] = el }} style={titleD}>{step.title}</div>
+                  <div ref={el => { bodyRefs.current[idx] = el }} style={bodyD}>{step.body}</div>
+                </div>
               </div>
+              {idx < steps.length - 1 && (
+                <div style={{ display: 'flex', justifyContent: 'center', height: '56px' }}>
+                  <svg width="20" height="56" viewBox="0 0 20 56" style={{ overflow: 'visible' }}>
+                    <line ref={el => { lineRefs.current[idx] = el }} x1="10" y1="4" x2="10" y2="52" strokeWidth="2" strokeLinecap="round" strokeDasharray="60" strokeDashoffset="0" />
+                    <circle ref={el => { dotRefs.current[idx] = el }} cx="10" cy="52" r="4" />
+                  </svg>
+                </div>
+              )}
             </div>
-          </div>
+          ))}
 
-          {/* Box 2 */}
-          <div style={{ position: 'absolute', bottom: 'clamp(0px,4vh,40px)', left: '50%', transform: 'translateX(-50%)', width: 'clamp(280px,30vw,360px)' }}>
-            <div style={boxShell}>
-              <div ref={el => { boxBgRefs.current[1] = el }} style={absInset} />
-              <div ref={el => { fillRefs.current[1] = el }} style={fillBase} />
-              <div style={contentD}>
-                <div ref={el => { numRefs.current[1] = el }} style={numD}>{steps[1].num}</div>
-                <div ref={el => { titleRefs.current[1] = el }} style={titleD}>{steps[1].title}</div>
-                <div ref={el => { bodyRefs.current[1] = el }} style={bodyD}>{steps[1].body}</div>
-              </div>
+          {/* Outcome */}
+          <div style={{ marginTop: '48px', textAlign: 'center' }}>
+            <div style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '8px' }}>
+              The only metric that matters
             </div>
-          </div>
-
-          {/* Box 3 */}
-          <div style={{ position: 'absolute', top: 0, right: 0, width: 'clamp(260px,27vw,320px)' }}>
-            <div style={boxShell}>
-              <div ref={el => { boxBgRefs.current[2] = el }} style={absInset} />
-              <div ref={el => { fillRefs.current[2] = el }} style={fillBase} />
-              <div style={contentD}>
-                <div ref={el => { numRefs.current[2] = el }} style={numD}>{steps[2].num}</div>
-                <div ref={el => { titleRefs.current[2] = el }} style={titleD}>{steps[2].title}</div>
-                <div ref={el => { bodyRefs.current[2] = el }} style={bodyD}>{steps[2].body}</div>
-              </div>
+            <div style={{ fontFamily: 'var(--font-bricolage,sans-serif)', fontSize: 'clamp(32px,4vw,52px)', fontWeight: 800, letterSpacing: '-0.02em', color: GREEN }}>
+              Inbound Clients
             </div>
           </div>
         </div>
-
-        {/* MOBILE */}
-        {isClient && isMobile && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {steps.map((step, idx) => (
-              <div key={idx}>
-                <div style={boxShell}>
-                  <div ref={el => { boxBgRefs.current[idx] = el }} style={absInset} />
-                  <div ref={el => { fillRefs.current[idx] = el }} style={fillBase} />
-                  <div style={contentM}>
-                    <div ref={el => { numRefs.current[idx] = el }} style={numM}>{step.num}</div>
-                    <div ref={el => { titleRefs.current[idx] = el }} style={titleM}>{step.title}</div>
-                    <div ref={el => { bodyRefs.current[idx] = el }} style={bodyM}>{step.body}</div>
-                  </div>
-                </div>
-                {idx < 2 && (
-                  <div style={{ display: 'flex', justifyContent: 'center', height: '52px' }}>
-                    <svg width="20" height="52" viewBox="0 0 20 52" style={{ overflow: 'visible' }}>
-                      <line ref={idx === 0 ? mLine1Ref : mLine2Ref} x1="10" y1="4" x2="10" y2="48" strokeWidth="2" strokeLinecap="round" strokeDasharray="60" strokeDashoffset="0" />
-                      <circle ref={idx === 0 ? mDot1Ref : mDot2Ref} cx="10" cy="48" r="4" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )

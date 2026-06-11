@@ -23,7 +23,7 @@ export default function CTAStrip({
   label,
   subtext,
   badge,
-  buttonText = 'Apply to Work With Us',
+  buttonText = 'I WANT CLIENTS COMING TO ME',
 }: CTAStripProps) {
   const { open } = useApply()
   const stripRef = useRef<HTMLDivElement>(null)

@@ -93,18 +93,7 @@ export default function FinalCTA() {
             zIndex: 1,
           }}
         >
-          Your content should be
-          making you{' '}
-          <span
-            style={{
-            color: 'transparent',
-            WebkitTextStroke: '1px var(--green)',
-              fontFamily: 'var(--font-jakarta), sans-serif',
-            }}
-          >
-            $$$
-          </span>
-          
+          Your Expertise Deserves an Audience. Let Us Go Build It.
         </motion.h2>
 
         <motion.h3
@@ -124,10 +113,7 @@ export default function FinalCTA() {
             zIndex: 1,
           }}
         >
-          If it isn&apos;t —{' '}
-          <span style={{ color: 'var(--green)', fontStyle: 'normal' }}>
-            that&apos;s what we fix.
-          </span>
+          Limited spots open each month. We respond to every application within 12 hours.
         </motion.h3>
 
         <motion.button
@@ -153,7 +139,7 @@ export default function FinalCTA() {
             transition: 'color 0.2s',
           }}
         >
-          Apply to Work With Us
+          I WANT CLIENTS COMING TO ME
         </motion.button>
 
         <motion.div
@@ -175,7 +161,7 @@ export default function FinalCTA() {
             zIndex: 1,
           }}
         >
-          {['No long-term contracts', 'First results in 30 days', '100% done-for-you', 'Cancel anytime'].map(
+          {['First content live in 48 hours after onboarding', '100% done for you', '90-Day Traction Guarantee'].map(
             item => (
               <span key={item}>
                 <span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '4px' }}>✓</span>

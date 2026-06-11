@@ -17,8 +17,8 @@ type Stat = {
 const stats: Stat[] = [
   { value: 300,  suffix: '',  sup: '+', label: 'Brands Served' },
   { value: 7,    suffix: 'B', sup: '+', label: 'Total Views Generated' },
-  { value: 14.1, suffix: 'M', sup: '',  label: 'Subscribers — Single Client', decimals: 1 },
-  { value: 48,   suffix: '',  sup: 'h', label: 'Response Guarantee' },
+  { value: 220,  suffix: '',  sup: '+', label: 'Content Pieces / Month, From One Recording Day a Week' },
+  { value: 48,   suffix: '',  sup: 'h', label: 'First Content Live' },
 ]
 
 export default function StatsBar() {
