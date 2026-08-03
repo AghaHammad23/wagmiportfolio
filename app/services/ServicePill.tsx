@@ -119,7 +119,9 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
           transform: 'translate(-50%, -50%) scale(0)',
           opacity: 0,
           pointerEvents: 'none',
-          zIndex: -1,
+          // 0, not -1: a negative index pushes the fill behind the button's own
+          // stacking context, where the transparent background hides it.
+          zIndex: 0,
           willChange: 'transform', // Optimize for performance
         }}
       />
