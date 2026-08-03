@@ -32,12 +32,12 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
       gsap.set(fillRef.current, { left: x, top: y, scale: 0, opacity: 1 })
       gsap.to(fillRef.current, { scale: 6, duration: 0.4, ease: 'power2.out' }) // Reduced duration
       
-      // Change text colors
+      // Dark green on the gold fill — the highest-contrast pairing in the theme.
       if (textRef.current) {
-        textRef.current.style.color = 'var(--black)'
+        textRef.current.style.color = 'var(--green2)'
       }
       if (iconRef.current) {
-        iconRef.current.style.color = 'var(--black)'
+        iconRef.current.style.color = 'var(--green2)'
         iconRef.current.style.opacity = '1'
       }
     })
