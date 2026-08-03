@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(sed -i 's/baseColor=\"#111111\"/baseColor=\"#0C3B2E\"/' app/components/FinalCTA.tsx)",
+      "Bash(sed -i 's/  background: #111111;/  background: #0C3B2E;/; s/  color: #ffffff;/  color: #F4F1D6;/' app/globals.css)",
+      "Bash(npx next *)"
     ]
   }
 }

@@ -134,7 +134,7 @@ function ImageWithFallback({ src, alt, initials, style }: { src: string; alt: st
         fontFamily: 'var(--font-bricolage), sans-serif',
         fontSize: 'clamp(18px, 3vw, 28px)',
         fontWeight: 700,
-        color: 'rgba(106,255,42,0.8)',
+        color: 'rgba(227,194,74,0.8)',
       }}>
         {initials}
       </div>
@@ -183,7 +183,7 @@ export default function TeamContent() {
 
   return (
     <div style={{ 
-      backgroundColor: '#0a0a0a', 
+      backgroundColor: 'var(--section-bg)', 
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -195,7 +195,7 @@ export default function TeamContent() {
         transform: 'translate(-50%, -50%)',
         width: '50%',
         height: '50%',
-        background: 'radial-gradient(circle at 50% 30%, rgba(106,255,42,0.2) 0%, rgba(106,255,42,0) 70%)',
+        background: 'radial-gradient(circle at 50% 30%, rgba(227,194,74,0.2) 0%, rgba(227,194,74,0) 70%)',
         pointerEvents: 'none',
         borderRadius: '50%',
         filter: 'blur(80px)',
@@ -219,7 +219,7 @@ export default function TeamContent() {
           {/* Grid background */}
           <div style={{
             position: 'absolute', inset: 0, zIndex: 0,
-            backgroundImage: 'linear-gradient(rgba(106,255,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.03) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(rgba(227,194,74,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(227,194,74,0.03) 1px, transparent 1px)',
             backgroundSize: '64px 64px',
             pointerEvents: 'none',
           }} />
@@ -238,7 +238,7 @@ export default function TeamContent() {
           <div style={{
             position: 'absolute', zIndex: 0,
             width: '800px', height: '800px',
-            background: 'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 65%)',
+            background: 'radial-gradient(circle, rgba(227,194,74,0.05) 0%, transparent 65%)',
             top: '40%', left: '50%', transform: 'translate(-50%,-50%)',
             pointerEvents: 'none',
           }} />
@@ -322,7 +322,7 @@ export default function TeamContent() {
               <motion.div
                 animate={{ y: [0, 6, 0] }}
                 transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-                style={{ color: 'rgba(106,255,42,0.5)', fontSize: '18px' }}
+                style={{ color: 'rgba(227,194,74,0.5)', fontSize: '18px' }}
               >
                 ↓
               </motion.div>
@@ -364,7 +364,7 @@ export default function TeamContent() {
                             const m = team[selected]
                             return (
                               <div style={{
-                                border: '1px solid rgba(106,255,42,0.15)',
+                                border: '1px solid rgba(227,194,74,0.15)',
                                 borderRadius: '20px',
                                 overflow: 'hidden',
                                 background: 'rgba(0,0,0,0.4)',
@@ -395,7 +395,7 @@ export default function TeamContent() {
                                   }} />
                                   <div style={{
                                     position: 'absolute', top: '16px', left: '16px',
-                                    background: 'rgba(106,255,42,0.9)', color: 'var(--black)',
+                                    background: 'rgba(227,194,74,0.9)', color: 'var(--black)',
                                     fontSize: '9px', fontWeight: 700,
                                     letterSpacing: '0.1em', textTransform: 'uppercase',
                                     padding: '5px 10px', borderRadius: '4px',
@@ -419,13 +419,13 @@ export default function TeamContent() {
                                   <div style={{
                                     fontSize: '11px', fontWeight: 500,
                                     letterSpacing: '0.08em', textTransform: 'uppercase',
-                                    color: 'rgba(106,255,42,0.6)', marginBottom: '20px',
+                                    color: 'rgba(227,194,74,0.6)', marginBottom: '20px',
                                   }}>
                                     {m.tag}
                                   </div>
 
                                   <blockquote style={{
-                                    borderLeft: '2px solid rgba(106,255,42,0.4)',
+                                    borderLeft: '2px solid rgba(227,194,74,0.4)',
                                     paddingLeft: '16px', margin: '0 0 20px',
                                     fontFamily: 'var(--font-jakarta), sans-serif',
                                     fontSize: 'clamp(14px, 1.6vw, 16px)',
@@ -496,7 +496,7 @@ export default function TeamContent() {
                                     onMouseEnter={e => {
                                       e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
                                       e.currentTarget.style.color = 'var(--white)'
-                                      e.currentTarget.style.borderColor = 'rgba(106,255,42,0.3)'
+                                      e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)'
                                     }}
                                     onMouseLeave={e => {
                                       e.currentTarget.style.background = 'rgba(255,255,255,0.03)'

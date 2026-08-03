@@ -143,8 +143,8 @@ export default function Testimonials() {
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--t4)' }}>Scroll</span>
-              <span style={{ display: 'inline-block', width: '36px', height: '1px', background: 'rgba(171,248,47,0.3)' }} />
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(171,248,47,0.5)" strokeWidth="2.5">
+              <span style={{ display: 'inline-block', width: '36px', height: '1px', background: 'rgba(227,194,74,0.3)' }} />
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(227,194,74,0.5)" strokeWidth="2.5">
                 <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
               </svg>
             </div>
@@ -156,8 +156,8 @@ export default function Testimonials() {
               flexShrink: 0,
               width: 'clamp(300px, 34vw, 460px)',
               display: 'flex', flexDirection: 'column',
-              background: '#0d0d0d',
-              border: '1px solid rgba(171,248,47,0.12)',
+              background: 'var(--green2)',
+              border: '1px solid rgba(227,194,74,0.12)',
               borderRadius: '16px', overflow: 'hidden',
             }}>
               {/* Image - FIXED: added width and height props */}
@@ -169,10 +169,10 @@ export default function Testimonials() {
                   height={380}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(0.7) grayscale(15%)' }}
                 />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, #0d0d0d 100%)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, rgba(12,59,46,1) 100%)' }} />
                 <div style={{
                   position: 'absolute', top: '14px', right: '14px',
-                  background: 'rgba(171,248,47,0.9)', color: 'var(--black)',
+                  background: 'rgba(227,194,74,0.9)', color: 'var(--black)',
                   fontSize: '9px', fontWeight: 700, letterSpacing: '0.12em',
                   textTransform: 'uppercase', padding: '4px 9px', borderRadius: '3px',
                 }}>
@@ -196,7 +196,7 @@ export default function Testimonials() {
                     alt={t.name}
                     width={36} 
                     height={36}
-                    style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(171,248,47,0.25)', flexShrink: 0 }}
+                    style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(227,194,74,0.25)', flexShrink: 0 }}
                   />
                   <div>
                     <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--white)', letterSpacing: '-0.01em' }}>{t.name}</div>
@@ -217,22 +217,22 @@ export default function Testimonials() {
             <div
               style={{
                 width: '148px', height: '148px', borderRadius: '50%',
-                border: '1px solid rgba(171,248,47,0.25)',
-                background: 'rgba(171,248,47,0.04)',
+                border: '1px solid rgba(227,194,74,0.25)',
+                background: 'rgba(227,194,74,0.04)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 textAlign: 'center', cursor: 'pointer',
                 transition: 'all 0.3s ease',
               }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement
-                el.style.background = 'rgba(171,248,47,0.1)'
-                el.style.borderColor = 'rgba(171,248,47,0.5)'
+                el.style.background = 'rgba(227,194,74,0.1)'
+                el.style.borderColor = 'rgba(227,194,74,0.5)'
                 el.style.transform = 'scale(1.06)'
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement
-                el.style.background = 'rgba(171,248,47,0.04)'
-                el.style.borderColor = 'rgba(171,248,47,0.25)'
+                el.style.background = 'rgba(227,194,74,0.04)'
+                el.style.borderColor = 'rgba(227,194,74,0.25)'
                 el.style.transform = 'scale(1)'
               }}
             >

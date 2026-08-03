@@ -67,7 +67,7 @@ export default function StickyMedia({ services, activeIndex }: { services: Servi
             position: 'absolute',
             top: '32px',
             right: '32px',
-            background: 'rgba(106,255,42,0.9)',
+            background: 'rgba(227,194,74,0.9)',
             color: 'var(--black)',
             fontSize: '10px',
             fontWeight: 700,

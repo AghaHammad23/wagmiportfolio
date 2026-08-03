@@ -121,7 +121,7 @@ export default function ServicesContent() {
   }
 
   return (
-    <main style={{ paddingTop: '52px' }}>
+    <main style={{ paddingTop: '52px', background: 'var(--hero-bg)' }}>
       <ServicesHero services={services} onPillClick={scrollToService} onScrollToServices={scrollToServices} />
 
       {/* Desktop sticky grid */}
@@ -161,7 +161,7 @@ export default function ServicesContent() {
                   )}
                   <div style={{
                     position: 'absolute', top: '14px', left: '14px',
-                    background: 'rgba(106,255,42,0.9)', color: 'var(--black)',
+                    background: 'rgba(227,194,74,0.9)', color: 'var(--black)',
                     fontSize: '9px', fontWeight: 700, letterSpacing: '0.1em',
                     textTransform: 'uppercase', padding: '5px 10px', borderRadius: '4px',
                   }}>
@@ -172,9 +172,9 @@ export default function ServicesContent() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                     <div style={{
                       width: '34px', height: '34px', borderRadius: '8px',
-                      border: '1px solid rgba(106,255,42,0.2)',
+                      border: '1px solid rgba(227,194,74,0.2)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: 'rgba(106,255,42,0.05)',
+                      background: 'rgba(227,194,74,0.05)',
                     }}>
                       <Icon size={15} color="var(--green)" />
                     </div>
@@ -192,7 +192,7 @@ export default function ServicesContent() {
                   <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {s.features.map((f, fi) => (
                       <li key={fi} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 400, color: 'var(--t3)' }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(106,255,42,0.6)', flexShrink: 0 }} />
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(227,194,74,0.6)', flexShrink: 0 }} />
                         {f}
                       </li>
                     ))}

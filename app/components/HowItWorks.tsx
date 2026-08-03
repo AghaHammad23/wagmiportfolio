@@ -35,7 +35,7 @@ const steps = [
   },
 ]
 
-const GREEN = '#ABF82F'
+const GREEN = '#E3C24A'
 const BLACK = '#000000'
 
 /* Easing */
@@ -224,7 +224,7 @@ export default function HowItWorks() {
   const boxShell: React.CSSProperties = {
     position: 'relative',
     borderRadius: '20px',
-    border: '1.5px solid rgba(106,255,42,0.22)',
+    border: '1.5px solid rgba(227,194,74,0.22)',
     overflow: 'hidden',
   }
   const absInset: React.CSSProperties = { position: 'absolute', inset: 0, zIndex: 0 }
@@ -256,7 +256,7 @@ export default function HowItWorks() {
         borderBottom: '1px solid var(--line2,rgba(255,255,255,0.08))',
         position: 'relative',
         overflow: 'hidden',
-        backgroundColor: '#0a0a0a', // dark base
+        backgroundColor: 'var(--section-bg)', // dark base
       }}
     >
       {/* Green background orb for line visibility */}
@@ -267,7 +267,7 @@ export default function HowItWorks() {
         transform: 'translate(-50%, -50%)',
         width: '80%',
         height: '80%',
-        background: 'radial-gradient(circle at 50% 30%, rgba(106,255,42,0.25) 0%, rgba(106,255,42,0) 70%)',
+        background: 'radial-gradient(circle at 50% 30%, rgba(227,194,74,0.25) 0%, rgba(227,194,74,0) 70%)',
         pointerEvents: 'none',
         borderRadius: '50%',
         filter: 'blur(60px)',

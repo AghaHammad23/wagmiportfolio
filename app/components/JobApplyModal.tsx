@@ -113,7 +113,7 @@ export default function JobApplyModal({ job, onClose }: { job: CareerCardData | 
   }
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    e.currentTarget.style.borderColor = 'rgba(171,248,47,0.4)'
+    e.currentTarget.style.borderColor = 'rgba(227,194,74,0.4)'
   }
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
@@ -163,8 +163,8 @@ export default function JobApplyModal({ job, onClose }: { job: CareerCardData | 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                   <span style={{
                     fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em',
-                    textTransform: 'uppercase', color: '#ABF82F',
-                    background: 'rgba(171,248,47,0.1)', padding: '3px 9px', borderRadius: '3px',
+                    textTransform: 'uppercase', color: '#E3C24A',
+                    background: 'rgba(227,194,74,0.1)', padding: '3px 9px', borderRadius: '3px',
                   }}>
                     {job?.department}
                   </span>
@@ -214,7 +214,7 @@ export default function JobApplyModal({ job, onClose }: { job: CareerCardData | 
                 >
                   <div style={{
                     width: '56px', height: '56px', borderRadius: '50%',
-                    background: 'rgba(171,248,47,0.1)', border: '1px solid rgba(171,248,47,0.3)',
+                    background: 'rgba(227,194,74,0.1)', border: '1px solid rgba(227,194,74,0.3)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     margin: '0 auto 24px', fontSize: '24px', color: 'var(--green)',
                   }}>
@@ -236,7 +236,7 @@ export default function JobApplyModal({ job, onClose }: { job: CareerCardData | 
                   </p>
                   {cvFile && (
                     <p style={{
-                      fontSize: '12px', fontWeight: 300, color: 'rgba(171,248,47,0.6)',
+                      fontSize: '12px', fontWeight: 300, color: 'rgba(227,194,74,0.6)',
                       maxWidth: '360px', margin: '0 auto 28px', lineHeight: 1.65,
                     }}>
                       Remember to attach <strong>{cvFile.name}</strong> before hitting send.
@@ -318,17 +318,17 @@ export default function JobApplyModal({ job, onClose }: { job: CareerCardData | 
                       onClick={() => fileInputRef.current?.click()}
                       style={{
                         width: '100%', padding: '12px 16px',
-                        border: `1px ${cvFile ? 'solid' : 'dashed'} ${cvFile ? 'rgba(171,248,47,0.4)' : 'rgba(255,255,255,0.12)'}`,
+                        border: `1px ${cvFile ? 'solid' : 'dashed'} ${cvFile ? 'rgba(227,194,74,0.4)' : 'rgba(255,255,255,0.12)'}`,
                         borderRadius: '4px', cursor: 'pointer',
                         display: 'flex', alignItems: 'center', gap: '10px',
-                        background: cvFile ? 'rgba(171,248,47,0.04)' : 'transparent',
+                        background: cvFile ? 'rgba(227,194,74,0.04)' : 'transparent',
                         transition: 'all 0.2s',
                       }}
                       onMouseEnter={e => { if (!cvFile) (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)' }}
                       onMouseLeave={e => { if (!cvFile) (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)' }}
                     >
                       <span style={{ fontSize: '16px' }}>{cvFile ? '📎' : '↑'}</span>
-                      <span style={{ fontSize: '13px', fontWeight: 300, color: cvFile ? 'rgba(171,248,47,0.8)' : 'var(--t3)', flex: 1 }}>
+                      <span style={{ fontSize: '13px', fontWeight: 300, color: cvFile ? 'rgba(227,194,74,0.8)' : 'var(--t3)', flex: 1 }}>
                         {cvFile ? cvFile.name : 'Click to select PDF or DOC'}
                       </span>
                       {cvFile && (
@@ -373,7 +373,7 @@ export default function JobApplyModal({ job, onClose }: { job: CareerCardData | 
                       fontFamily: 'var(--font-bricolage), sans-serif',
                       fontSize: '14px', fontWeight: 700, letterSpacing: '0.02em',
                       color: 'var(--black)',
-                      background: submitting ? 'rgba(171,248,47,0.7)' : 'var(--green)',
+                      background: submitting ? 'rgba(227,194,74,0.7)' : 'var(--green)',
                       border: 'none', padding: '14px 32px', borderRadius: '4px',
                       cursor: submitting ? 'not-allowed' : 'pointer',
                       transition: 'transform 0.15s, background 0.2s',

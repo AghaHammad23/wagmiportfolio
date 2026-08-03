@@ -77,7 +77,7 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
   }
 
   const focusBorder = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    e.currentTarget.style.borderColor = 'rgba(106,255,42,0.4)'
+    e.currentTarget.style.borderColor = 'rgba(227,194,74,0.4)'
   }
   const blurBorder = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
@@ -182,7 +182,7 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
                 >
                   <div style={{
                     width: '56px', height: '56px', borderRadius: '50%',
-                    background: 'rgba(106,255,42,0.1)', border: '1px solid rgba(106,255,42,0.3)',
+                    background: 'rgba(227,194,74,0.1)', border: '1px solid rgba(227,194,74,0.3)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     margin: '0 auto 24px', fontSize: '24px', color: 'var(--green)',
                   }}>✓</div>
@@ -304,7 +304,7 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
                       fontFamily: 'var(--font-bricolage), sans-serif',
                       fontSize: '14px', fontWeight: 700, letterSpacing: '0.02em',
                       color: 'var(--black)',
-                      background: submitting ? 'rgba(106,255,42,0.7)' : 'var(--green)',
+                      background: submitting ? 'rgba(227,194,74,0.7)' : 'var(--green)',
                       border: 'none', padding: '14px 32px',
                       borderRadius: '4px',
                       cursor: submitting ? 'not-allowed' : 'pointer',

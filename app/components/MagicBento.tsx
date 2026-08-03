@@ -29,7 +29,7 @@ interface MagicBentoProps {
 
 const DEFAULT_PARTICLE_COUNT = 10
 const DEFAULT_SPOTLIGHT_RADIUS = 280
-const DEFAULT_GLOW_COLOR = '171, 248, 47'
+const DEFAULT_GLOW_COLOR = '227,194,74'
 const MOBILE_BREAKPOINT = 768
 
 /* ─── Grid span algorithm ──────────────────────────────────── */
@@ -305,9 +305,9 @@ export default function MagicBento({
   const spans = computeSpans(cards.length)
 
   const deptColor: Record<string, string> = {
-    Production: 'rgba(171,248,47,0.12)',
-    Strategy: 'rgba(171,248,47,0.09)',
-    Creative: 'rgba(171,248,47,0.10)',
+    Production: 'rgba(227,194,74,0.12)',
+    Strategy: 'rgba(227,194,74,0.09)',
+    Creative: 'rgba(227,194,74,0.10)',
   }
 
   const renderContent = (card: CareerCardData, wide: boolean) => (
@@ -316,7 +316,7 @@ export default function MagicBento({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '20px' }}>
         <span style={{
           fontSize: '9px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
-          color: '#ABF82F', background: deptColor[card.department] ?? 'rgba(171,248,47,0.1)',
+          color: '#E3C24A', background: deptColor[card.department] ?? 'rgba(227,194,74,0.1)',
           padding: '4px 10px', borderRadius: '4px',
         }}>
           {card.department}
@@ -354,7 +354,7 @@ export default function MagicBento({
       <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '7px', marginBottom: '24px', flex: 1 }}>
         {card.requirements.slice(0, wide ? 3 : 2).map((req, j) => (
           <li key={j} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', fontSize: '12px', fontWeight: 300, color: 'rgba(255,255,255,0.35)', lineHeight: 1.55 }}>
-            <span style={{ color: 'rgba(171,248,47,0.55)', marginTop: '2px', flexShrink: 0, fontSize: '9px' }}>✓</span>
+            <span style={{ color: 'rgba(227,194,74,0.55)', marginTop: '2px', flexShrink: 0, fontSize: '9px' }}>✓</span>
             {req}
           </li>
         ))}
@@ -374,7 +374,7 @@ export default function MagicBento({
         style={{
           display: 'inline-flex', alignItems: 'center', gap: '6px',
           fontSize: '12px', fontWeight: 700, fontFamily: 'var(--font-bricolage), sans-serif',
-          color: '#000', background: '#ABF82F',
+          color: '#000', background: '#E3C24A',
           padding: '10px 20px', borderRadius: '6px',
           border: 'none', cursor: 'pointer',
           transition: 'transform 0.15s, opacity 0.15s',
@@ -391,7 +391,7 @@ export default function MagicBento({
   const baseClass = `mb-card flex flex-col ${enableBorderGlow ? 'mb-card--glow' : ''}`
 
   const cardStyle = (span: number): React.CSSProperties => ({
-    backgroundColor: '#0a0a0a',
+    backgroundColor: 'var(--section-bg)',
     border: '1px solid rgba(255,255,255,0.07)',
     borderRadius: '12px',
     padding: 'clamp(20px, 2.5vw, 28px)',

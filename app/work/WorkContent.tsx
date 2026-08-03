@@ -308,7 +308,7 @@ export default function WorkContent() {
   const current = clients[activeSlide]
 
   return (
-    <main>
+    <main style={{ background: 'var(--hero-bg)' }}>
       {/* ── FULL-SCREEN VIDEO OVERLAY ──────────────────────────────────────── */}
       {overlayMounted && (
         <motion.div
@@ -320,7 +320,7 @@ export default function WorkContent() {
             position: 'fixed',
             inset: 0,
             zIndex: 999,
-            background: '#000',
+            background: 'var(--hero-bg)',
             overflow: 'hidden',
           }}
         >
@@ -576,6 +576,7 @@ export default function WorkContent() {
           textAlign: 'center',
           padding: 'clamp(80px, 12vw, 160px) var(--pad)',
           paddingTop: '80px',
+          background: 'var(--hero-bg)',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -584,7 +585,7 @@ export default function WorkContent() {
           position: 'absolute',
           width: '700px',
           height: '700px',
-          background: 'radial-gradient(circle, rgba(106,255,42,0.03) 0%, transparent 60%)',
+          background: 'radial-gradient(circle, rgba(227,194,74,0.03) 0%, transparent 60%)',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%,-50%)',

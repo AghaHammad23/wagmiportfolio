@@ -93,7 +93,7 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
         alignItems: 'center',
         gap: '10px',
         padding: 'clamp(12px, 1.5vw, 16px) clamp(20px, 2.5vw, 32px)',
-        border: '1px solid rgba(106,255,42,0.2)',
+        border: '1px solid rgba(227,194,74,0.2)',
         background: 'transparent',
         borderRadius: '999px',
         cursor: 'pointer',
@@ -105,7 +105,7 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
         zIndex: 0,
         willChange: 'transform', // Optimize for performance
       }}
-      whileHover={{ borderColor: 'rgba(106,255,42,0.6)' }}
+      whileHover={{ borderColor: 'rgba(227,194,74,0.6)' }}
     >
       <span
         ref={fillRef}

@@ -207,7 +207,7 @@ function SocialLink({
         transition-all duration-200
         hover:border-(--green)
         hover:text-(--green)
-        hover:bg-[rgba(106,255,42,0.06)]
+        hover:bg-[rgba(227,194,74,0.06)]
         hover:-translate-y-0.5
         shrink-0
       "

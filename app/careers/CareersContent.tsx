@@ -129,6 +129,7 @@ export default function CareersContent() {
         justifyContent: 'center',
         textAlign: 'center',
         padding: 'clamp(80px, 10vw, 120px) var(--pad) clamp(60px, 8vw, 100px)',
+        background: 'var(--hero-bg)',
         borderBottom: '1px solid var(--line2)',
         position: 'relative',
         overflow: 'hidden',
@@ -136,7 +137,7 @@ export default function CareersContent() {
         {/* Grid background */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 0,
-          backgroundImage: 'linear-gradient(rgba(106,255,42,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.05) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(227,194,74,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(227,194,74,0.05) 1px, transparent 1px)',
           backgroundSize: '94px 94px',
           pointerEvents: 'none',
         }} />
@@ -145,7 +146,7 @@ export default function CareersContent() {
         <div style={{
           position: 'absolute', zIndex: 0,
           width: '800px', height: '800px',
-          background: 'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(227,194,74,0.05) 0%, transparent 65%)',
           top: '40%', left: '50%', transform: 'translate(-50%,-50%)',
           pointerEvents: 'none',
         }} />
@@ -228,7 +229,7 @@ export default function CareersContent() {
             <motion.div
               animate={{ y: [0, 6, 0] }}
               transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-              style={{ color: 'rgba(106,255,42,0.5)', fontSize: '18px' }}
+              style={{ color: 'rgba(227,194,74,0.5)', fontSize: '18px' }}
             >
               ↓
             </motion.div>
@@ -239,7 +240,7 @@ export default function CareersContent() {
       <div ref={revealRef}>
 
         {/* ── Open Roles ───────────────────────────────────── */}
-        <section ref={openRolesRef} id="open-roles" style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', borderBottom: '1px solid var(--line2)' }}>
+        <section ref={openRolesRef} id="open-roles" style={{ padding: 'clamp(80px, 10vw, 120px) var(--pad)', background: 'var(--section-bg)', borderBottom: '1px solid var(--line2)' }}>
           <div style={{ maxWidth: 'var(--max)', margin: '0 auto' }}>
             <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t2)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
@@ -261,7 +262,7 @@ export default function CareersContent() {
                 clickEffect={true}
                 particleCount={8}
                 spotlightRadius={280}
-                glowColor="171, 248, 47"
+                glowColor="227,194,74"
               />
             </div>
           </div>
@@ -277,13 +278,14 @@ export default function CareersContent() {
         {/* ── Open Application ─────────────────────────────── */}
         <section style={{
           padding: 'clamp(80px, 12vw, 140px) var(--pad)',
+          background: 'var(--hero-bg)',
           borderBottom: '1px solid var(--line2)',
           position: 'relative', overflow: 'hidden',
         }}>
           {/* BG glow */}
           <div style={{
             position: 'absolute', width: '800px', height: '800px',
-            background: 'radial-gradient(circle, rgba(171,248,47,0.03) 0%, transparent 60%)',
+            background: 'radial-gradient(circle, rgba(227,194,74,0.03) 0%, transparent 60%)',
             top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
             pointerEvents: 'none',
           }} />
@@ -315,13 +317,13 @@ export default function CareersContent() {
 
               {/* Right — CTAs */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
-                <div style={{ borderLeft: '2px solid rgba(171,248,47,0.3)', paddingLeft: '20px' }}>
+                <div style={{ borderLeft: '2px solid rgba(227,194,74,0.3)', paddingLeft: '20px' }}>
                   <div style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '8px' }}>
                     What to include
                   </div>
                   {['Your best work — links, portfolio, showreel', 'What role you\'re going for or creating', 'Why WAGMI specifically, not just any agency'].map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '6px', fontSize: '13px', fontWeight: 300, color: 'var(--t2)', lineHeight: 1.6 }}>
-                      <span style={{ color: 'rgba(171,248,47,0.5)', flexShrink: 0, marginTop: '2px', fontSize: '10px' }}>✓</span>
+                      <span style={{ color: 'rgba(227,194,74,0.5)', flexShrink: 0, marginTop: '2px', fontSize: '10px' }}>✓</span>
                       {item}
                     </div>
                   ))}

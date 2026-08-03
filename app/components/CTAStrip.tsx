@@ -73,7 +73,7 @@ export default function CTAStrip({
             right: 'var(--pad)',
             height: '1px',
             background:
-              'linear-gradient(to right, transparent, rgba(106,255,42,0.3), transparent)',
+              'linear-gradient(to right, transparent, rgba(227,194,74,0.3), transparent)',
           }}
         />
 
@@ -87,7 +87,7 @@ export default function CTAStrip({
             width: '420px',
             height: '420px',
             background:
-              'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 65%)',
+              'radial-gradient(circle, rgba(227,194,74,0.05) 0%, transparent 65%)',
             pointerEvents: 'none',
           }}
         />

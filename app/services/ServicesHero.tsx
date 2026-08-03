@@ -22,6 +22,7 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
         justifyContent: 'center',
         textAlign: 'center',
         padding: 'clamp(80px, 10vw, 120px) var(--pad) clamp(60px, 8vw, 100px)',
+        background: 'var(--hero-bg)',
         borderBottom: '1px solid var(--line2)',
         position: 'relative',
         overflow: 'hidden',
@@ -30,7 +31,7 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
       {/* Grid background - optimized with will-change */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 0,
-        backgroundImage: 'linear-gradient(rgba(106,255,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(106,255,42,0.03) 1px, transparent 1px)',
+        backgroundImage: 'linear-gradient(rgba(227,194,74,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(227,194,74,0.03) 1px, transparent 1px)',
         backgroundSize: '64px 64px',
         pointerEvents: 'none',
         willChange: 'transform', // Optimize for performance
@@ -40,7 +41,7 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
       <div style={{
         position: 'absolute', zIndex: 0,
         width: '800px', height: '800px',
-        background: 'radial-gradient(circle, rgba(106,255,42,0.05) 0%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(227,194,74,0.05) 0%, transparent 65%)',
         top: '40%', left: '50%', transform: 'translate(-50%,-50%)',
         pointerEvents: 'none',
         willChange: 'transform', // Optimize for performance
@@ -132,7 +133,7 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }} // Slightly faster
-            style={{ color: 'rgba(106,255,42,0.5)', fontSize: '18px' }}
+            style={{ color: 'rgba(227,194,74,0.5)', fontSize: '18px' }}
           >
             ↓
           </motion.div>

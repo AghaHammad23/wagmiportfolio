@@ -134,7 +134,7 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
                 paddingLeft: 'calc(var(--pad) + 16px)',
               }}
             >
-              <div style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '44px', fontWeight: 800, color: isLast ? 'rgba(171,248,47,0.07)' : 'rgba(255,255,255,0.05)', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: '10px' }}>{p.step}</div>
+              <div style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '44px', fontWeight: 800, color: isLast ? 'rgba(227,194,74,0.07)' : 'rgba(255,255,255,0.05)', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: '10px' }}>{p.step}</div>
               <div style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: '17px', fontWeight: 700, color: isLast ? 'var(--green)' : 'var(--white)', marginBottom: '8px', letterSpacing: '-0.01em' }}>{p.title}</div>
               <div style={{ fontSize: '13px', fontWeight: 300, lineHeight: 1.7, color: 'var(--t3)', marginBottom: isLast ? '20px' : 0 }}>{p.desc}</div>
               {isLast && (
@@ -219,7 +219,7 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
                   fontSize: 'clamp(36px, 5vw, 64px)',
                   fontWeight: 800,
                   letterSpacing: '-0.04em',
-                  color: 'rgba(106,255,42,0)',
+                  color: 'rgba(227,194,74,0)',
                   WebkitTextStroke: '1px var(--green)',
                   transition: 'color 0.7s ease',
                   lineHeight: 1,
@@ -268,8 +268,8 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
       <style>{`
         .stair-step.step-active {
           border-top-color: var(--green) !important;
-          box-shadow: 0 -4px 20px rgba(106,255,42,0.2);
-          background: rgba(106,255,42,0.03);
+          box-shadow: 0 -4px 20px rgba(227,194,74,0.2);
+          background: rgba(227,194,74,0.03);
         }
         .stair-step.step-active .step-number {
           color: var(--green) !important;

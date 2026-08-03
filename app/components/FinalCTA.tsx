@@ -32,7 +32,7 @@ export default function FinalCTA() {
         <DotGrid
           dotSize={4}
           gap={22}
-          baseColor="#111111"
+          baseColor="#0C3B2E"
           activeColor="#6AFF2A"
           proximity={140}
           shockRadius={320}
@@ -68,7 +68,7 @@ export default function FinalCTA() {
             position: 'absolute',
             width: '700px',
             height: '700px',
-            background: 'radial-gradient(circle, rgba(106,255,42,0.07) 0%, transparent 60%)',
+            background: 'radial-gradient(circle, rgba(227,194,74,0.07) 0%, transparent 60%)',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -164,7 +164,7 @@ export default function FinalCTA() {
           {['First content live in 48 hours after onboarding', '100% done for you', '90-Day Traction Guarantee'].map(
             item => (
               <span key={item}>
-                <span style={{ color: 'rgba(106,255,42,0.6)', marginRight: '4px' }}>✓</span>
+                <span style={{ color: 'rgba(227,194,74,0.6)', marginRight: '4px' }}>✓</span>
                 {item}
               </span>
             )

@@ -99,7 +99,7 @@ export default function PerksStack({ perks }: { perks: Perk[] }) {
     >
       {/* Background orbs */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', width: '1000px', height: '1000px', borderRadius: '80%', background: 'radial-gradient(circle, rgba(171,248,47,0.13) 0%, transparent 65%)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+        <div style={{ position: 'absolute', width: '1000px', height: '1000px', borderRadius: '80%', background: 'radial-gradient(circle, rgba(227,194,74,0.13) 0%, transparent 65%)', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
        
       </div>
       {/* Header */}
@@ -138,8 +138,8 @@ export default function PerksStack({ perks }: { perks: Perk[] }) {
             className="perk-card"
             style={{
               position: 'absolute', inset: 0,
-              background: '#0d0d0d',
-              border: '1px solid rgba(171,248,47,0.2)',
+              background: 'var(--green2)',
+              border: '1px solid rgba(227,194,74,0.2)',
               borderRadius: '20px',
               padding: 'clamp(24px, 3.5vw, 40px)',
               display: 'flex', alignItems: 'center', gap: '24px',
@@ -148,7 +148,7 @@ export default function PerksStack({ perks }: { perks: Perk[] }) {
             }}
           >
             {/* Image */}
-            <div style={{ flexShrink: 0, width: '72px', height: '72px', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(171,248,47,0.18)' }}>
+            <div style={{ flexShrink: 0, width: '72px', height: '72px', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(227,194,74,0.18)' }}>
               <Image
                 src={p.img}
                 alt={p.title}

@@ -104,15 +104,15 @@ export default function ServicesStickyGrid({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                   <div style={{
                     width: '40px', height: '40px', borderRadius: '10px',
-                    border: '1px solid rgba(106,255,42,0.2)',
+                    border: '1px solid rgba(227,194,74,0.2)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(106,255,42,0.05)',
+                    background: 'rgba(227,194,74,0.05)',
                   }}>
                     <Icon size={18} color="var(--green)" />
                   </div>
                   <span style={{
                     fontSize: '10px', fontWeight: 500, letterSpacing: '0.1em',
-                    textTransform: 'uppercase', color: 'rgba(106,255,42,0.6)',
+                    textTransform: 'uppercase', color: 'rgba(227,194,74,0.6)',
                   }}>
                     {s.tag}
                   </span>
@@ -142,7 +142,7 @@ export default function ServicesStickyGrid({
                     }}>
                       <span style={{
                         width: '5px', height: '5px', borderRadius: '50%',
-                        background: 'rgba(106,255,42,0.6)', flexShrink: 0,
+                        background: 'rgba(227,194,74,0.6)', flexShrink: 0,
                       }} />
                       {f}
                     </li>

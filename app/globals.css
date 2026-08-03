@@ -50,6 +50,10 @@ html {
 }
 
 body {
+  /* Base canvas — any section without its own background inherits the theme
+     instead of falling through to browser white. */
+  background: var(--hero-bg);
+  color: var(--t1);
   overflow-x: hidden;
   cursor: default;
 }
@@ -62,7 +66,7 @@ body {
   border-radius: 2px;
   transition: background 0.2s;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(106,255,42,0.35); }
+::-webkit-scrollbar-thumb:hover { background: rgba(227,194,74,0.35); }
 * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) var(--off); }
 
 /* ─── GRAIN OVERLAY ────────────────────────────────── */
@@ -105,8 +109,8 @@ body::after {
 }
 
 select option {
-  background: #111111;
-  color: #ffffff;
+  background: #0C3B2E;
+  color: #F4F1D6;
 }
 
 /* ─── MOBILE ────────────────────────────────────────── */
