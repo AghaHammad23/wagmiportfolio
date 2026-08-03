@@ -35,7 +35,7 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   title: 'WAGMI',
   description:
-    'Scripts. Editing. Strategy. Distribution. We run the entire operation — so you stop creating content that gets views and start creating content that gets paid.',
+    'Scripts, recording, editing, distribution, and weekly optimization — we run the entire content operation on 60 minutes of your time a week, so you stop creating content that gets views and start creating content that gets paid.',
 }
 
 export default function RootLayout({

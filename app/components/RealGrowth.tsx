@@ -35,7 +35,7 @@ const slides: Slide[] = [
     id: 'dana-alvarez',
     video: '/heroVideo.mp4',
     quote:
-      'One recording day a month replaced an entire in-house team. Our pipeline doubled in a quarter and the cost went down.',
+      'One hour of recording a week replaced an entire in-house team. Our pipeline doubled in a quarter and the cost went down.',
     name: 'Dana Alvarez',
     role: 'Managing Partner, North Peak',
     avatar: '/pic.png',

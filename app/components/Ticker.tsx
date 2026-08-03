@@ -10,16 +10,16 @@ const sets: Record<TickerVariant, Item[]> = {
     { text: '60-Min Recording' },
     { text: 'Elite Editing', hi: true },
     { text: 'Distribution' },
-    { text: 'Weekly Optimisation', hi: true },
+    { text: 'Weekly Optimization', hi: true },
     { text: 'Done For You' },
   ],
   // After the bonus table / guarantees → before the testimonials.
   proof: [
-    { text: '7 Billion Views Generated', hi: true },
-    { text: '300+ Brands Served' },
-    { text: '220+ Assets a Month', hi: true },
-    { text: 'First Content Live in 48h' },
-    { text: '90-Day Traction Guarantee', hi: true },
+    { text: '200+ Assets Produced', hi: true },
+    { text: '12 to 24 Hr Delivery' },
+    { text: '60 Minutes of Your Time', hi: true },
+    { text: 'Delivery Guarantee' },
+    { text: '100k Audience in 90 Days', hi: true },
     { text: 'Real Growth. Real Numbers.' },
   ],
   // After the testimonials → before the closing CTA.

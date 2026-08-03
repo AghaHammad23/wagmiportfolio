@@ -631,7 +631,7 @@ export default function WorkContent() {
             margin: '0 auto 40px',
             lineHeight: 1.7,
           }}>
-            Limited spots available. Apply and we&apos;ll get back to you within 48 hours.
+            We take on 2 new clients a month. Apply and we&apos;ll get back to you within 48 hours.
           </p>
 
           <button

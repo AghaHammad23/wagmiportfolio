@@ -31,7 +31,7 @@ const services = [
     icon: (props: any) => <RiVideoLine {...props} />,
     title: 'Short-Form Video',
     tag: 'Distribution',
-    desc: 'Shorts, Reels, and TikToks that perform. We handle editing, captions, music, and posting cadence — turning your long-form content into a short-form machine that runs 7 days a week.',
+    desc: 'Shorts, Reels, and TikToks that perform. We handle editing, captions, music, and posting cadence — turning one recording session into a short-form machine that publishes 7 days a week without you.',
     features: ['Multi-platform formatting', 'Caption design', 'Trend integration', 'A/B hook testing'],
     media: { type: 'video', src: '/heroVideo.mp4' },
   },
@@ -47,8 +47,8 @@ const services = [
     icon: (props: any) => <RiLineChartLine {...props} />,
     title: 'Content Strategy',
     tag: 'Growth Engine',
-    desc: "We don't guess. Every 90-day roadmap is built on data: your audience, your competitors, and what's already working in your niche. Then we build a system that compounds over time.",
-    features: ['90-day roadmap', 'Competitor analysis', 'Content pillar mapping', 'Weekly performance reviews'],
+    desc: "We don't guess. Every roadmap is built on data: your audience, your competitors, and what's already working in your niche. Then we rebuild it every week, so the system compounds instead of going stale.",
+    features: ['Weekly roadmap', 'Competitor analysis', 'Content pillar mapping', 'Weekly performance reviews'],
     media: { type: 'image', src: '/logo.png' },
   },
   {
@@ -61,19 +61,21 @@ const services = [
   },
   {
     icon: (props: any) => <RiSearchLine {...props} />,
-    title: 'Weekly Optimisation',
+    title: 'Weekly Optimization',
     tag: 'Compounding',
-    desc: "The system gets sharper every week. We analyse performance data, kill what's not working, and double down on what is. This is how channels go from 10K to 1M — iteration, not luck.",
+    desc: "The system gets sharper every week. We analyse performance data, kill what's not working, and double down on what is. This is how content stops chasing views and starts booking calls — iteration, not luck.",
     features: ['Weekly analytics report', 'Trend monitoring', 'Format experimentation', 'Monthly strategy calls'],
     media: { type: 'video', src: '/heroVideo.mp4' },
   },
 ]
 
+/* The five layers — mirrors the FiveLayers section on the homepage. */
 const process = [
-  { step: '01', title: 'Application', desc: 'Fill out our short application. We review every submission personally and respond within 48 hours.' },
-  { step: '02', title: 'Strategy Call', desc: 'A 30-minute call with our team to understand your brand, goals, and current content situation.' },
-  { step: '03', title: 'Custom Roadmap', desc: 'We build a 90-day content roadmap tailored to your niche, audience, and growth target.' },
-  { step: '04', title: 'We Execute', desc: 'Production begins. You review, approve, and post. We handle everything else — every week.' },
+  { step: '01', title: 'Script Architecture', desc: 'We turn your expertise into high-performing psychological hooks and scripts.' },
+  { step: '02', title: '60-Min Recording', desc: 'Record your monthly volume in a single streamlined, high-energy session.' },
+  { step: '03', title: 'Elite Editing', desc: 'Cinema-grade assets designed for retention and brand authority.' },
+  { step: '04', title: 'Distribution', desc: 'Every asset published across platforms on a schedule built for compounding reach.' },
+  { step: '05', title: 'Optimization', desc: 'We read the data every week and feed the winners straight back into the next batch.' },
 ]
 
 export default function ServicesContent() {
@@ -121,7 +123,7 @@ export default function ServicesContent() {
   }
 
   return (
-    <main style={{ paddingTop: '52px', background: 'var(--hero-bg)' }}>
+    <main style={{ paddingTop: '72px', background: 'var(--hero-bg)' }}>
       <ServicesHero services={services} onPillClick={scrollToService} onScrollToServices={scrollToServices} />
 
       {/* Desktop sticky grid */}

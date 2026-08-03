@@ -10,7 +10,6 @@ import Dock, { type DockItemData } from './Dock'
 import {
   HiHome,
   HiBriefcase,
-  HiSparkles,
   HiUserGroup,
   HiAcademicCap,
   HiPaperAirplane,
@@ -19,7 +18,9 @@ import {
 const navLinks = [
   { label: 'Home', href: '/', icon: <HiHome size={18} /> },
   { label: 'Work', href: '/work', icon: <HiBriefcase size={18} /> },
-  { label: 'Services', href: '/services', icon: <HiSparkles size={18} /> },
+  // Services is hidden from navigation for now — the route still exists and is
+  // reachable directly at /services.
+  // { label: 'Services', href: '/services', icon: <HiSparkles size={18} /> },
   { label: 'Meet the Team', href: '/meet-the-team', icon: <HiUserGroup size={18} /> },
   { label: 'Careers', href: '/careers', icon: <HiAcademicCap size={18} /> },
 ]
@@ -31,8 +32,18 @@ export default function Navbar() {
   const router = useRouter()
   const { open } = useApply()
   const [menuOpen, setMenuOpen] = useState(false)
+  // The bottom dock stays hidden while the page is at the top and slides up
+  // once the user scrolls away from it.
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => { setMenuOpen(false) }, [pathname])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 120)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -56,6 +67,83 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Desktop top header — logo left, links centre, CTA right */}
+      <header
+        className="desktop-header"
+        style={{
+          /* Absolute, not fixed: it sits on the page and scrolls away with the
+             hero rather than animating out on its own. */
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          height: '72px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '24px',
+          padding: '0 var(--pad)',
+          background: 'transparent',
+        }}
+      >
+        {/* Logo */}
+        <Link
+          href="/"
+          style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}
+        >
+          <Image src="/logo.png" alt="WAGMI Media" width={116} height={30} priority />
+        </Link>
+
+        {/* Centre links */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 'clamp(18px, 2.4vw, 38px)' }}>
+          {navLinks.map(({ label, href }) => {
+            const isActive = pathname === href
+            return (
+              <Link
+                key={href}
+                href={href}
+                className="header-link"
+                style={{
+                  position: 'relative',
+                  fontFamily: 'var(--font-jakarta), sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: isActive ? 'var(--hero-gold)' : 'var(--hero-cream)',
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.25s ease',
+                }}
+              >
+                {label}
+                <span
+                  aria-hidden="true"
+                  className="header-underline"
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: '-6px',
+                    height: '1px',
+                    background: 'var(--hero-gold)',
+                    transform: `scaleX(${isActive ? 1 : 0})`,
+                    transformOrigin: 'left center',
+                    transition: 'transform 0.3s cubic-bezier(0.22,1,0.36,1)',
+                  }}
+                />
+              </Link>
+            )
+          })}
+        </nav>
+
+        {/* CTA */}
+        <button onClick={open} className="header-cta">
+          Book a Call
+        </button>
+      </header>
+
       {/* Mobile-only top bar */}
       <nav
         className="mobile-nav"
@@ -125,15 +213,20 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Desktop dock — fixed at bottom */}
+      {/* Desktop dock — hidden at the top of the page, slides up on scroll */}
       <div
         className="desktop-dock"
+        aria-hidden={!scrolled}
         style={{
           position: 'fixed',
           bottom: 0,
           left: 0,
           right: 0,
           zIndex: 1000,
+          transform: scrolled ? 'translateY(0)' : 'translateY(120%)',
+          opacity: scrolled ? 1 : 0,
+          pointerEvents: scrolled ? 'auto' : 'none',
+          transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease',
         }}
       >
         <Dock
@@ -236,13 +329,42 @@ export default function Navbar() {
       </AnimatePresence>
 
       <style>{`
+        .header-link:hover { color: var(--hero-gold) !important; }
+        .header-link:hover .header-underline { transform: scaleX(1) !important; }
+
+        .header-cta {
+          flex-shrink: 0;
+          font-family: var(--font-jakarta), sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--hero-bg);
+          background: var(--card-cream);
+          border: 1px solid transparent;
+          border-radius: 999px;
+          padding: 11px 24px;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: background 0.28s ease, color 0.28s ease, transform 0.28s ease, box-shadow 0.28s ease;
+        }
+        .header-cta:hover {
+          background: var(--hero-gold);
+          transform: translateY(-2px);
+          box-shadow: 0 10px 26px rgba(227,194,74,0.28);
+        }
+
         @media (min-width: 769px) {
           .mobile-nav { display: none !important; }
         }
         @media (max-width: 768px) {
-          .desktop-dock { display: none !important; }
+          .desktop-dock, .desktop-header { display: none !important; }
         }
-
+        /* Drop the centre links before they collide with the logo and CTA */
+        @media (max-width: 1080px) and (min-width: 769px) {
+          .desktop-header nav { gap: 16px !important; }
+          .desktop-header nav a { font-size: 11px !important; }
+        }
       `}</style>
     </>
   )

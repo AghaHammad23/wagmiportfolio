@@ -45,31 +45,32 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
 
   const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     if (!fillRef.current || !pillRef.current) return
-    
+
     const rect = pillRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    
+
+    // Reset colors immediately rather than in the tween's onComplete: re-entering
+    // the pill mid-shrink makes GSAP overwrite that tween, which skips onComplete
+    // and would strand the hover colors permanently. The CSS colour transition on
+    // the text/icon still animates the fade out.
+    if (textRef.current) {
+      textRef.current.style.color = ''
+    }
+    if (iconRef.current) {
+      iconRef.current.style.color = ''
+      iconRef.current.style.opacity = ''
+    }
+
     requestAnimationFrame(() => {
       if (!fillRef.current) return
       gsap.to(fillRef.current, {
         scale: 0,
+        opacity: 0,
         left: x,
         top: y,
         duration: 0.3, // Reduced duration
         ease: 'power2.in',
-        onComplete: () => {
-          if (!fillRef.current) return
-          gsap.set(fillRef.current, { opacity: 0 })
-          // Reset text colors
-          if (textRef.current) {
-            textRef.current.style.color = ''
-          }
-          if (iconRef.current) {
-            iconRef.current.style.color = ''
-            iconRef.current.style.opacity = ''
-          }
-        },
       })
     })
   }, [])

@@ -95,7 +95,7 @@ export default function ServicesHero({ services, onPillClick, onScrollToServices
             margin: '0 auto clamp(48px, 7vw, 80px)',
           }}
         >
-          We don&apos;t offer à la carte. We build the entire content engine — strategy, production, distribution, and optimisation — all under one roof.
+          We don&apos;t offer à la carte. We build the entire content engine — scripts, recording, editing, distribution, and weekly optimization — on 60 minutes of your time a week.
         </motion.p>
 
         {/* Service pills - reduced stagger delay */}

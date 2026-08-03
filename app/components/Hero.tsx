@@ -43,8 +43,9 @@ export default function Hero() {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        /* Top pad clears the 52px fixed navbar; section fills exactly one viewport. */
-        padding: '68px var(--pad) clamp(20px, 3vh, 40px)',
+        /* Top pad clears the fixed header (72px desktop / 52px mobile bar);
+           section fills exactly one viewport. */
+        padding: '86px var(--pad) clamp(20px, 3vh, 40px)',
         height: '100dvh',
         minHeight: '100dvh',
         position: 'relative',

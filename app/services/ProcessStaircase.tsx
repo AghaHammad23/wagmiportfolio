@@ -40,7 +40,8 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
       if (st) st.kill()
     }
 
-    const targetHeights = [32, 56, 78, 100] // %
+    // Even staircase rise, derived from the step count so any length works.
+    const targetHeights = steps.map((_, i) => 30 + ((100 - 30) * i) / (steps.length - 1)) // %
 
     // Reset initial states
     gsap.set(steps, { height: '0%' })
@@ -114,11 +115,11 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
         <div style={{ padding: 'clamp(72px, 9vw, 112px) var(--pad) clamp(36px, 4.5vw, 52px)', maxWidth: 'var(--max)', margin: '0 auto' }}>
           <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t4)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ width: '16px', height: '1px', background: 'var(--t4)', display: 'inline-block' }} />
-            How We Onboard You
+            The Five Layers
           </div>
           <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white)' }}>
-            Four steps from{' '}
-            <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>application to execution.</em>
+            60 minutes a week, from{' '}
+            <em style={{ fontStyle: 'normal', color: 'var(--t3)' }}>script to scale.</em>
           </h2>
         </div>
         {process.map((p, i) => {
@@ -176,11 +177,11 @@ export default function ProcessStaircase({ process, onApplyClick, isMobile }: Pr
       <div style={{ padding: 'clamp(72px, 9vw, 112px) var(--pad) clamp(36px, 4.5vw, 52px)', maxWidth: 'var(--max)', margin: '0 auto', width: '100%' }}>
         <div className="reveal" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--t2)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ width: '16px', height: '1px', background: 'var(--green)', display: 'inline-block' }} />
-          How We Onboard You
+          The Five Layers
         </div>
         <h2 className="reveal" style={{ fontFamily: 'var(--font-bricolage), sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.06, color: 'var(--white)' }}>
-          Four steps from{' '}
-          <em style={{ fontStyle: 'normal', color: 'var(--green)' }}>application to execution.</em>
+          60 minutes a week, from{' '}
+          <em style={{ fontStyle: 'normal', color: 'var(--green)' }}>script to scale.</em>
         </h2>
       </div>
 

@@ -17,14 +17,14 @@ const team = [
   {
     name: 'Agha Saad',
     role: 'Founder & CEO',
-    bio: 'Agha built WAGMI Media from the ground up after seeing too many talented creators leave views on the table. He\'s the strategic mind behind every content engine we\'ve built — from 0 to 14M subscribers.',
+    bio: 'Agha built WAGMI Media from the ground up after watching too many strong offers stall behind weak content. He\'s the strategic mind behind every content engine we\'ve built — each one running on 60 minutes of the client\'s time a week.',
     tag: 'Strategy · Vision · Growth',
     initials: 'AS',
     headshot: '/team/saadP.png',
     portrait: '/team/agha-saad.png',
     stats: [
-      { label: 'Channels Scaled', value: '300+' },
-      { label: 'Views Generated', value: '7B+' },
+      { label: 'Assets Produced', value: '200+' },
+      { label: 'Client Input', value: '60 min' },
       { label: 'Years Experience', value: '8' },
     ],
     quote: 'Great content without a system is just luck. We build the system.',
@@ -47,7 +47,7 @@ const team = [
   {
     name: 'Zubair Ahmad',
     role: 'Lead Strategist',
-    bio: 'Zubair turns data into content roadmaps. With a background in brand strategy and 5 years of YouTube channel growth, he\'s the person responsible for the 90-day plans that actually work.',
+    bio: 'Zubair turns data into content roadmaps. With a background in brand strategy and 5 years of YouTube channel growth, he\'s the person responsible for the weekly optimization loop that keeps the system compounding.',
     tag: 'Strategy · Analytics · Positioning',
     initials: 'ZA',
     headshot: '/team/zubair.png',
@@ -637,7 +637,7 @@ export default function TeamContent() {
               maxWidth: '380px', margin: '0 auto 40px',
               lineHeight: 1.7, position: 'relative', zIndex: 2,
             }}>
-              Apply today. Limited spots open each month.
+              Apply today. We take on 2 new clients a month.
             </p>
             
             <motion.div

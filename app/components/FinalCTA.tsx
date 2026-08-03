@@ -113,7 +113,7 @@ export default function FinalCTA() {
             zIndex: 1,
           }}
         >
-          Limited spots open each month. We respond to every application within 12 hours.
+          We take on 2 new clients a month. We respond to every application within 48 hours.
         </motion.h3>
 
         <motion.button
@@ -161,7 +161,7 @@ export default function FinalCTA() {
             zIndex: 1,
           }}
         >
-          {['First content live in 48 hours after onboarding', '100% done for you', '90-Day Traction Guarantee'].map(
+          {['12 to 24 hour delivery speed', '100% done for you', 'Delivery & Visibility Guarantees'].map(
             item => (
               <span key={item}>
                 <span style={{ color: 'rgba(227,194,74,0.6)', marginRight: '4px' }}>✓</span>
