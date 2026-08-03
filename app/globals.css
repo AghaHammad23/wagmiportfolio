@@ -16,11 +16,19 @@
   --sage:    rgba(106,255,42,0.45);
   --max:     1100px;
   --pad:     clamp(20px, 5vw, 80px);
+
+  /* Hero palette */
+  --hero-bg:      #001710;
+  --hero-panel:   #123D2E;
+  --hero-edge:    #7BD6A5;
+  --hero-cream:   #F4F1D6;
+  --hero-gold:    #E3C24A;
 }
 
 @theme inline {
   --font-bricolage: var(--font-bricolage);
   --font-jakarta:   var(--font-jakarta);
+  --font-anton:     var(--font-anton);
 }
 
 /* ─── BASE ─────────────────────────────────────────── */

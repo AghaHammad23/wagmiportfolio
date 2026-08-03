@@ -1,10 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useApply } from './Providers'
-import Image from 'next/image'
-import { useRef } from 'react'
-import ApplyButton from './ApplyButton'
+import { useRef, useState } from 'react'
+import { HiPlay, HiPause, HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
@@ -17,147 +15,89 @@ function rise(delay: number) {
 }
 
 export default function Hero() {
-  const { open } = useApply()
-  const resultsRef = useRef<HTMLDivElement | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [playing, setPlaying] = useState(true)
+  // Autoplay only works muted — the sound control turns audio on.
+  const [muted, setMuted] = useState(true)
 
-  const scrollToResults = () => {
-    const resultsSection = document.getElementById('results-section')
-    if (resultsSection) {
-      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+  const togglePlay = () => {
+    const video = videoRef.current
+    if (!video) return
+    if (video.paused) video.play()
+    else video.pause()
+  }
+
+  const toggleMute = () => {
+    const video = videoRef.current
+    if (!video) return
+    video.muted = !video.muted
+    setMuted(video.muted)
   }
 
   return (
     <section
       style={{
-        minHeight: '100vh',
+        background: 'var(--hero-bg)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: '80px var(--pad) 80px',
+        /* Top pad clears the 52px fixed navbar; section fills exactly one viewport. */
+        padding: '68px var(--pad) clamp(20px, 3vh, 40px)',
+        height: '100dvh',
+        minHeight: '100dvh',
         position: 'relative',
         overflow: 'hidden',
-        borderBottom: '1px solid var(--line2)',
       }}
     >
-      {/* Background Video */}
       <div
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
+          position: 'relative',
+          zIndex: 2,
           width: '100%',
+          maxWidth: '1000px',
           height: '100%',
-          overflow: 'hidden',
-          zIndex: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="none"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            minWidth: '100%',
-            minHeight: '100%',
-            width: 'auto',
-            height: 'auto',
-            transform: 'translate(-50%, -50%)',
-            objectFit: 'cover',
-          }}
-        >
-          <source src="/heroVideo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
 
-        {/* Dark overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            background: 'rgba(0, 0, 0, 0.8)',
-            pointerEvents: 'none',
-          }}
-        />
-      </div>
-
-      {/* Glow */}
-      <div
-        style={{
-          position: 'absolute',
-          width: '600px',
-          height: '600px',
-          background: 'radial-gradient(circle, rgba(106,255,42,0.08) 0%, transparent 65%)',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Content */}
-      <div style={{ position: 'relative', zIndex: 2 }}>
-
-        {/* Logo */}
-        <motion.div
+        {/* Kicker */}
+        <motion.h2
           {...rise(0.1)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-        >
-          <Image src="/logo.png" alt="WAGMI Media Logo" width={154} height={24} priority />
-        </motion.div>
-
-        {/* Eyebrow */}
-        <motion.div
-          {...rise(0.15)}
           style={{
-            fontSize: '10px',
-            fontWeight: 500,
-            letterSpacing: '0.16em',
+            fontFamily: 'var(--font-anton), sans-serif',
+            fontWeight: 400,
+            fontSize: 'clamp(24px, 4.2vw, 48px)',
+            lineHeight: 1,
+            letterSpacing: '0.005em',
             textTransform: 'uppercase',
-            color: 'var(--t4)',
-            marginTop: '20px',
-            marginBottom: '16px',
+            color: 'var(--hero-cream)',
           }}
         >
-          For coaches, consultants and agency owners with a high-ticket offer
-        </motion.div>
+          Your offer is fine.
+        </motion.h2>
 
         {/* H1 */}
         <h1
           style={{
-            fontFamily: 'var(--font-jakarta), sans-serif',
-            fontSize: 'clamp(32px, 6.5vw, 80px)',
-            fontWeight: 800,
-            lineHeight: 1.1,
-            letterSpacing: '-0.03em',
-            color: 'var(--white)',
-            maxWidth: '900px',
-            marginBottom: '28px',
+            fontFamily: 'var(--font-anton), sans-serif',
+            fontWeight: 400,
+            fontSize: 'clamp(48px, 12vw, 140px)',
+            lineHeight: 0.94,
+            letterSpacing: '0.005em',
+            textTransform: 'uppercase',
+            color: 'var(--hero-gold)',
+            marginTop: 'clamp(10px, 1.4vw, 18px)',
           }}
         >
           {[
-            { text: 'Do You Want Your Personal Brand', delay: 0.2,  muted: false },
-            { text: 'Bringing You Clients', delay: 0.32, muted: false },
-            { text: 'in the Next 90 Days?', delay: 0.44, muted: true  },
-          ].map(({ text, delay, muted }) => (
-            <motion.span
-              key={text}
-              {...rise(delay)}
-              style={{
-                display: 'block',
-                color: muted ? 'var(--green)' : 'var(--white)',
-              }}
-            >
+            { text: 'Your content is', delay: 0.2 },
+            { text: 'the bottleneck.', delay: 0.32 },
+          ].map(({ text, delay }) => (
+            <motion.span key={text} {...rise(delay)} style={{ display: 'block' }}>
               {text}
             </motion.span>
           ))}
@@ -165,125 +105,131 @@ export default function Hero() {
 
         {/* Subtitle */}
         <motion.p
-          {...rise(0.58)}
+          {...rise(0.46)}
           style={{
-            fontSize: 'clamp(14px, 1.8vw, 19px)',
-            fontWeight: 300,
-            letterSpacing: '0.01em',
-            lineHeight: 1.6,
-            color: 'var(--t2)',
-            maxWidth: '560px',
-            margin: 'auto',
-            padding: '0 16px 40px',
+            fontSize: 'clamp(14px, 1.7vw, 18px)',
+            fontWeight: 400,
+            lineHeight: 1.65,
+            color: 'var(--hero-cream)',
+            maxWidth: '680px',
+            margin: 'clamp(16px, 3vh, 36px) auto 0',
           }}
         >
-          You record one day a week, 2 to 3 hours max. We handle everything else. Strategy, scripts, editing, posting, and optimization. Without hiring a team, learning to edit, or guessing what to post.
+          Stop gambling on &ldquo;going viral.&rdquo; Build a content engine that predictably converts
+          strangers into high-ticket clients with just 60 minutes of your time per week.
         </motion.p>
 
-        {/* CTAs */}
+        {/* Video */}
         <motion.div
-          {...rise(0.72)}
+          {...rise(0.6)}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            padding: '0 16px',
+            /* Shrinks to whatever height is left so the section never exceeds 100dvh. */
+            flex: '1 1 auto',
+            minHeight: 0,
+            width: 'auto',
+            maxWidth: 'min(900px, 100%)',
+            alignSelf: 'center',
+            margin: 'clamp(20px, 3.5vh, 48px) auto 0',
+            aspectRatio: '16 / 11',
+            background: 'var(--hero-panel)',
+            border: '2px solid var(--hero-edge)',
+            borderRadius: 'clamp(16px, 2vw, 28px)',
+            overflow: 'hidden',
+            position: 'relative',
           }}
         >
-                    <button
-   onClick={open}
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
             style={{
-              fontFamily: 'var(--font-bricolage), sans-serif',
-              fontSize: 'clamp(12px, 1.5vw, 14px)',
-              fontWeight: 700,
-              letterSpacing: '0.01em',
-              color: 'var(--black)',
-              background: 'var(--white)',
-              border: 'none',
-              padding: 'clamp(12px, 2vw, 14px) clamp(24px, 4vw, 32px)',
-              cursor: 'pointer',
-              textDecoration: 'none',
-              display: 'inline-block',
-              transition: 'background 0.2s, transform 0.15s',
-              textTransform: 'uppercase',
-              borderRadius: '8px',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'var(--green)'
-              e.currentTarget.style.transform = 'translateY(-1px)'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'var(--white)'
-              e.currentTarget.style.transform = 'translateY(0)'
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
             }}
           >
-            I WANT CLIENTS COMING TO ME
-          </button>
-          <button
-            onClick={scrollToResults}
-            className="shine-btn"
-          >
-            See Our Work ↓
-          </button>
-        </motion.div>
+            <source src="/heroVideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
 
-        {/* Risk strip */}
-        <motion.div
-          {...rise(0.86)}
-          className="flex items-center justify-center flex-wrap gap-3 md:gap-6 mt-7 px-4"
-          style={{
-            fontSize: 'clamp(10px, 1.2vw, 11px)',
-            fontWeight: 400,
-            letterSpacing: '0.04em',
-            paddingTop: '28px',
-          }}
-        >
-          {['First content live in 48 hours after onboarding', '100% done for you', '90-Day Traction Guarantee'].map((item) => (
-            <span
-              key={item}
-              className="relative cursor-default border-2 border-(--green) px-3 py-2 rounded-full transition-all duration-300 hover:text-black overflow-hidden group"
-              style={{ padding: '10px', borderRadius: '30px' }}
+          {/* Custom controls */}
+          <div
+            style={{
+              position: 'absolute',
+              right: 'clamp(12px, 1.6vw, 18px)',
+              bottom: 'clamp(12px, 1.6vw, 18px)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              zIndex: 2,
+            }}
+          >
+            <ControlButton
+              label={playing ? 'Pause video' : 'Play video'}
+              onClick={togglePlay}
             >
-              {/* Fill layer */}
-              <span className="absolute inset-0 bg-(--green) rounded-full transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-              {/* Text */}
-              <span className="relative z-10 inline-block transition-colors duration-300 group-hover:text-black text-(--green)">
-                {item}
-              </span>
-            </span>
-          ))}
+              {playing
+                ? <HiPause size={18} style={{ color: 'var(--hero-bg)' }} />
+                : <HiPlay  size={18} style={{ color: 'var(--hero-bg)' }} />}
+            </ControlButton>
+
+            <ControlButton
+              label={muted ? 'Unmute video' : 'Mute video'}
+              onClick={toggleMute}
+            >
+              {muted
+                ? <HiSpeakerXMark size={18} style={{ color: 'var(--hero-bg)' }} />
+                : <HiSpeakerWave  size={18} style={{ color: 'var(--hero-bg)' }} />}
+            </ControlButton>
+          </div>
         </motion.div>
       </div>
-
-      <style>{`
-        .shine-btn {
-          position: relative;
-          padding: 12px 48px;
-          background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
-          background-position: 0;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shine 3s infinite linear;
-          animation-fill-mode: forwards;
-          font-weight: 600;
-          font-size: 16px;
-          font-family: var(--font-jakarta), sans-serif;
-          white-space: nowrap;
-          border: none;
-          cursor: pointer;
-          background-color: transparent;
-        }
-
-        @keyframes shine {
-          0%   { background-position: 0; }
-          60%  { background-position: 180px; }
-          100% { background-position: 180px; }
-        }
-      `}</style>
     </section>
+  )
+}
+
+function ControlButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={label}
+      style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        background: 'var(--hero-cream)',
+        border: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        transition: 'transform 0.2s, background 0.2s',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = 'scale(1.08)'
+        e.currentTarget.style.background = 'var(--hero-gold)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = 'scale(1)'
+        e.currentTarget.style.background = 'var(--hero-cream)'
+      }}
+    >
+      {children}
+    </button>
   )
 }
