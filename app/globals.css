@@ -2,18 +2,22 @@
 
 /* ─── DESIGN TOKENS ────────────────────────────────── */
 :root {
-  --black:   #000000;
-  --off:     #0a0a0a;
-  --surface: #111111;
-  --line:    rgba(255,255,255,0.08);
-  --line2:   rgba(255,255,255,0.04);
-  --white:   #ffffff;
-  --t1:      #ffffff;
-  --t2:      rgba(255,255,255,0.55);
-  --t3:      rgba(255,255,255,0.28);
-  --t4:      rgba(255,255,255,0.12);
-  --green:   #ABF82F;
-  --sage:    rgba(106,255,42,0.45);
+  /* Legacy tokens, retargeted to the green/gold theme so every page that
+     still references them picks it up. --green is now the gold accent. */
+  --black:   #001710;
+  --off:     #00251B;
+  --surface: #0C3B2E;
+  --line:    rgba(244,241,214,0.10);
+  --line2:   rgba(244,241,214,0.05);
+  --white:   #F4F1D6;
+  --t1:      #F4F1D6;
+  --t2:      rgba(244,241,214,0.60);
+  --t3:      rgba(244,241,214,0.34);
+  --t4:      rgba(244,241,214,0.16);
+  --green:   #E3C24A;
+  --green2:  #0C3B2E;
+  --green3:  #1E7D63;
+  --sage:    rgba(227,194,74,0.45);
   --max:     1100px;
   --pad:     clamp(20px, 5vw, 80px);
 
@@ -23,6 +27,10 @@
   --hero-edge:    #7BD6A5;
   --hero-cream:   #F4F1D6;
   --hero-gold:    #E3C24A;
+  --green2:       #0C3B2E;
+  --section-bg:   #00251B;
+  --card-cream:   #F2EFD4;
+  --hero-green:   #00251B;
 }
 
 @theme inline {
@@ -42,8 +50,6 @@ html {
 }
 
 body {
-  background: var(--black);
-  color: var(--t1);
   overflow-x: hidden;
   cursor: default;
 }

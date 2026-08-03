@@ -225,7 +225,7 @@ export default function Footer() {
     <>
       <footer
         style={{
-          background: 'var(--off)',
+          background: 'var(--hero-bg)',
           borderTop: '1px solid var(--line2)',
           position: 'relative',
           zIndex: 1,
@@ -348,7 +348,7 @@ export default function Footer() {
               position: 'absolute',
               inset: 0,
               background:
-                'linear-gradient(to right, var(--off) 0%, transparent 8%, transparent 92%, var(--off) 100%)',
+                'linear-gradient(to right, var(--hero-bg) 0%, transparent 8%, transparent 92%, var(--hero-bg) 100%)',
               pointerEvents: 'none',
               zIndex: 1,
             }}

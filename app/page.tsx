@@ -1,6 +1,15 @@
 import Hero from './components/Hero'
 import Ticker from './components/Ticker'
 import StatsBar from './components/StatsBar'
+import PostingIsNotASystem from './components/PostingIsNotASystem'
+import TwoCoreOffers from './components/TwoCoreOffers'
+import FiveLayers from './components/FiveLayers'
+import ProofNotPromises from './components/ProofNotPromises'
+import PickYourEngine from './components/PickYourEngine'
+import IncludedFree from './components/IncludedFree'
+import TwoGuarantees from './components/TwoGuarantees'
+import RealGrowth from './components/RealGrowth'
+import SixtyMinutesCTA from './components/SixtyMinutesCTA'
 import VSL from './components/VSL'
 import CTAStrip from './components/CTAStrip'
 import HowItWorks from './components/HowItWorks'
@@ -15,31 +24,42 @@ export default function Page() {
     <>
       <Hero />
       <StatsBar />
-      <VSL />
-      <Ticker />
+      <PostingIsNotASystem />
+      <TwoCoreOffers />
+      <FiveLayers />
+      <Ticker variant="capabilities" />
+      <ProofNotPromises />
+      <PickYourEngine />
+      <IncludedFree />
+      <Ticker variant="proof" />
+      <TwoGuarantees />
+      <RealGrowth />
+      <Ticker variant="urgency" />
+      <SixtyMinutesCTA />
+      {/* <VSL /> */}
 
       {/* Post-VSL — low pressure, curiosity hook */}
-      <CTAStrip
+      {/* <CTAStrip
         variant="minimal"
         badge="Now Accepting Clients"
         text="Seen enough? Let's talk about your channel."
         buttonText="Apply Now"
-      />
+      /> */}
 
-      <HowItWorks />
+      {/* <HowItWorks /> */}
 
       {/* Post-process — medium intent, hand-off framing */}
-      <CTAStrip
+      {/* <CTAStrip
         variant="bold"
         label="Done For You"
         text="Ready to hand off your entire content operation?"
         subtext="Scripts, edits, thumbnails, strategy, distribution — fully managed."
         buttonText="Apply to Work With Us"
-      />
+      /> */}
 
-      <Results />
+      {/* <Results /> */}
       {/* <ProofNote /> */}
-      <Testimonials />
+      {/* <Testimonials /> */}
 
       {/* Post-results — high intent, social proof momentum */}
       {/* <CTAStrip
@@ -51,7 +71,7 @@ export default function Page() {
         buttonText="Apply to Work With Us"
       /> */}
 
-      <FinalCTA />
+      {/* <FinalCTA /> */}
     </>
   )
 }
