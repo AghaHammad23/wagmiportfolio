@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer'
 export type ApplyPayload = {
   name: string
   email: string
+  phone?: string
   brand?: string
   revenue?: string
   service?: string
@@ -49,19 +50,28 @@ export async function POST(request: Request) {
 
   const name = body.name?.trim() ?? ''
   const email = body.email?.trim() ?? ''
+  const phone = body.phone?.trim() ?? ''
 
-  // Only name + email are required — everything else is qualifying detail.
-  if (!name || !email) {
-    return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 })
+  // Name, email and phone are required — everything else is qualifying detail.
+  if (!name || !email || !phone) {
+    return NextResponse.json(
+      { error: 'Name, email and phone number are required.' },
+      { status: 400 }
+    )
   }
 
   if (!isValidEmail(email)) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 })
   }
 
+  if (phone.replace(/\D/g, '').length < 6) {
+    return NextResponse.json({ error: 'Please enter a valid phone number.' }, { status: 400 })
+  }
+
   const application = {
     name,
     email,
+    phone,
     brand: body.brand?.trim() || '—',
     revenue: (body.revenue && revenueLabels[body.revenue]) || '—',
     service: (body.service && serviceLabels[body.service]) || '—',
@@ -170,7 +180,7 @@ export async function POST(request: Request) {
                 ${escapeHtml(application.name)}
               </div>
               <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:${CREAM};padding-top:8px;">
-                <a href="mailto:${escapeHtml(application.email)}" style="color:${CREAM};text-decoration:underline;">${escapeHtml(application.email)}</a>
+                <a href="mailto:${escapeHtml(application.email)}" style="color:${CREAM};text-decoration:underline;">${escapeHtml(application.email)}</a><span style="color:${MUTED};">&nbsp;&nbsp;·&nbsp;&nbsp;</span><a href="tel:${escapeHtml(application.phone.replace(/[^\d+]/g, ''))}" style="color:${CREAM};text-decoration:underline;">${escapeHtml(application.phone)}</a>
               </div>
             </td>
           </tr>
@@ -226,6 +236,7 @@ export async function POST(request: Request) {
   const text = [
     `NEW APPLICATION — ${application.name}`,
     `${application.email}`,
+    `${application.phone}`,
     '',
     ...rows.map(([label, value]) => `${label}: ${value}`),
     '',

@@ -33,13 +33,141 @@ const labelStyle: React.CSSProperties = {
 interface FormState {
   name: string
   email: string
+  /** Country id, e.g. 'US' — dial codes are not unique. */
+  country: string
+  phone: string
   brand: string
   revenue: string
   service: string
   message: string
 }
 
-const EMPTY: FormState = { name: '', email: '', brand: '', revenue: '', service: '', message: '' }
+const EMPTY: FormState = {
+  name: '', email: '', country: 'US', phone: '',
+  brand: '', revenue: '', service: '', message: '',
+}
+
+/* Key markets first, then the rest alphabetically. Values carry a unique id
+   because several countries share a dial code (+1, +7, +44 …). */
+type DialCode = { id: string; code: string; label: string }
+
+const priorityDialCodes: DialCode[] = [
+  { id: 'US', code: '+1', label: 'United States' },
+  { id: 'CA', code: '+1', label: 'Canada' },
+  { id: 'GB', code: '+44', label: 'United Kingdom' },
+  { id: 'AU', code: '+61', label: 'Australia' },
+  { id: 'AE', code: '+971', label: 'United Arab Emirates' },
+  { id: 'PK', code: '+92', label: 'Pakistan' },
+  { id: 'IN', code: '+91', label: 'India' },
+]
+
+const otherDialCodes: DialCode[] = [
+  { id: 'AF', code: '+93', label: 'Afghanistan' },
+  { id: 'AL', code: '+355', label: 'Albania' },
+  { id: 'DZ', code: '+213', label: 'Algeria' },
+  { id: 'AR', code: '+54', label: 'Argentina' },
+  { id: 'AM', code: '+374', label: 'Armenia' },
+  { id: 'AT', code: '+43', label: 'Austria' },
+  { id: 'AZ', code: '+994', label: 'Azerbaijan' },
+  { id: 'BH', code: '+973', label: 'Bahrain' },
+  { id: 'BD', code: '+880', label: 'Bangladesh' },
+  { id: 'BY', code: '+375', label: 'Belarus' },
+  { id: 'BE', code: '+32', label: 'Belgium' },
+  { id: 'BO', code: '+591', label: 'Bolivia' },
+  { id: 'BA', code: '+387', label: 'Bosnia & Herzegovina' },
+  { id: 'BR', code: '+55', label: 'Brazil' },
+  { id: 'BG', code: '+359', label: 'Bulgaria' },
+  { id: 'KH', code: '+855', label: 'Cambodia' },
+  { id: 'CM', code: '+237', label: 'Cameroon' },
+  { id: 'CL', code: '+56', label: 'Chile' },
+  { id: 'CN', code: '+86', label: 'China' },
+  { id: 'CO', code: '+57', label: 'Colombia' },
+  { id: 'CR', code: '+506', label: 'Costa Rica' },
+  { id: 'HR', code: '+385', label: 'Croatia' },
+  { id: 'CY', code: '+357', label: 'Cyprus' },
+  { id: 'CZ', code: '+420', label: 'Czechia' },
+  { id: 'DK', code: '+45', label: 'Denmark' },
+  { id: 'DO', code: '+1809', label: 'Dominican Republic' },
+  { id: 'EC', code: '+593', label: 'Ecuador' },
+  { id: 'EG', code: '+20', label: 'Egypt' },
+  { id: 'SV', code: '+503', label: 'El Salvador' },
+  { id: 'EE', code: '+372', label: 'Estonia' },
+  { id: 'ET', code: '+251', label: 'Ethiopia' },
+  { id: 'FI', code: '+358', label: 'Finland' },
+  { id: 'FR', code: '+33', label: 'France' },
+  { id: 'GE', code: '+995', label: 'Georgia' },
+  { id: 'DE', code: '+49', label: 'Germany' },
+  { id: 'GH', code: '+233', label: 'Ghana' },
+  { id: 'GR', code: '+30', label: 'Greece' },
+  { id: 'GT', code: '+502', label: 'Guatemala' },
+  { id: 'HN', code: '+504', label: 'Honduras' },
+  { id: 'HK', code: '+852', label: 'Hong Kong' },
+  { id: 'HU', code: '+36', label: 'Hungary' },
+  { id: 'IS', code: '+354', label: 'Iceland' },
+  { id: 'ID', code: '+62', label: 'Indonesia' },
+  { id: 'IQ', code: '+964', label: 'Iraq' },
+  { id: 'IE', code: '+353', label: 'Ireland' },
+  { id: 'IL', code: '+972', label: 'Israel' },
+  { id: 'IT', code: '+39', label: 'Italy' },
+  { id: 'JM', code: '+1876', label: 'Jamaica' },
+  { id: 'JP', code: '+81', label: 'Japan' },
+  { id: 'JO', code: '+962', label: 'Jordan' },
+  { id: 'KZ', code: '+7', label: 'Kazakhstan' },
+  { id: 'KE', code: '+254', label: 'Kenya' },
+  { id: 'KW', code: '+965', label: 'Kuwait' },
+  { id: 'LV', code: '+371', label: 'Latvia' },
+  { id: 'LB', code: '+961', label: 'Lebanon' },
+  { id: 'LT', code: '+370', label: 'Lithuania' },
+  { id: 'LU', code: '+352', label: 'Luxembourg' },
+  { id: 'MY', code: '+60', label: 'Malaysia' },
+  { id: 'MT', code: '+356', label: 'Malta' },
+  { id: 'MU', code: '+230', label: 'Mauritius' },
+  { id: 'MX', code: '+52', label: 'Mexico' },
+  { id: 'MD', code: '+373', label: 'Moldova' },
+  { id: 'MA', code: '+212', label: 'Morocco' },
+  { id: 'NP', code: '+977', label: 'Nepal' },
+  { id: 'NL', code: '+31', label: 'Netherlands' },
+  { id: 'NZ', code: '+64', label: 'New Zealand' },
+  { id: 'NG', code: '+234', label: 'Nigeria' },
+  { id: 'NO', code: '+47', label: 'Norway' },
+  { id: 'OM', code: '+968', label: 'Oman' },
+  { id: 'PA', code: '+507', label: 'Panama' },
+  { id: 'PY', code: '+595', label: 'Paraguay' },
+  { id: 'PE', code: '+51', label: 'Peru' },
+  { id: 'PH', code: '+63', label: 'Philippines' },
+  { id: 'PL', code: '+48', label: 'Poland' },
+  { id: 'PT', code: '+351', label: 'Portugal' },
+  { id: 'QA', code: '+974', label: 'Qatar' },
+  { id: 'RO', code: '+40', label: 'Romania' },
+  { id: 'RU', code: '+7', label: 'Russia' },
+  { id: 'SA', code: '+966', label: 'Saudi Arabia' },
+  { id: 'RS', code: '+381', label: 'Serbia' },
+  { id: 'SG', code: '+65', label: 'Singapore' },
+  { id: 'SK', code: '+421', label: 'Slovakia' },
+  { id: 'SI', code: '+386', label: 'Slovenia' },
+  { id: 'ZA', code: '+27', label: 'South Africa' },
+  { id: 'KR', code: '+82', label: 'South Korea' },
+  { id: 'ES', code: '+34', label: 'Spain' },
+  { id: 'LK', code: '+94', label: 'Sri Lanka' },
+  { id: 'SE', code: '+46', label: 'Sweden' },
+  { id: 'CH', code: '+41', label: 'Switzerland' },
+  { id: 'TW', code: '+886', label: 'Taiwan' },
+  { id: 'TZ', code: '+255', label: 'Tanzania' },
+  { id: 'TH', code: '+66', label: 'Thailand' },
+  { id: 'TT', code: '+1868', label: 'Trinidad & Tobago' },
+  { id: 'TN', code: '+216', label: 'Tunisia' },
+  { id: 'TR', code: '+90', label: 'Türkiye' },
+  { id: 'UG', code: '+256', label: 'Uganda' },
+  { id: 'UA', code: '+380', label: 'Ukraine' },
+  { id: 'UY', code: '+598', label: 'Uruguay' },
+  { id: 'UZ', code: '+998', label: 'Uzbekistan' },
+  { id: 'VE', code: '+58', label: 'Venezuela' },
+  { id: 'VN', code: '+84', label: 'Vietnam' },
+  { id: 'ZM', code: '+260', label: 'Zambia' },
+  { id: 'ZW', code: '+263', label: 'Zimbabwe' },
+]
+
+const allDialCodes: DialCode[] = [...priorityDialCodes, ...otherDialCodes]
 
 /* Tap-to-select options — one tap beats a native picker, especially on mobile. */
 const revenueOptions = [
@@ -104,12 +232,18 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
   }
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
-  const step1Valid = form.name.trim().length > 1 && emailValid
+  // Digits only, so formatting like (555) 018-2244 still counts.
+  const phoneValid = form.phone.replace(/\D/g, '').length >= 6
+  const step1Valid = form.name.trim().length > 1 && emailValid && phoneValid
 
   const goNext = () => {
     setError(null)
     if (step === 1 && !step1Valid) {
-      setError('Add your name and a valid email to continue.')
+      setError(
+        !phoneValid && form.name.trim().length > 1 && emailValid
+          ? 'Add a phone number so we can reach you.'
+          : 'Add your name, email and phone number to continue.'
+      )
       return
     }
     setStep(s => Math.min(s + 1, TOTAL_STEPS))
@@ -124,7 +258,7 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
     e.preventDefault()
     if (!step1Valid) {
       setStep(1)
-      setError('Add your name and a valid email to continue.')
+      setError('Add your name, email and phone number to continue.')
       return
     }
 
@@ -132,10 +266,13 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
     setError(null)
 
     try {
+      const { country, phone, ...rest } = form
+      const dial = allDialCodes.find(c => c.id === country)?.code ?? '+1'
       const res = await fetch('/api/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        // Send one combined number; the split is only a UI convenience.
+        body: JSON.stringify({ ...rest, phone: `${dial} ${phone.trim()}`.trim() }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => null)
@@ -361,6 +498,23 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
                             />
                           </div>
                           <div>
+                            <label style={labelStyle} htmlFor="apply-phone">Phone</label>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                              <CountrySelect
+                                value={form.country}
+                                onChange={id => setForm(p => ({ ...p, country: id }))}
+                              />
+                              <input
+                                id="apply-phone"
+                                type="tel" name="phone" value={form.phone} onChange={set}
+                                placeholder="555 000 1234"
+                                autoComplete="tel-national"
+                                inputMode="tel"
+                                style={fieldStyle} onFocus={focusBorder} onBlur={blurBorder}
+                              />
+                            </div>
+                          </div>
+                          <div>
                             <label style={labelStyle} htmlFor="apply-brand">
                               Brand or channel <span style={{ textTransform: 'none', letterSpacing: 0 }}>(optional)</span>
                             </label>
@@ -490,5 +644,162 @@ export default function ApplyModal({ isOpen, onClose }: { isOpen: boolean; onClo
         </motion.div>
       )}
     </AnimatePresence>
+  )
+}
+
+/**
+ * Searchable country/dial-code picker. A native <select> is unusable at 100+
+ * entries, so this is a filterable listbox driven by keyboard or pointer.
+ */
+function CountrySelect({ value, onChange }: { value: string; onChange: (id: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const [highlight, setHighlight] = useState(0)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
+  // Buffered keystrokes for typeahead, e.g. "p" then "o" jumps to Poland.
+  const typed = useRef('')
+  const typedTimer = useRef<number | undefined>(undefined)
+
+  const selected = allDialCodes.find(c => c.id === value) ?? allDialCodes[0]
+
+  // Close when clicking outside.
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [open])
+
+  // Open on the current selection, and focus the list so keys are captured.
+  useEffect(() => {
+    if (!open) return
+    const idx = allDialCodes.findIndex(c => c.id === value)
+    setHighlight(idx < 0 ? 0 : idx)
+    typed.current = ''
+    setTimeout(() => listRef.current?.focus(), 20)
+  }, [open, value])
+
+  // Keep the highlighted row in view.
+  useEffect(() => {
+    if (!open) return
+    const el = listRef.current?.querySelector<HTMLElement>(`[data-idx="${highlight}"]`)
+    el?.scrollIntoView({ block: 'nearest' })
+  }, [highlight, open])
+
+  useEffect(() => () => window.clearTimeout(typedTimer.current), [])
+
+  const choose = (id: string) => {
+    onChange(id)
+    setOpen(false)
+  }
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setHighlight(h => Math.min(h + 1, allDialCodes.length - 1))
+      return
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setHighlight(h => Math.max(h - 1, 0))
+      return
+    }
+    if (e.key === 'Home') {
+      e.preventDefault()
+      setHighlight(0)
+      return
+    }
+    if (e.key === 'End') {
+      e.preventDefault()
+      setHighlight(allDialCodes.length - 1)
+      return
+    }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      const pick = allDialCodes[highlight]
+      if (pick) choose(pick.id)
+      return
+    }
+    if (e.key === 'Escape' || e.key === 'Tab') {
+      setOpen(false)
+      return
+    }
+
+    // Typeahead: letters jump to the first country starting with what's typed.
+    if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
+      e.preventDefault()
+      typed.current += e.key.toLowerCase()
+
+      // Search the alphabetical section only — the pinned countries at the top
+      // would otherwise swallow "p" (Pakistan) instead of jumping to Panama.
+      const findFrom = (prefix: string) =>
+        allDialCodes.findIndex(
+          (c, i) => i >= priorityDialCodes.length && c.label.toLowerCase().startsWith(prefix)
+        )
+
+      let idx = findFrom(typed.current)
+      // No match on the buffer means the user started a new word — restart it.
+      if (idx < 0 && typed.current.length > 1) {
+        typed.current = e.key.toLowerCase()
+        idx = findFrom(typed.current)
+      }
+      if (idx >= 0) setHighlight(idx)
+
+      window.clearTimeout(typedTimer.current)
+      typedTimer.current = window.setTimeout(() => { typed.current = '' }, 800)
+    }
+  }
+
+  return (
+    <div ref={wrapRef} style={{ position: 'relative', flexShrink: 0 }}>
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={`Country code: ${selected.label} ${selected.code}`}
+        className="apply-country-trigger"
+      >
+        <span>{selected.code}</span>
+        <span className="apply-country-caret">▾</span>
+      </button>
+
+      {open && (
+        <div className="apply-country-pop">
+          <div
+            ref={listRef}
+            role="listbox"
+            tabIndex={-1}
+            onKeyDown={onKeyDown}
+            aria-activedescendant={`country-${allDialCodes[highlight]?.id}`}
+            className="apply-country-list"
+          >
+            {allDialCodes.map((c, i) => (
+              <button
+                key={c.id}
+                id={`country-${c.id}`}
+                type="button"
+                data-idx={i}
+                role="option"
+                tabIndex={-1}
+                aria-selected={c.id === value}
+                onClick={() => choose(c.id)}
+                onMouseEnter={() => setHighlight(i)}
+                /* Rule marks where the pinned countries end and A–Z begins. */
+                style={i === priorityDialCodes.length
+                  ? { borderTop: '1px solid rgba(244,241,214,0.14)' }
+                  : undefined}
+                className={`apply-country-item ${i === highlight ? 'is-active' : ''} ${c.id === value ? 'is-selected' : ''}`}
+              >
+                <span className="apply-country-name">{c.label}</span>
+                <span className="apply-country-code">{c.code}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
