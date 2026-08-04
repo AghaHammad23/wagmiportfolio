@@ -4,7 +4,16 @@
       "Bash(npx tsc *)",
       "Bash(sed -i 's/baseColor=\"#111111\"/baseColor=\"#0C3B2E\"/' app/components/FinalCTA.tsx)",
       "Bash(sed -i 's/  background: #111111;/  background: #0C3B2E;/; s/  color: #ffffff;/  color: #F4F1D6;/' app/globals.css)",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "Bash(git check-ignore *)",
+      "Bash(echo \"exit=$? \\(1 = NOT ignored, good\\)\")",
+      "Bash(rm .env.local)",
+      "Bash(cp /tmp/smtptest.mjs ./smtptest.mjs)",
+      "Bash(node ./smtptest.mjs)",
+      "Bash(rm -f ./smtptest.mjs)",
+      "Read(//tmp/**)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(curl -s -X POST http://localhost:3000/api/apply -H \"Content-Type: application/json\" -d '{\"name\":\"Sarah Chen\",\"email\":\"sarah@innovatetech.io\"}' -w \"\\\\nHTTP %{http_code}\\\\n\")"
     ]
   }
 }
