@@ -12,9 +12,9 @@ type Stat = {
 }
 
 const stats: Stat[] = [
-  { value: '200+',         label: 'Assets Produced' },
-  { value: '60 min',       label: 'Client Input' },
-  { value: '12 to 24 hrs', label: 'Delivery Speed' },
+  { value: '200+/M',         label: 'Content Shipped' },
+  { value: '60 Min/week',       label: 'Your Input' },
+  { value: '12 to 24 hrs', label: 'Turnaround' },
   { value: '1 system',     label: 'For Scale' },
 ]
 

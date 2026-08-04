@@ -45,7 +45,7 @@ export default function Hero() {
         textAlign: 'center',
         /* Top pad clears the fixed header (72px desktop / 52px mobile bar);
            section fills exactly one viewport. */
-        padding: '86px var(--pad) clamp(20px, 3vh, 40px)',
+        padding: '80px clamp(16px, 3vw, 48px) clamp(16px, 2.2vh, 28px)',
         height: '100dvh',
         minHeight: '100dvh',
         position: 'relative',
@@ -57,7 +57,8 @@ export default function Hero() {
           position: 'relative',
           zIndex: 2,
           width: '100%',
-          maxWidth: '1000px',
+          /* Wide enough for the video; the text blocks cap themselves below. */
+          maxWidth: '1500px',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -71,7 +72,7 @@ export default function Hero() {
           style={{
             fontFamily: 'var(--font-anton), sans-serif',
             fontWeight: 400,
-            fontSize: 'clamp(24px, 4.2vw, 48px)',
+            fontSize: 'clamp(20px, 3.2vw, 36px)',
             lineHeight: 1,
             letterSpacing: '0.005em',
             textTransform: 'uppercase',
@@ -86,12 +87,14 @@ export default function Hero() {
           style={{
             fontFamily: 'var(--font-anton), sans-serif',
             fontWeight: 400,
-            fontSize: 'clamp(48px, 12vw, 140px)',
+            fontSize: 'clamp(40px, 8.5vw, 104px)',
             lineHeight: 0.94,
             letterSpacing: '0.005em',
             textTransform: 'uppercase',
             color: 'var(--hero-gold)',
-            marginTop: 'clamp(10px, 1.4vw, 18px)',
+            marginTop: 'clamp(6px, 1vw, 12px)',
+            maxWidth: '1000px',
+            marginInline: 'auto',
           }}
         >
           {[
@@ -104,34 +107,18 @@ export default function Hero() {
           ))}
         </h1>
 
-        {/* Subtitle */}
-        <motion.p
-          {...rise(0.46)}
-          style={{
-            fontSize: 'clamp(14px, 1.7vw, 18px)',
-            fontWeight: 400,
-            lineHeight: 1.65,
-            color: 'var(--hero-cream)',
-            maxWidth: '680px',
-            margin: 'clamp(16px, 3vh, 36px) auto 0',
-          }}
-        >
-          Stop gambling on &ldquo;going viral.&rdquo; Build a content engine that predictably converts
-          strangers into high-ticket clients with just 60 minutes of your time per week.
-        </motion.p>
-
         {/* Video */}
         <motion.div
-          {...rise(0.6)}
+          {...rise(0.46)}
           style={{
             /* Shrinks to whatever height is left so the section never exceeds 100dvh. */
             flex: '1 1 auto',
             minHeight: 0,
             width: 'auto',
-            maxWidth: 'min(900px, 100%)',
+            maxWidth: 'min(1500px, 100%)',
             alignSelf: 'center',
-            margin: 'clamp(20px, 3.5vh, 48px) auto 0',
-            aspectRatio: '16 / 11',
+            margin: 'clamp(14px, 2.2vh, 28px) auto 0',
+            aspectRatio: '16 / 9',
             background: 'var(--hero-panel)',
             border: '2px solid var(--hero-edge)',
             borderRadius: 'clamp(16px, 2vw, 28px)',
@@ -191,6 +178,23 @@ export default function Hero() {
             </ControlButton>
           </div>
         </motion.div>
+
+        {/* Subtitle — sits under the video */}
+        <motion.p
+          {...rise(0.6)}
+          style={{
+            flexShrink: 0,
+            fontSize: 'clamp(14px, 1.7vw, 18px)',
+            fontWeight: 400,
+            lineHeight: 1.65,
+            color: 'var(--hero-cream)',
+            maxWidth: '680px',
+            margin: 'clamp(12px, 2vh, 24px) auto 0',
+          }}
+        >
+          Stop gambling on &ldquo;going viral.&rdquo; <br/>Build a content engine that predictably converts
+          strangers into high-ticket clients with just 60 minutes of your time per week.
+        </motion.p>
       </div>
     </section>
   )
