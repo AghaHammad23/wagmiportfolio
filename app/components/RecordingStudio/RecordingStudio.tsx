@@ -35,7 +35,7 @@ function getLayout(world: WorldSize) {
   return {
     narrow,
     // Camera lives in the left gutter, scene-1 media occupies 40%→98%.
-    camRest: { x: fx(0.19), y: fy(0.58) },
+    camRest: { x: fx(0.24), y: fy(0.58) },
     camStartY: fy(-0.35),
     camScale: world.w * 0.135,
     // Scene 2's video is centred — camera travels down and in behind it.
@@ -83,7 +83,7 @@ export default function RecordingStudio() {
 
       // ── Initial state ──────────────────────────────────────
       gsap.set(cam.position, { x: L.camRest.x, y: L.camStartY, z: 0 })
-      gsap.set(cam.rotation, { x: 0, y: -0.6, z: 0 })
+      gsap.set(cam.rotation, { x: 0, y: 0, z: 0 })
       gsap.set(cam.scale, { x: 0.0001, y: 0.0001, z: 0.0001 })
       mouseInfluence.current.value = 0
 
@@ -121,10 +121,10 @@ export default function RecordingStudio() {
           { x: L.camScale, y: L.camScale, z: L.camScale, duration: 2, ease: 'back.out(1.2)' },
           0.8
         )
-        .to(cam.rotation, { y: 0.1, duration: 2, ease: 'power2.out' }, 0.8)
-        // Settle facing the video — a firm tilt right so the body clearly
-        // reads as pointed at the video, not just glancing toward it.
-        .to(cam.rotation, { y: 0.75, x: 0.05, duration: 0.9, ease: 'power2.inOut' }, 2.6)
+        // Turns linearly from 0 straight to facing right as it falls — one
+        // continuous rotation, so it never swings through facing-left first.
+        .to(cam.rotation, { y: Math.PI / 2, duration: 2.9, ease: 'power2.out' }, 0.8)
+        .to(cam.rotation, { x: 0.05, duration: 0.9, ease: 'power2.inOut' }, 2.6)
         .to(
           video1FrameRef.current,
           { rotateY: -9, rotateX: 2, duration: 0.9, ease: 'power2.inOut' },
@@ -134,7 +134,7 @@ export default function RecordingStudio() {
       /* ── PHASE 2 — recording hold: camera holds its scroll position, only
          the cursor moves it (see the pointer-drift group in CameraModel) ── */
       const phase2Start = 3.5
-      const phase2Span = 1.2
+      const phase2Span = 0.6
       tl.to(mouseInfluence.current, { value: 1, duration: 0.4, ease: 'power1.out' }, phase2Start)
         .to(
           mouseInfluence.current,
@@ -219,7 +219,7 @@ export default function RecordingStudio() {
       </div>
 
       {/* ── Scene 1 — pinned ─────────────────────────────────── */}
-      <section ref={pinnedSectionRef} style={{ position: 'relative', height: '460vh' }}>
+      <section ref={pinnedSectionRef} style={{ position: 'relative', height: '420vh' }}>
         <div
           style={{
             position: 'sticky',
