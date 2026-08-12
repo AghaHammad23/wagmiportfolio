@@ -13,7 +13,21 @@
       "Bash(rm -f ./smtptest.mjs)",
       "Read(//tmp/**)",
       "Bash(taskkill //F //IM node.exe)",
-      "Bash(curl -s -X POST http://localhost:3000/api/apply -H \"Content-Type: application/json\" -d '{\"name\":\"Sarah Chen\",\"email\":\"sarah@innovatetech.io\"}' -w \"\\\\nHTTP %{http_code}\\\\n\")"
+      "Bash(curl -s -X POST http://localhost:3000/api/apply -H \"Content-Type: application/json\" -d '{\"name\":\"Sarah Chen\",\"email\":\"sarah@innovatetech.io\"}' -w \"\\\\nHTTP %{http_code}\\\\n\")",
+      "Bash(npm ls *)",
+      "Bash(mkdir -p \"c:\\\\Users\\\\PC\\\\Desktop\\\\Hammad\\\\wagmiportfolio\\\\public\\\\models\")",
+      "Bash(mv \"c:\\\\Users\\\\PC\\\\Desktop\\\\Hammad\\\\wagmiportfolio\\\\public\\\\canon_at-1_retro_camera.glb\" \"c:\\\\Users\\\\PC\\\\Desktop\\\\Hammad\\\\wagmiportfolio\\\\public\\\\models\\\\canon_at-1_retro_camera.glb\")",
+      "Bash(powershell.exe -NoProfile -Command \"Get-Content -Wait -Path 'C:\\\\Users\\\\PC\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-PC-Desktop-Hammad-wagmiportfolio\\\\0135966f-e9b4-4999-b9eb-224e77283d10\\\\tasks\\\\busj06x7y.output'\")",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/scroll-test\" -UseBasicParsing -TimeoutSec 10; \"STATUS: $\\($r.StatusCode\\)\"; $r.Content.Substring\\(0, [Math]::Min\\(500, $r.Content.Length\\)\\) } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/scroll-test\" -UseBasicParsing -TimeoutSec 10; $r.Content } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/scroll-test\" -UseBasicParsing -TimeoutSec 15; \"STATUS: $\\($r.StatusCode\\) LEN: $\\($r.Content.Length\\)\" } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/scroll-test\" -UseBasicParsing -TimeoutSec 10; \"STATUS: $\\($r.StatusCode\\)\" } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/\" -UseBasicParsing -TimeoutSec 15; \"STATUS: $\\($r.StatusCode\\) LEN: $\\($r.Content.Length\\)\" } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/\" -UseBasicParsing -TimeoutSec 25; \"STATUS: $\\($r.StatusCode\\) LEN: $\\($r.Content.Length\\)\" } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/\" -UseBasicParsing -TimeoutSec 25; \"STATUS: $\\($r.StatusCode\\)\" } catch { \"ERROR: $\\($_.Exception.Message\\)\" })"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\PC\\Desktop\\Hammad\\wagmiportfolio\\public"
     ]
   }
 }

@@ -4,6 +4,7 @@ import StatsBar from './components/StatsBar'
 import PostingIsNotASystem from './components/PostingIsNotASystem'
 import TwoCoreOffers from './components/TwoCoreOffers'
 import FiveLayers from './components/FiveLayers'
+import RecordingStudioClient from './components/RecordingStudio/RecordingStudioClient'
 import ProofNotPromises from './components/ProofNotPromises'
 import PickYourEngine from './components/PickYourEngine'
 import IncludedFree from './components/IncludedFree'
@@ -26,6 +27,7 @@ export default function Page() {
       <StatsBar />
       <PostingIsNotASystem />
       <TwoCoreOffers />
+      <RecordingStudioClient />
       <FiveLayers />
       <Ticker variant="capabilities" />
       <ProofNotPromises />
