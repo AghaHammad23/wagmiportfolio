@@ -10,9 +10,8 @@ export type WorldSize = { w: number; h: number }
 
 /**
  * Reports the canvas size in *world units at z=0*, so the scroll timeline can
- * place objects as fractions of the stage instead of hardcoded coordinates.
- * The canvas is stretched over the stage container, so these map 1:1 onto the
- * DOM layout's percentages.
+ * place objects as fractions of the viewport instead of hardcoded coordinates.
+ * The canvas covers the full viewport, so these map 1:1 onto screen pixels.
  */
 function ViewportProbe({ onResize }: { onResize: (s: WorldSize) => void }) {
   const { viewport } = useThree()
@@ -24,7 +23,6 @@ function ViewportProbe({ onResize }: { onResize: (s: WorldSize) => void }) {
 
 type CameraSceneProps = {
   cameraRef: React.RefObject<THREE.Group | null>
-  penRef: React.RefObject<THREE.Group | null>
   mouseInfluence: React.RefObject<MouseInfluence>
   onReady: () => void
   onResize: (s: WorldSize) => void
@@ -32,7 +30,6 @@ type CameraSceneProps = {
 
 export default function CameraScene({
   cameraRef,
-  penRef,
   mouseInfluence,
   onReady,
   onResize,
@@ -53,13 +50,6 @@ export default function CameraScene({
           ref={cameraRef as React.RefObject<THREE.Group>}
           onReady={onReady}
           mouseInfluence={mouseInfluence}
-        />
-        {/* Pen placeholder — same GLB for now, swapped later. */}
-        <CameraModel
-          ref={penRef as React.RefObject<THREE.Group>}
-          onReady={onReady}
-          mouseInfluence={mouseInfluence}
-          mouseStrength={0.05}
         />
         <Environment preset="studio" />
       </Suspense>

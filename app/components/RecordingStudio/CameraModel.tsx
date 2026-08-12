@@ -5,9 +5,6 @@ import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-// TODO(pen): swap this path for the real pen GLB once it lands in
-// /public/models. Until then both objects in this section share the camera
-// model — see `PEN_MODEL_PATH` usage in RecordingStudio.tsx.
 const MODEL_PATH = '/models/canon_at-1_retro_camera.glb'
 
 // PERF: this GLB is 19.5 MB, effectively all of it PNG textures. Resize and
