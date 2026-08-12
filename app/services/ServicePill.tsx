@@ -3,19 +3,20 @@
 import { motion, Easing } from 'framer-motion'
 import { gsap } from 'gsap'
 import { useRef, useState, useCallback } from 'react'
+import type { IconType } from 'react-icons'
 
 const ease: Easing[] = [0.16, 1, 0.3, 1] as unknown as Easing[]
 
 export default function ServicePill({ label, icon: Icon, index, onClick }: {
   label: string
-  icon: React.ElementType
+  icon: IconType
   index: number
   onClick: () => void
 }) {
   const pillRef = useRef<HTMLButtonElement>(null)
   const fillRef = useRef<HTMLSpanElement>(null)
   const textRef = useRef<HTMLSpanElement>(null)
-  const iconRef = useRef<SVGElement>(null)
+  const iconRef = useRef<HTMLSpanElement>(null)
   
   // Use RAF to batch DOM reads/writes and prevent forced reflows
   const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -125,18 +126,20 @@ export default function ServicePill({ label, icon: Icon, index, onClick }: {
           willChange: 'transform', // Optimize for performance
         }}
       />
-      <Icon 
+      <span
         ref={iconRef}
-        size={16} 
-        style={{ 
-          opacity: 0.7, 
-          flexShrink: 0, 
-          position: 'relative', 
+        style={{
+          display: 'inline-flex',
+          opacity: 0.7,
+          flexShrink: 0,
+          position: 'relative',
           zIndex: 1,
           color: 'var(--white)',
           transition: 'color 0.15s, opacity 0.15s',
-        }} 
-      />
+        }}
+      >
+        <Icon size={16} />
+      </span>
       <span 
         ref={textRef}
         style={{ 

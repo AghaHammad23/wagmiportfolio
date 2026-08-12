@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import type { IconType } from 'react-icons'
 import StickyMedia from './StickyMedia'
 
 interface Service {
-  icon: React.ElementType
+  icon: IconType
   title: string
   tag: string
   desc: string

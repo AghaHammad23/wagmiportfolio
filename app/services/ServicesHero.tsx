@@ -1,12 +1,13 @@
 'use client'
 
 import { motion, Easing } from 'framer-motion'
+import type { IconType } from 'react-icons'
 import ServicePill from './ServicePill'
 
 const ease: Easing[] = [0.16, 1, 0.3, 1] as unknown as Easing[]
 
 interface ServicesHeroProps {
-  services: Array<{ title: string; icon: React.ElementType }>
+  services: Array<{ title: string; icon: IconType }>
   onPillClick: (index: number) => void
   onScrollToServices: () => void
 }
